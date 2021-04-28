@@ -49,7 +49,7 @@ jobs:
       shell: bash
       env:
         TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
+        REGISTRY: ${{ secrets.REGISTRY }}
 
   BuildLinux:
     runs-on: ubuntu-latest
@@ -99,7 +99,7 @@ jobs:
       shell: bash
       env:
         TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
+        REGISTRY: ${{ secrets.REGISTRY }}
 
     - name: Compose push ${{ env.SERVICE }}
       run: sudo -E docker-compose push ${{ env.SERVICE }}
@@ -107,10 +107,10 @@ jobs:
       shell: bash
       env:
         TAG: ${{ env.BRANCH }}
-        REGISTRY: ${{ secrets.REGISTRY_ENDPOINT }}
+        REGISTRY: ${{ secrets.REGISTRY }}
 
     - name: Create multiarch manifest
       run: |
-        docker --config ~/.docker manifest create ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
+        docker --config ~/.docker manifest create ${{ secrets.REGISTRY  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ secrets.REGISTRY  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
+        docker --config ~/.docker manifest push ${{ secrets.REGISTRY  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
       shell: bash
