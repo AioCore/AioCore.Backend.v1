@@ -6,7 +6,7 @@
     <ProjectGuid>2c0cee1b-a672-43b9-b763-62b4b4668a2d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>aiocore.api</DockerServiceName>
+    <DockerServiceName>aiocore-api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
