@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AioCore.Application\AioCore.Application.csproj" />
     <ProjectReference Include="..\AioCore.Infrastructure\AioCore.Infrastructure.csproj" />
     <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
@@ -9,6 +13,10 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>73919129-cc10-4cc7-806c-24e463dfa20f</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
 </Project>

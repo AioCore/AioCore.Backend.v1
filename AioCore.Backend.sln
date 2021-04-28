@@ -5,23 +5,25 @@ VisualStudioVersion = 16.6.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E7647CEF-310D-4841-AC21-2F1A43B7D15B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.API", "src\AioCore.API\AioCore.API.csproj", "{3BAD4DDC-B973-41C0-94EB-C47EDD608A75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AioCore.API", "src\AioCore.API\AioCore.API.csproj", "{3BAD4DDC-B973-41C0-94EB-C47EDD608A75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.Application", "src\AioCore.Application\AioCore.Application.csproj", "{8D745BA0-BBAC-416A-AA5A-52DE780B551E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AioCore.Application", "src\AioCore.Application\AioCore.Application.csproj", "{8D745BA0-BBAC-416A-AA5A-52DE780B551E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.Domain", "src\AioCore.Domain\AioCore.Domain.csproj", "{E47EC40A-F9CB-4549-8F2A-2F3D5A79FB81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AioCore.Domain", "src\AioCore.Domain\AioCore.Domain.csproj", "{E47EC40A-F9CB-4549-8F2A-2F3D5A79FB81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.Infrastructure", "src\AioCore.Infrastructure\AioCore.Infrastructure.csproj", "{DA50574B-9022-4361-98AD-FA9347213C92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AioCore.Infrastructure", "src\AioCore.Infrastructure\AioCore.Infrastructure.csproj", "{DA50574B-9022-4361-98AD-FA9347213C92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.Shared", "src\AioCore.Shared\AioCore.Shared.csproj", "{C663ABC9-486E-4F25-8489-0E656BFB261B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AioCore.Shared", "src\AioCore.Shared\AioCore.Shared.csproj", "{C663ABC9-486E-4F25-8489-0E656BFB261B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AioCore.Packages", "AioCore.Packages", "{D1D71B6B-AD2B-4719-8D6B-2FC05A5DB6AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.Mongo", "src\AioCore.Packages\Package.Mongo\Package.Mongo.csproj", "{C8417A18-67DA-4F5F-9B66-65B9112EFC82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Package.Mongo", "src\AioCore.Packages\Package.Mongo\Package.Mongo.csproj", "{C8417A18-67DA-4F5F-9B66-65B9112EFC82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.Redis", "src\AioCore.Packages\Package.Redis\Package.Redis.csproj", "{F503A127-34DB-4CEA-9E5E-04D406601467}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Package.Redis", "src\AioCore.Packages\Package.Redis\Package.Redis.csproj", "{F503A127-34DB-4CEA-9E5E-04D406601467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.NestedSet", "src\AioCore.Packages\Package.NestedSet\Package.NestedSet.csproj", "{E5971232-B20C-4C13-8167-65DF36F26A1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Package.NestedSet", "src\AioCore.Packages\Package.NestedSet\Package.NestedSet.csproj", "{E5971232-B20C-4C13-8167-65DF36F26A1A}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,9 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3BAD4DDC-B973-41C0-94EB-C47EDD608A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -132,6 +131,21 @@ Global
 		{E5971232-B20C-4C13-8167-65DF36F26A1A}.Release|x64.Build.0 = Release|Any CPU
 		{E5971232-B20C-4C13-8167-65DF36F26A1A}.Release|x86.ActiveCfg = Release|Any CPU
 		{E5971232-B20C-4C13-8167-65DF36F26A1A}.Release|x86.Build.0 = Release|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Release|x64.Build.0 = Release|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C0CEE1B-A672-43B9-B763-62B4B4668A2D}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3BAD4DDC-B973-41C0-94EB-C47EDD608A75} = {E7647CEF-310D-4841-AC21-2F1A43B7D15B}
@@ -143,5 +157,8 @@ Global
 		{C8417A18-67DA-4F5F-9B66-65B9112EFC82} = {D1D71B6B-AD2B-4719-8D6B-2FC05A5DB6AB}
 		{F503A127-34DB-4CEA-9E5E-04D406601467} = {D1D71B6B-AD2B-4719-8D6B-2FC05A5DB6AB}
 		{E5971232-B20C-4C13-8167-65DF36F26A1A} = {D1D71B6B-AD2B-4719-8D6B-2FC05A5DB6AB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {224450DA-6EF5-4E31-A951-5B21A23EF16F}
 	EndGlobalSection
 EndGlobal
