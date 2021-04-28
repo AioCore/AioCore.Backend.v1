@@ -79,12 +79,12 @@ jobs:
           docker version -f '{{.Client.Experimental}}'
           docker version -f '{{.Server.Experimental}}'
 
-    - name: Login to Container Registry
+    - name: Login to GitHub Packages Docker Registry
       uses: docker/login-action@v1
       with:
-        registry: ${{ secrets.REGISTRY_HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+        registry: ${{ secrets.REGISTRY }}
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.TOKEN }}
 
     - name: Set branch name as env variable
       run: |
