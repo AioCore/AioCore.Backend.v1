@@ -36,7 +36,7 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Build and run unit tests
+    - name: Build project
       run: |
         dotnet restore "AioCore.Backend.sln"
         cd src
@@ -45,7 +45,7 @@ jobs:
       
     - name: Compose build ${{ env.SERVICE }}
       run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
+      working-directory: .
       shell: bash
       env:
         TAG: ${{ env.BRANCH }}
@@ -63,7 +63,7 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Build and run unit tests
+    - name: Build project
       run: |
         dotnet restore "AioCore.Backend.sln"
         cd src
@@ -95,7 +95,7 @@ jobs:
 
     - name: Compose build ${{ env.SERVICE }}
       run: sudo -E docker-compose build ${{ env.SERVICE }}
-      working-directory: ./src
+      working-directory: .
       shell: bash
       env:
         TAG: ${{ env.BRANCH }}
@@ -103,7 +103,7 @@ jobs:
 
     - name: Compose push ${{ env.SERVICE }}
       run: sudo -E docker-compose push ${{ env.SERVICE }}
-      working-directory: ./src
+      working-directory: .
       shell: bash
       env:
         TAG: ${{ env.BRANCH }}
