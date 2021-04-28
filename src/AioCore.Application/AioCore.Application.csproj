@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AioCore.Infrastructure\AioCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
     <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
     <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
   </ItemGroup>
