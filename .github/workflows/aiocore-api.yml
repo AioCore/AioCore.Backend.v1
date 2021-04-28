@@ -20,7 +20,7 @@ on:
 env:
   SERVICE: aiocore-api
   IMAGE: aiocore.api
-  DOTNET_VERSION: 6.0.x
+  DOTNET_VERSION: 6.0.100-preview.3.21202.5
 
 jobs:
 
