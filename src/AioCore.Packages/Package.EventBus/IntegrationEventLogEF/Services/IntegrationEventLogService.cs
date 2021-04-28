@@ -87,15 +87,13 @@ namespace Package.EventBus.IntegrationEventLogEF.Services
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if (_disposedValue) return;
+            if (disposing)
             {
-                if (disposing)
-                {
-                    _integrationEventLogContext?.Dispose();
-                }
-
-                _disposedValue = true;
+                _integrationEventLogContext?.Dispose();
             }
+
+            _disposedValue = true;
         }
 
         public void Dispose()

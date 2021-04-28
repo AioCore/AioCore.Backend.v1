@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  aiocore-api:
+  aiocore.api:
     image: ${REGISTRY:-aiocore}/aiocore.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .

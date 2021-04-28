@@ -13,26 +13,28 @@ namespace AioCore.Infrastructure
     public class AioCoreContext : DbContext, IUnitOfWork
     {
         private readonly IMediator _mediator;
-        public bool HasActiveTransaction => _currentTransaction != null;
         private IDbContextTransaction _currentTransaction;
-
-        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
         public AioCoreContext(DbContextOptions<AioCoreContext> options) : base(options)
         {
         }
 
+        public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
+
+        public bool HasActiveTransaction => _currentTransaction != null;
+
         public AioCoreContext(DbContextOptions<AioCoreContext> options, IMediator mediator) : base(options)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            System.Diagnostics.Debug.WriteLine($"{nameof(AioCoreContext)}::ctor ->" + GetHashCode());
+
+            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             await _mediator.DispatchDomainEventsAsync(this);
 
-            await base.SaveChangesAsync(cancellationToken);
+            var result = await base.SaveChangesAsync(cancellationToken);
 
             return true;
         }

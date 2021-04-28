@@ -1,8 +1,9 @@
-﻿using AioCore.Shared;
+﻿using AioCore.Infrastructure;
+using AioCore.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace AioCore.Infrastructure
+namespace AioCore.API.Factories
 {
     public class AioCoreContextFactory : IDesignTimeDbContextFactory<AioCoreContext>
     {
