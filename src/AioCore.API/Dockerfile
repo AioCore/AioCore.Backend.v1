@@ -10,6 +10,10 @@ COPY ["src/AioCore.API/AioCore.API.csproj", "src/AioCore.API/"]
 COPY ["src/AioCore.Application/AioCore.Application.csproj", "src/AioCore.Application/"]
 COPY ["src/AioCore.Domain/AioCore.Domain.csproj", "src/AioCore.Domain/"]
 COPY ["src/AioCore.Shared/AioCore.Shared.csproj", "src/AioCore.Shared/"]
+COPY ["src/AioCore.Packages/Package.Redis/Package.Redis.csproj", "src/AioCore.Packages/Package.Redis/"]
+COPY ["src/AioCore.Packages/Package.EventBus/Package.EventBus.csproj", "src/AioCore.Packages/Package.EventBus/"]
+COPY ["src/AioCore.Packages/Package.Mongo/Package.Mongo.csproj", "src/AioCore.Packages/Package.Mongo/"]
+COPY ["src/AioCore.Packages/Package.NestedSet/Package.NestedSet.csproj", "src/AioCore.Packages/Package.NestedSet/"]
 COPY ["src/AioCore.Infrastructure/AioCore.Infrastructure.csproj", "src/AioCore.Infrastructure/"]
 RUN dotnet restore "src/AioCore.API/AioCore.API.csproj"
 COPY . .
