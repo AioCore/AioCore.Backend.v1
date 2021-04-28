@@ -1,4 +1,4 @@
-name: aiocore-api
+name: aiocore.api
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
 
     paths:
     - src/**
-    - .github/workflows/aiocore-api.yml
+    - .github/workflows/aiocore.api.yml
   
   pull_request:
     branches:
@@ -16,9 +16,9 @@ on:
 
     paths:
     - src/**
-    - .github/workflows/aiocore-api.yml
+    - .github/workflows/aiocore.api.yml
 env:
-  SERVICE: aiocore-api
+  SERVICE: aiocore.api
   IMAGE: aiocore.api
   DOTNET_VERSION: 6.0.100-preview.3.21202.5
 
