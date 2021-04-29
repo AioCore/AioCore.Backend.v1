@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace AioCore.Infrastructure
 {
-    public class SettingsContextSeed
+    public class AioCoreContextSeed
     {
-        public async Task SeedAsync(AioCoreContext context, ILogger<SettingsContextSeed> logger)
+        public async Task SeedAsync(AioCoreContext context, ILogger<AioCoreContextSeed> logger)
         {
-            var policy = CreatePolicy(logger, nameof(SettingsContextSeed));
+            var policy = CreatePolicy(logger, nameof(AioCoreContextSeed));
 
             await policy.ExecuteAsync(async () =>
             {

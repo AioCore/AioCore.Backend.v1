@@ -1,3 +1,10 @@
+using AioCore.Domain.AggregatesModel.DynamicDateAggregate;
+using AioCore.Domain.AggregatesModel.DynamicEntityAggregate;
+using AioCore.Domain.AggregatesModel.DynamicFloatAggregate;
+using AioCore.Domain.AggregatesModel.DynamicGuidAggregate;
+using AioCore.Domain.AggregatesModel.DynamicIntegerAggregate;
+using AioCore.Domain.AggregatesModel.DynamicStringAggregate;
+using AioCore.Infrastructure.EntityTypeConfigurations;
 using AioCore.Shared.Extensions;
 using AioCore.Shared.Seedwork;
 using MediatR;
@@ -10,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace AioCore.Infrastructure
 {
-    public class AioCoreContext : DbContext, IUnitOfWork
+    public sealed class AioCoreContext : DbContext, IUnitOfWork
     {
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -27,7 +34,55 @@ namespace AioCore.Infrastructure
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
+            System.Diagnostics.Debug.WriteLine($"{nameof(AioCoreContext)}::ctor ->" + GetHashCode());
+        }
+
+        public DbSet<DynamicDateAttribute> DynamicDateAttributes { get; set; }
+
+        public DbSet<DynamicDateValue> DynamicDateValues { get; set; }
+
+        public DbSet<DynamicEntity> DynamicEntities { get; set; }
+
+        public DbSet<DynamicFloatAttribute> DynamicFloatAttributes { get; set; }
+
+        public DbSet<DynamicFloatValue> DynamicFloatValues { get; set; }
+
+        public DbSet<DynamicGuidAttribute> DynamicGuidAttributes { get; set; }
+
+        public DbSet<DynamicGuidValue> DynamicGuidValues { get; set; }
+
+        public DbSet<DynamicIntegerAttribute> DynamicIntegerAttributes { get; set; }
+
+        public DbSet<DynamicIntegerValue> DynamicIntegerValues { get; set; }
+
+        public DbSet<DynamicStringAttribute> DynamicStringAttributes { get; set; }
+
+        public DbSet<DynamicStringValue> DynamicStringValues { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new DynamicDateAttributeTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicDateValueTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicFloatAttributeTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicFloatValueTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicGuidAttributeTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicGuidValueTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicIntegerAttributeTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicIntegerValueTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicStringAttributeTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new DynamicStringValueTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new SettingActionTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingDomTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingFeatureTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingFieldTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingFormTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingTenantTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingViewTypeConfiguration());
         }
 
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)

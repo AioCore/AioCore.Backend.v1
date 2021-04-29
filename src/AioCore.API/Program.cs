@@ -33,9 +33,9 @@ namespace AioCore.API
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 host.MigrateDbContext<AioCoreContext>((context, services) =>
                 {
-                    var logger = services.GetRequiredService<ILogger<SettingsContextSeed>>();
+                    var logger = services.GetRequiredService<ILogger<AioCoreContextSeed>>();
 
-                    new SettingsContextSeed()
+                    new AioCoreContextSeed()
                         .SeedAsync(context, logger)
                         .Wait();
                 }).MigrateDbContext<IntegrationEventLogContext>((_, __) => { }); ;

@@ -3,15 +3,17 @@ using System;
 using AioCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AioCore.API.Migrations
 {
     [DbContext(typeof(AioCoreContext))]
-    partial class AioCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210429071451_AddDynamicEntities")]
+    partial class AddDynamicEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace AioCore.API.Migrations
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("Value")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AttributeId");
@@ -66,17 +65,11 @@ namespace AioCore.API.Migrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Data")
-                        .HasColumnType("xml");
-
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -108,9 +101,6 @@ namespace AioCore.API.Migrations
 
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uuid");
-
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -145,9 +135,6 @@ namespace AioCore.API.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("EntityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("Value")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -185,9 +172,6 @@ namespace AioCore.API.Migrations
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AttributeId");
@@ -223,9 +207,6 @@ namespace AioCore.API.Migrations
                     b.Property<Guid>("EntityId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AttributeId");
@@ -233,136 +214,6 @@ namespace AioCore.API.Migrations
                     b.HasIndex("EntityId");
 
                     b.ToTable("DynamicStringValues");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingActionAggregate.SettingAction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SettingAction");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingDomAggregate.SettingDom", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AttributeValues")
-                        .HasColumnType("xml");
-
-                    b.Property<string>("Attributes")
-                        .HasColumnType("xml");
-
-                    b.Property<Guid>("FeatureId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ParentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("TagName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FeatureId");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("SettingDom");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingEntityAggregate.SettingEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("SettingEntity");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingFeatureAggregate.SettingFeature", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SettingFeature");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingFieldAggregate.SettingField", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SettingField");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingFormAggregate.SettingForm", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SettingForm");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingTenantAggregate.SettingTenant", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("FaviconId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("LogoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SettingTenant");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingViewAggregate.SettingView", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SettingView");
                 });
 
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.DynamicDateAggregate.DynamicDateValue", b =>
@@ -458,36 +309,6 @@ namespace AioCore.API.Migrations
                     b.Navigation("Attribute");
 
                     b.Navigation("Entity");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingDomAggregate.SettingDom", b =>
-                {
-                    b.HasOne("AioCore.Domain.AggregatesModel.SettingFeatureAggregate.SettingFeature", "Feature")
-                        .WithMany()
-                        .HasForeignKey("FeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AioCore.Domain.AggregatesModel.SettingDomAggregate.SettingDom", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Feature");
-
-                    b.Navigation("Parent");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingEntityAggregate.SettingEntity", b =>
-                {
-                    b.HasOne("AioCore.Domain.AggregatesModel.SettingTenantAggregate.SettingTenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
                 });
 
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.DynamicDateAggregate.DynamicDateAttribute", b =>
