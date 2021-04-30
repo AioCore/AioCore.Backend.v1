@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
+using AioCore.Infrastructure.Repositories;
+using Autofac;
 
 namespace AioCore.Application.AutofacModules
 {
@@ -6,6 +8,9 @@ namespace AioCore.Application.AutofacModules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<SettingTenantRepository>()
+                .As<ISettingTenantRepository>()
+                .InstancePerLifetimeScope();
         }
     }
 }

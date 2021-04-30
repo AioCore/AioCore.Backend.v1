@@ -4,6 +4,14 @@ using AioCore.Domain.AggregatesModel.DynamicFloatAggregate;
 using AioCore.Domain.AggregatesModel.DynamicGuidAggregate;
 using AioCore.Domain.AggregatesModel.DynamicIntegerAggregate;
 using AioCore.Domain.AggregatesModel.DynamicStringAggregate;
+using AioCore.Domain.AggregatesModel.SettingActionAggregate;
+using AioCore.Domain.AggregatesModel.SettingDomAggregate;
+using AioCore.Domain.AggregatesModel.SettingEntityAggregate;
+using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
+using AioCore.Domain.AggregatesModel.SettingFieldAggregate;
+using AioCore.Domain.AggregatesModel.SettingFormAggregate;
+using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
+using AioCore.Domain.AggregatesModel.SettingViewAggregate;
 using AioCore.Infrastructure.EntityTypeConfigurations;
 using AioCore.Shared.Extensions;
 using AioCore.Shared.Seedwork;
@@ -58,6 +66,22 @@ namespace AioCore.Infrastructure
         public DbSet<DynamicStringAttribute> DynamicStringAttributes { get; set; }
 
         public DbSet<DynamicStringValue> DynamicStringValues { get; set; }
+
+        public DbSet<SettingAction> SettingActions { get; set; }
+
+        public DbSet<SettingDom> SettingDoms { get; set; }
+
+        public DbSet<SettingEntity> SettingEntities { get; set; }
+
+        public DbSet<SettingFeature> SettingFeatures { get; set; }
+
+        public DbSet<SettingField> SettingFields { get; set; }
+
+        public DbSet<SettingForm> SettingForms { get; set; }
+
+        public DbSet<SettingTenant> SettingTenants { get; set; }
+
+        public DbSet<SettingView> SettingViews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -11,8 +11,10 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using Package.EventBus.EventBus;
+using Package.EventBus.EventBus.Abstractions;
 using Package.EventBus.EventBus.RabbitMQ;
 using Package.EventBus.EventBus.ServiceBus;
 using Package.EventBus.IntegrationEventLogEF;
@@ -37,7 +39,9 @@ namespace AioCore.API
         {
             services.AddCustomMvc()
                 .AddCustomDbContext()
-                .AddCustomIntegrations(_configuration); ;
+                .AddCustomSwagger(_configuration)
+                .AddCustomIntegrations(_configuration)
+                .AddEventBus(_configuration);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -48,15 +52,17 @@ namespace AioCore.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Document API aioc.vn");
+                });
 
             app.UseRouting();
-
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
             });
         }
@@ -106,6 +112,21 @@ namespace AioCore.API
                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                         sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                     });
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.SchemaFilter<EnumSchemaFilter>();
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Document API aioc.vn",
+                    Version = "v1"
+                });
             });
 
             return services;
@@ -161,6 +182,46 @@ namespace AioCore.API
                     return new DefaultRabbitMqPersistentConnection(factory, logger, retryCount);
                 });
             }
+
+            return services;
+        }
+
+        public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
+        {
+            if (configuration.GetValue<bool>("EventBus:AzureServiceBusEnabled"))
+            {
+                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
+                {
+                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
+                        eventBusSubcriptionsManager, iLifetimeScope);
+                });
+            }
+            else
+            {
+                services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
+                {
+                    var subscriptionClientName = configuration["EventBus:SubscriptionClientName"];
+                    var rabbitMqPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
+                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMq>>();
+                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+                    var retryCount = 5;
+                    if (!string.IsNullOrEmpty(configuration["EventBus:RetryCount"]))
+                    {
+                        retryCount = int.Parse(configuration["EventBus:RetryCount"]);
+                    }
+
+                    return new EventBusRabbitMq(rabbitMqPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                });
+            }
+
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
             return services;
         }
