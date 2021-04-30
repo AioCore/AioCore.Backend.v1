@@ -14,5 +14,7 @@ namespace AioCore.Domain.AggregatesModel.SettingTenantAggregate
         Task<SettingTenant> GetAsync(Guid tenantId);
 
         IQueryable<SettingTenant> GetAsync(int skip, int take, string query);
+
+        Task<long> LongCountAsync();
     }
 }

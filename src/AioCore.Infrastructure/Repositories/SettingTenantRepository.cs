@@ -40,5 +40,10 @@ namespace AioCore.Infrastructure.Repositories
             var tenants = _context.SettingTenants.Where(specs.Predicate).Skip(skip).Take(take);
             return tenants;
         }
+
+        public async Task<long> LongCountAsync()
+        {
+            return await _context.SettingTenants.LongCountAsync();
+        }
     }
 }

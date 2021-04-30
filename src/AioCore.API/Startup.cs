@@ -1,9 +1,11 @@
+using AioCore.Application;
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Infrastructure;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
 using Autofac;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +28,7 @@ using System.Reflection;
 
 namespace AioCore.API
 {
-    public class Startup
+    public sealed class Startup
     {
         private readonly IConfiguration _configuration;
 
@@ -37,6 +39,8 @@ namespace AioCore.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR(typeof(ApplicationHelper).GetTypeInfo().Assembly);
+
             services.AddCustomMvc()
                 .AddCustomDbContext()
                 .AddCustomSwagger(_configuration)
@@ -46,12 +50,13 @@ namespace AioCore.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new MediatorModule());
             builder.RegisterModule(new ApplicationModule());
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.CreateLogger<Startup>().LogDebug("LogDebug Starting...");
+
             app.UseSwagger()
                 .UseSwaggerUI(c =>
                 {
@@ -65,6 +70,12 @@ namespace AioCore.API
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
             });
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
         }
     }
 

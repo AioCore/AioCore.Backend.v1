@@ -1,6 +1,8 @@
-﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
+﻿using AioCore.Application.Behaviors;
+using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Infrastructure.Repositories;
 using Autofac;
+using MediatR;
 
 namespace AioCore.Application.AutofacModules
 {
@@ -8,6 +10,10 @@ namespace AioCore.Application.AutofacModules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
+            builder.RegisterGeneric(typeof(TransactionBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
+            //builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
+
             builder.RegisterType<SettingTenantRepository>()
                 .As<ISettingTenantRepository>()
                 .InstancePerLifetimeScope();

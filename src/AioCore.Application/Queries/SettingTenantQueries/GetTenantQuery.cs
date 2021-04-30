@@ -8,7 +8,12 @@ namespace AioCore.Application.Queries.SettingTenantQueries
 {
     public class GetTenantQuery : IRequest<GetTenantResponse>
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
+
+        public void MergeParams(Guid id)
+        {
+            Id = id;
+        }
 
         internal class Handler : IRequestHandler<GetTenantQuery, GetTenantResponse>
         {
