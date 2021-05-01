@@ -1,13 +1,13 @@
-﻿using AioCore.Shared.Extensions;
+﻿using AioCore.Application.IntegrationEvents;
+using AioCore.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Package.EventBus.EventBus.Extensions;
 using Serilog.Context;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.IntegrationEvents;
-using AioCore.Infrastructure;
 
 namespace AioCore.Application.Behaviors
 {

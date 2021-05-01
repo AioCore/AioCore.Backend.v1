@@ -1,6 +1,6 @@
-﻿using AioCore.Shared.Extensions;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
+using Package.EventBus.EventBus.Extensions;
 using System.Threading;
 using System.Threading.Tasks;
 
