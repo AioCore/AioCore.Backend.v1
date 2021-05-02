@@ -16,7 +16,7 @@ jobs:
           
       - name: Build docker image
         run: |
-          sudo -E docker-compose build -t aiocore/aiocore.backend .
+          sudo -E docker-compose build aiocore.backend .
         shell: bash
 
       - name: Login to Container Registry
@@ -28,4 +28,4 @@ jobs:
           
       - name: Docker push image
         run: |
-          sudo docker-compose push aiocore/aiocore.backend:latest
+          sudo docker push aiocore/aiocore.backend:latest
