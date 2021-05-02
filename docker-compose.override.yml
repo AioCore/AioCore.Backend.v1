@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  aiocore.api:
+  aiocore.backend:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
