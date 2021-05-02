@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
-    <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

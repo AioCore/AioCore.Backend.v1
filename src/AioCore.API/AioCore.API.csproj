@@ -10,9 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AioCore.Application\AioCore.Application.csproj" />
-    <ProjectReference Include="..\AioCore.Infrastructure\AioCore.Infrastructure.csproj" />
-    <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
-    <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
