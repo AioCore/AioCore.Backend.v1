@@ -1,68 +1,27 @@
-name: aiocore-backend
+name: Docker
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-    - dev
-
-    paths:
-    - src/**
-    - .github/workflows/main.yml
-  
-  pull_request:
-    branches:
-    - dev
-
-    paths:
-    - src/**
-    - .github/workflows/main.yml
-env:
-  SERVICE: aiocore-backend
-  IMAGE: aiocore-backend
-  DOTNET_VERSION: 6.0.100-preview.3.21202.5
+    branches: [ dev ]
 
 jobs:
 
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
     steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
+    - name: Checkout
+      uses: actions/checkout@v2
   
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Build and run unit tests
-      run: |
-        dotnet restore "AioCore.Backend.sln"
-        cd src/AioCore.API/AioCore.API
-        dotnet build --no-restore
-
-    - name: Enable experimental features for the Docker daemon and CLI
-      run: |
-          echo $'{\n  "experimental": true\n}' | sudo tee /etc/docker/daemon.json
-          mkdir -p ~/.docker
-          echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
-          sudo service docker restart
-          docker version -f '{{.Client.Experimental}}'
-          docker version -f '{{.Server.Experimental}}'
+        dotnet-version: 6.0.100-preview.3.21202.5
 
     - name: Login Docker Hub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-    - name: Set branch name as env variable
-      run: |
-        currentbranch=$(echo ${GITHUB_REF##*/})
-        echo "running on $currentbranch"
-        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-      shell: bash
 
     - name: Compose build aiocore-backend
       run: sudo -E docker-compose build aiocore-backend
@@ -72,10 +31,4 @@ jobs:
     - name: Compose push aiocore-backend
       run: sudo -E docker-compose push aiocore-backend
       working-directory: .
-      shell: bash
-
-    - name: Create multiarch manifest
-      run: |
-        docker --config ~/.docker manifest create ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
       shell: bash
