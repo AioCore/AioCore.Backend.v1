@@ -12,44 +12,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Enable experimental features for the Docker daemon and CLI
-      run: |
-          echo $'{\n  "experimental": true\n}' | sudo tee /etc/docker/daemon.json
-          mkdir -p ~/.docker
-          echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
-          sudo service docker restart
-          docker version -f '{{.Client.Experimental}}'
-          docker version -f '{{.Server.Experimental}}'
-
-    - name: Login Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-    - name: Set branch name as env variable
-      run: |
-        currentbranch=$(echo ${GITHUB_REF##*/})
-        echo "running on $currentbranch"
-        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
-      shell: bash
-
     - name: Compose build aiocore-backend
       run: sudo -E docker-compose build aiocore-backend
       working-directory: .
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-
-    - name: Compose push aiocore-backend
-      run: sudo -E docker-compose push aiocore-backend
-      working-directory: .
-      shell: bash
-      env:
-        TAG: ${{ env.BRANCH }}
-
-    - name: Create multiarch manifest
-      run: |
-        docker --config ~/.docker manifest create ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }} ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:linux-${{ env.BRANCH  }}
-        docker --config ~/.docker manifest push ${{ secrets.REGISTRY_ENDPOINT  }}/${{ env.IMAGE  }}:${{ env.BRANCH  }}
       shell: bash
