@@ -11,11 +11,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-  
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.100-preview.3.21202.5
 
     - name: Enable experimental features for the Docker daemon and CLI
       run: |
@@ -32,15 +27,26 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+    - name: Set branch name as env variable
+      run: |
+        currentbranch=$(echo ${GITHUB_REF##*/})
+        echo "running on $currentbranch"
+        echo "BRANCH=$currentbranch" >> $GITHUB_ENV
+      shell: bash
+
     - name: Compose build aiocore-backend
       run: sudo -E docker-compose build aiocore-backend
       working-directory: .
       shell: bash
+      env:
+        TAG: ${{ env.BRANCH }}
 
     - name: Compose push aiocore-backend
       run: sudo -E docker-compose push aiocore-backend
       working-directory: .
       shell: bash
+      env:
+        TAG: ${{ env.BRANCH }}
 
     - name: Create multiarch manifest
       run: |

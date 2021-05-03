@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   aiocore-backend:
-    image: aiocore/aiocore-backend:latest
+    image: aiocore/aiocore-backend:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/AioCore.API/Dockerfile
