@@ -17,6 +17,7 @@ jobs:
       with:
         username: ${{ github.actor }}
         password: ${{ secrets.ACCESS_TOKEN }}
+        dockerfile: src/AioCore.API/Dockerfile
         registry: docker.pkg.github.com
         repository: aiocore/aiocore.backend/aiocore-backend
         tag_with_ref: true
