@@ -3,15 +3,17 @@ using System;
 using AioCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AioCore.API.Migrations
 {
     [DbContext(typeof(AioCoreContext))]
-    partial class AioCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210503170508_AddSettingComponentAndSettingLayout")]
+    partial class AddSettingComponentAndSettingLayout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,24 +347,7 @@ namespace AioCore.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Icon")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("LayoutId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Slug")
-                        .HasColumnType("text");
-
-                    b.Property<string>("XmlPage")
-                        .HasColumnType("xml");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("LayoutId");
 
                     b.ToTable("SettingFeatures");
                 });
@@ -588,17 +573,6 @@ namespace AioCore.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingFeatureAggregate.SettingFeature", b =>
-                {
-                    b.HasOne("AioCore.Domain.AggregatesModel.SettingLayoutAggregate.SettingLayout", "Layout")
-                        .WithMany()
-                        .HasForeignKey("LayoutId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Layout");
                 });
 
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.DynamicDateAggregate.DynamicDateAttribute", b =>

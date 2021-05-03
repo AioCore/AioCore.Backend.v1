@@ -1,4 +1,5 @@
-﻿using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
+﻿using AioCore.Domain.AggregatesModel.SettingComponentAggregate;
+using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
 using AioCore.Shared.Seedwork;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,8 +20,12 @@ namespace AioCore.Domain.AggregatesModel.SettingDomAggregate
 
         public virtual SettingDom Parent { get; set; }
 
+        public Guid ComponentId { get; set; }
+
+        public virtual SettingComponent Component { get; set; }
+
         public Guid FeatureId { get; set; }
 
-        public SettingFeature Feature { get; set; }
+        public virtual SettingFeature Feature { get; set; }
     }
 }

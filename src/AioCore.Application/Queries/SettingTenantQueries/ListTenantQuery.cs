@@ -35,7 +35,8 @@ namespace AioCore.Application.Queries.SettingTenantQueries
 
             public async Task<ListTenantResponse> Handle(ListTenantQuery request, CancellationToken cancellationToken)
             {
-                var res = await _settingTenantRepository.GetAsync(request.PageSize * request.PageIndex, request.PageSize, request.Keyword)
+                var res = await _settingTenantRepository.GetAsync(request.PageSize * (request.PageIndex - 1),
+                        request.PageSize, request.Keyword)
                     .Select(x => new GetTenantResponse(x.Id, x.Name)).ToListAsync(cancellationToken);
                 var count = await _settingTenantRepository.LongCountAsync();
                 return new ListTenantResponse(request.PageSize, request.PageIndex, count, res);

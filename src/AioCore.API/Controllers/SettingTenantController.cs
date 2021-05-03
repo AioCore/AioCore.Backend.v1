@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AioCore.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/settings/v1/tenant")]
     [ApiController]
     public class SettingTenantController : ControllerBase
     {
@@ -20,16 +20,17 @@ namespace AioCore.API.Controllers
         }
 
         [HttpGet]
-        [Route("items/{tenantId:guid}", Name = nameof(GetTenantAsync))]
+        [Route("items/{tenantId:guid}")]
         [ProducesResponseType(typeof(GetTenantResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<GetTenantResponse>> GetTenantAsync(GetTenantQuery query, [FromQuery] Guid tenantId)
+        public async Task<ActionResult<GetTenantResponse>> GetTenantAsync([FromQuery] Guid tenantId)
         {
             if (tenantId.Equals(Guid.Empty)) return BadRequest();
 
             try
             {
+                var query = new GetTenantQuery();
                 query.MergeParams(tenantId);
                 var res = await _mediator.Send(query);
                 return Ok(res);
@@ -44,10 +45,11 @@ namespace AioCore.API.Controllers
         [Route("items")]
         [ProducesResponseType(typeof(ListTenantQuery), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> ItemsAsync(ListTenantQuery query, [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0, string keyword = null)
+        public async Task<IActionResult> ItemsAsync([FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 1, string keyword = null)
         {
             try
             {
+                var query = new ListTenantQuery();
                 query.MergeParams(pageSize, pageIndex, keyword);
                 var res = await _mediator.Send(query);
                 return Ok(res);

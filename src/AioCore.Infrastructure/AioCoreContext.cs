@@ -5,11 +5,13 @@ using AioCore.Domain.AggregatesModel.DynamicGuidAggregate;
 using AioCore.Domain.AggregatesModel.DynamicIntegerAggregate;
 using AioCore.Domain.AggregatesModel.DynamicStringAggregate;
 using AioCore.Domain.AggregatesModel.SettingActionAggregate;
+using AioCore.Domain.AggregatesModel.SettingComponentAggregate;
 using AioCore.Domain.AggregatesModel.SettingDomAggregate;
 using AioCore.Domain.AggregatesModel.SettingEntityAggregate;
 using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
 using AioCore.Domain.AggregatesModel.SettingFieldAggregate;
 using AioCore.Domain.AggregatesModel.SettingFormAggregate;
+using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
 using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Domain.AggregatesModel.SettingViewAggregate;
 using AioCore.Infrastructure.EntityTypeConfigurations;
@@ -69,6 +71,8 @@ namespace AioCore.Infrastructure
 
         public DbSet<SettingAction> SettingActions { get; set; }
 
+        public DbSet<SettingComponent> SettingComponents { get; set; }
+
         public DbSet<SettingDom> SettingDoms { get; set; }
 
         public DbSet<SettingEntity> SettingEntities { get; set; }
@@ -78,6 +82,8 @@ namespace AioCore.Infrastructure
         public DbSet<SettingField> SettingFields { get; set; }
 
         public DbSet<SettingForm> SettingForms { get; set; }
+
+        public DbSet<SettingLayout> SettingLayouts { get; set; }
 
         public DbSet<SettingTenant> SettingTenants { get; set; }
 
@@ -100,11 +106,13 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new DynamicStringValueTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new SettingActionTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingComponentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingDomTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingFeatureTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingFieldTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingFormTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingLayoutTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingTenantTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingViewTypeConfiguration());
         }
