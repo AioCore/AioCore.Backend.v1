@@ -9,10 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Check out the repo
       uses: actions/checkout@v2
-
-    - name: Compose build aiocore-backend
-      run: sudo -E docker-compose build aiocore-backend
-      working-directory: .
-      shell: bash
+    
+    - name: Push to GitHub Packages
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.ACCESS_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: AioCore/AioCore.Backend/aiocore-backend
+        tag_with_ref: true
