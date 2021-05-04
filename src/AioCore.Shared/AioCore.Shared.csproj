@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AioCore.Packages\Package.Elasticsearch\Package.Elasticsearch.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.Mongo\Package.Mongo.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.NestedSet\Package.NestedSet.csproj" />

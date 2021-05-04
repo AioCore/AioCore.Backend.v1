@@ -7,7 +7,6 @@ using AioCore.Shared.Filters;
 using Autofac;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Package.Elasticsearch;
 using Package.EventBus.EventBus;
 using Package.EventBus.EventBus.Abstractions;
 using Package.EventBus.EventBus.RabbitMQ;
@@ -45,7 +45,8 @@ namespace AioCore.API
                 .AddCustomDbContext()
                 .AddCustomSwagger(_configuration)
                 .AddCustomIntegrations(_configuration)
-                .AddEventBus(_configuration);
+                .AddEventBus(_configuration)
+                .AddElasticsearch(_configuration);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -53,7 +54,7 @@ namespace AioCore.API
             builder.RegisterModule(new ApplicationModule());
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.CreateLogger<Startup>().LogDebug("LogDebug Starting...");
 

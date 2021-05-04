@@ -4,6 +4,11 @@ using AioCore.Domain.AggregatesModel.DynamicFloatAggregate;
 using AioCore.Domain.AggregatesModel.DynamicGuidAggregate;
 using AioCore.Domain.AggregatesModel.DynamicIntegerAggregate;
 using AioCore.Domain.AggregatesModel.DynamicStringAggregate;
+using AioCore.Domain.AggregatesModel.SecurityGroupAggregate;
+using AioCore.Domain.AggregatesModel.SecurityPermissionAggregate;
+using AioCore.Domain.AggregatesModel.SecurityPermissionSetAggregate;
+using AioCore.Domain.AggregatesModel.SecurityPolicyAggregate;
+using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
 using AioCore.Domain.AggregatesModel.SettingActionAggregate;
 using AioCore.Domain.AggregatesModel.SettingComponentAggregate;
 using AioCore.Domain.AggregatesModel.SettingDomAggregate;
@@ -69,6 +74,16 @@ namespace AioCore.Infrastructure
 
         public DbSet<DynamicStringValue> DynamicStringValues { get; set; }
 
+        public DbSet<SecurityGroup> SecurityGroups { get; set; }
+
+        public DbSet<SecurityPermissionSet> SecurityPermissionSets { get; set; }
+
+        public DbSet<SecurityPermission> SecurityPermissions { get; set; }
+
+        public DbSet<SecurityPolicy> SecurityPolicies { get; set; }
+
+        public DbSet<SecurityUser> SecurityUsers { get; set; }
+
         public DbSet<SettingAction> SettingActions { get; set; }
 
         public DbSet<SettingComponent> SettingComponents { get; set; }
@@ -104,6 +119,11 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new DynamicIntegerValueTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicStringAttributeTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicStringValueTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new SecurityGroupTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SecurityPermissionTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SecurityPermissionSetTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SecurityPolicyTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new SettingActionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingComponentTypeConfiguration());
