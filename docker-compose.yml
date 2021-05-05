@@ -42,10 +42,24 @@ services:
       dockerfile: src/AioCore.API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString=Host=localhost;Port=5432;User ID=postgres;Password=Pass@word;Database=aiocore;Pooling=true;
+      - EventBus:AzureServiceBusEnabled=false
+      - EventBus:Connection=localhost
+      - EventBus:SubscriptionClientName=aiocore
+      - EventBus:UserName=guest
+      - EventBus:Password=guest
+      - EventBus:RetryCount=5
+      - Elasticsearch:Url=http://localhost:9200
+      - Elasticsearch:Index=aioc
+      - Elasticsearch:UserName=
+      - Elasticsearch:Password=
     ports:
       - "5000:80"
     depends_on:
+    - elasticsearch
     - sqldata
+    - rabbitmq
+    - redis
 
 volumes:
   sqldata:

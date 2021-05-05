@@ -5,7 +5,7 @@ namespace AioCore.Application.Commands.SettingTenantCommands
 {
     public class CreateTenantCommandValidator : AbstractValidator<CreateTenantCommand>
     {
-        public CreateTenantCommandValidator(ILogger<CreateTenantCommandValidator> logger)
+        public CreateTenantCommandValidator(ILogger logger)
         {
             RuleFor(command => command.Name).NotEmpty();
 

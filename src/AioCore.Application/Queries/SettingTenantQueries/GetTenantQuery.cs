@@ -1,5 +1,6 @@
 ﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using MediatR;
+using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,16 +18,16 @@ namespace AioCore.Application.Queries.SettingTenantQueries
 
         internal class Handler : IRequestHandler<GetTenantQuery, GetTenantResponse>
         {
-            private readonly ISettingTenantRepository _settingTenantRepository;
+            private readonly IElasticsearchService _elasticsearchService;
 
-            public Handler(ISettingTenantRepository settingTenantRepository)
+            public Handler(IElasticsearchService elasticsearchService)
             {
-                _settingTenantRepository = settingTenantRepository ?? throw new ArgumentNullException(nameof(settingTenantRepository));
+                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
             public async Task<GetTenantResponse> Handle(GetTenantQuery request, CancellationToken cancellationToken)
             {
-                var tenant = await _settingTenantRepository.GetAsync(request.Id);
+                var tenant = await _elasticsearchService.GetAsync<SettingTenant>(request.Id);
                 return new GetTenantResponse(tenant.Id, tenant.Name);
             }
         }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AioCore.API.Migrations.IntegrationEventLog
 {
-    public partial class InitialIntegrationEventLogs : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

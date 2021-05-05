@@ -1,5 +1,6 @@
 ﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using MediatR;
+using Package.Elasticsearch;
 using System;
 using System.Runtime.Serialization;
 using System.Threading;
@@ -8,29 +9,34 @@ using System.Threading.Tasks;
 namespace AioCore.Application.Commands.SettingTenantCommands
 {
     [DataContract]
-    public class CreateTenantCommand : IRequest<Guid>
+    public class CreateTenantCommand : IRequest<SettingTenant>
     {
         [DataMember]
         public string Name { get; set; }
 
         [DataMember]
         public string Description { get; set; }
-    }
 
-    public class CreateTenantCommandHandler : IRequestHandler<CreateTenantCommand, Guid>
-    {
-        private readonly ISettingTenantRepository _settingTenantRepository;
-
-        public CreateTenantCommandHandler(ISettingTenantRepository settingTenantRepository)
+        internal class CreateTenantCommandHandler : IRequestHandler<CreateTenantCommand, SettingTenant>
         {
-            _settingTenantRepository = settingTenantRepository;
-        }
+            private readonly ISettingTenantRepository _settingTenantRepository;
+            private readonly IElasticsearchService _elasticsearchService;
 
-        public async Task<Guid> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
-        {
-            var item = _settingTenantRepository.Add(new SettingTenant(request.Name, request.Description));
-            await _settingTenantRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-            return item.Id;
+            public CreateTenantCommandHandler(
+                ISettingTenantRepository settingTenantRepository,
+                IElasticsearchService elasticsearchService)
+            {
+                _settingTenantRepository = settingTenantRepository ?? throw new ArgumentNullException(nameof(settingTenantRepository));
+                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
+            }
+
+            public async Task<SettingTenant> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+            {
+                var item = _settingTenantRepository.Add(new SettingTenant(request.Name, request.Description));
+                await _settingTenantRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                await _elasticsearchService.IndexAsync(item);
+                return item;
+            }
         }
     }
 }

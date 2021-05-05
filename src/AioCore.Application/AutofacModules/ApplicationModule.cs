@@ -3,6 +3,7 @@ using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Infrastructure.Repositories;
 using Autofac;
 using MediatR;
+using Package.Elasticsearch;
 
 namespace AioCore.Application.AutofacModules
 {
@@ -13,6 +14,10 @@ namespace AioCore.Application.AutofacModules
             builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(TransactionBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
+
+            builder.RegisterType<ElasticsearchService>()
+                .As<IElasticsearchService>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<SettingTenantRepository>()
                 .As<ISettingTenantRepository>()

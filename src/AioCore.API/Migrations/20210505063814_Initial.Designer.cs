@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AioCore.API.Migrations
 {
     [DbContext(typeof(AioCoreContext))]
-    [Migration("20210430173741_AddTenantRef")]
-    partial class AddTenantRef
+    [Migration("20210505063814_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -237,15 +237,170 @@ namespace AioCore.API.Migrations
                     b.ToTable("DynamicStringValues");
                 });
 
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityGroupAggregate.SecurityGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("IndexLeft")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IndexRight")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("SecurityGroups");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityPermissionAggregate.SecurityPermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RecordId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SecurityPermissions");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityPermissionSetAggregate.SecurityPermissionSet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Policy")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("SecurityPermissionSets");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityPolicyAggregate.SecurityPolicy", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Action")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Controller")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SecurityPolicies");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityUserAggregate.SecurityUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("SecurityUsers");
+                });
+
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingActionAggregate.SettingAction", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("SettingActions");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingComponentAggregate.SettingComponent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ComponentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ComponentType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ParentType")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("SettingLayoutId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SettingLayoutId");
+
+                    b.ToTable("SettingComponents");
                 });
 
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingDomAggregate.SettingDom", b =>
@@ -260,10 +415,16 @@ namespace AioCore.API.Migrations
                     b.Property<string>("Attributes")
                         .HasColumnType("xml");
 
+                    b.Property<Guid>("ComponentId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("FeatureId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ParentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("SettingLayoutId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("TagName")
@@ -271,9 +432,13 @@ namespace AioCore.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ComponentId");
+
                     b.HasIndex("FeatureId");
 
                     b.HasIndex("ParentId");
+
+                    b.HasIndex("SettingLayoutId");
 
                     b.ToTable("SettingDoms");
                 });
@@ -306,7 +471,24 @@ namespace AioCore.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Icon")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("LayoutId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.Property<string>("XmlPage")
+                        .HasColumnType("xml");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("LayoutId");
 
                     b.ToTable("SettingFeatures");
                 });
@@ -316,6 +498,15 @@ namespace AioCore.API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FieldType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -328,9 +519,32 @@ namespace AioCore.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("SettingForms");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingLayoutAggregate.SettingLayout", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SettingLayouts");
                 });
 
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingTenantAggregate.SettingTenant", b =>
@@ -361,6 +575,12 @@ namespace AioCore.API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -462,8 +682,54 @@ namespace AioCore.API.Migrations
                     b.Navigation("Entity");
                 });
 
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityGroupAggregate.SecurityGroup", b =>
+                {
+                    b.HasOne("AioCore.Domain.AggregatesModel.SecurityGroupAggregate.SecurityGroup", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityPermissionSetAggregate.SecurityPermissionSet", b =>
+                {
+                    b.HasOne("AioCore.Domain.AggregatesModel.SecurityPermissionAggregate.SecurityPermission", "Permission")
+                        .WithMany("PermissionSets")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityUserAggregate.SecurityUser", b =>
+                {
+                    b.HasOne("AioCore.Domain.AggregatesModel.SettingTenantAggregate.SettingTenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingComponentAggregate.SettingComponent", b =>
+                {
+                    b.HasOne("AioCore.Domain.AggregatesModel.SettingLayoutAggregate.SettingLayout", null)
+                        .WithMany("Components")
+                        .HasForeignKey("SettingLayoutId");
+                });
+
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingDomAggregate.SettingDom", b =>
                 {
+                    b.HasOne("AioCore.Domain.AggregatesModel.SettingComponentAggregate.SettingComponent", "Component")
+                        .WithMany()
+                        .HasForeignKey("ComponentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AioCore.Domain.AggregatesModel.SettingFeatureAggregate.SettingFeature", "Feature")
                         .WithMany()
                         .HasForeignKey("FeatureId")
@@ -475,6 +741,12 @@ namespace AioCore.API.Migrations
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AioCore.Domain.AggregatesModel.SettingLayoutAggregate.SettingLayout", null)
+                        .WithMany("Doms")
+                        .HasForeignKey("SettingLayoutId");
+
+                    b.Navigation("Component");
 
                     b.Navigation("Feature");
 
@@ -490,6 +762,17 @@ namespace AioCore.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingFeatureAggregate.SettingFeature", b =>
+                {
+                    b.HasOne("AioCore.Domain.AggregatesModel.SettingLayoutAggregate.SettingLayout", "Layout")
+                        .WithMany()
+                        .HasForeignKey("LayoutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Layout");
                 });
 
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.DynamicDateAggregate.DynamicDateAttribute", b =>
@@ -528,6 +811,18 @@ namespace AioCore.API.Migrations
             modelBuilder.Entity("AioCore.Domain.AggregatesModel.DynamicStringAggregate.DynamicStringAttribute", b =>
                 {
                     b.Navigation("DynamicStringValues");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SecurityPermissionAggregate.SecurityPermission", b =>
+                {
+                    b.Navigation("PermissionSets");
+                });
+
+            modelBuilder.Entity("AioCore.Domain.AggregatesModel.SettingLayoutAggregate.SettingLayout", b =>
+                {
+                    b.Navigation("Components");
+
+                    b.Navigation("Doms");
                 });
 #pragma warning restore 612, 618
         }

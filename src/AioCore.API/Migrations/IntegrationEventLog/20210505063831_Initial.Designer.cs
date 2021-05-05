@@ -10,8 +10,8 @@ using Package.EventBus.IntegrationEventLogEF;
 namespace AioCore.API.Migrations.IntegrationEventLog
 {
     [DbContext(typeof(IntegrationEventLogContext))]
-    [Migration("20210430175707_InitialIntegrationEventLogs")]
-    partial class InitialIntegrationEventLogs
+    [Migration("20210505063831_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

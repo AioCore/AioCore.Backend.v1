@@ -1,15 +1,13 @@
 ﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Package.Elasticsearch;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AioCore.Application.Queries.SettingTenantQueries
 {
-    public class ListTenantQuery : IRequest<ListTenantResponse>
+    public class ListTenantQuery : IRequest<Pagination<SettingTenant>>
     {
         public int PageSize { get; private set; }
 
@@ -24,46 +22,20 @@ namespace AioCore.Application.Queries.SettingTenantQueries
             Keyword = keyword;
         }
 
-        internal class Handler : IRequestHandler<ListTenantQuery, ListTenantResponse>
+        internal class Handler : IRequestHandler<ListTenantQuery, Pagination<SettingTenant>>
         {
-            private readonly ISettingTenantRepository _settingTenantRepository;
+            private readonly IElasticsearchService _elasticsearchService;
 
-            public Handler(ISettingTenantRepository settingTenantRepository)
+            public Handler(IElasticsearchService elasticsearchService)
             {
-                _settingTenantRepository = settingTenantRepository ?? throw new ArgumentNullException(nameof(settingTenantRepository));
+                _elasticsearchService = elasticsearchService;
+                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
-            public async Task<ListTenantResponse> Handle(ListTenantQuery request, CancellationToken cancellationToken)
+            public async Task<Pagination<SettingTenant>> Handle(ListTenantQuery request, CancellationToken cancellationToken)
             {
-                var res = await _settingTenantRepository.GetAsync(request.PageSize * (request.PageIndex - 1),
-                        request.PageSize, request.Keyword)
-                    .Select(x => new GetTenantResponse(x.Id, x.Name)).ToListAsync(cancellationToken);
-                var count = await _settingTenantRepository.LongCountAsync();
-                return new ListTenantResponse(request.PageSize, request.PageIndex, count, res);
+                return await _elasticsearchService.SearchAsync<SettingTenant>(request.PageIndex, request.PageSize, request.Keyword);
             }
-        }
-    }
-
-    public record ListTenantResponse
-    {
-        public int PageSize { get; private set; }
-
-        public int PageIndex { get; private set; }
-
-        public long Count { get; private set; }
-
-        public List<GetTenantResponse> Items { get; private set; }
-
-        public ListTenantResponse(
-            int pageSize,
-            int pageIndex,
-            long count,
-            List<GetTenantResponse> items)
-        {
-            PageSize = pageSize;
-            PageIndex = pageIndex;
-            Count = count;
-            Items = items;
         }
     }
 }

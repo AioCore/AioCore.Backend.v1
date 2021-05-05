@@ -1,6 +1,7 @@
-﻿using System;
+﻿using MediatR;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using MediatR;
 
 namespace AioCore.Shared.Seedwork
 {
@@ -15,7 +16,9 @@ namespace AioCore.Shared.Seedwork
             protected set => _id = value;
         }
 
+        [JsonIgnore]
         private List<INotification> _domainEvents;
+
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)
