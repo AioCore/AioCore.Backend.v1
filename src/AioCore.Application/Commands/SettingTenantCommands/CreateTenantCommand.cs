@@ -17,12 +17,12 @@ namespace AioCore.Application.Commands.SettingTenantCommands
         [DataMember]
         public string Description { get; set; }
 
-        internal class CreateTenantCommandHandler : IRequestHandler<CreateTenantCommand, SettingTenant>
+        internal class Handler : IRequestHandler<CreateTenantCommand, SettingTenant>
         {
             private readonly ISettingTenantRepository _settingTenantRepository;
             private readonly IElasticsearchService _elasticsearchService;
 
-            public CreateTenantCommandHandler(
+            public Handler(
                 ISettingTenantRepository settingTenantRepository,
                 IElasticsearchService elasticsearchService)
             {

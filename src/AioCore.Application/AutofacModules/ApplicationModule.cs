@@ -1,4 +1,5 @@
 ﻿using AioCore.Application.Behaviors;
+using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
 using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Infrastructure.Repositories;
 using Autofac;
@@ -17,6 +18,10 @@ namespace AioCore.Application.AutofacModules
 
             builder.RegisterType<ElasticsearchService>()
                 .As<IElasticsearchService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<SecurityUserRepository>()
+                .As<ISecurityUserRepository>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<SettingTenantRepository>()

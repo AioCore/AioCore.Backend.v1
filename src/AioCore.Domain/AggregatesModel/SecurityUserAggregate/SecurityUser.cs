@@ -1,6 +1,7 @@
 using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Shared.Seedwork;
 using Nest;
+using Package.Extensions;
 using System;
 
 namespace AioCore.Domain.AggregatesModel.SecurityUserAggregate
@@ -23,5 +24,21 @@ namespace AioCore.Domain.AggregatesModel.SecurityUserAggregate
         public DateTimeOffset Created { get; set; }
 
         public DateTimeOffset Modified { get; set; }
+
+        public SecurityUser()
+        {
+        }
+
+        public SecurityUser(
+            string name,
+            string email,
+            Guid tenantId,
+            string password)
+        {
+            Name = name;
+            Email = email;
+            TenantId = tenantId;
+            PasswordHash = password.CreateMd5();
+        }
     }
 }

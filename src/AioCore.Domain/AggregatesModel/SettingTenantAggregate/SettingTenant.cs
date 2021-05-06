@@ -1,6 +1,8 @@
-﻿using AioCore.Shared.Seedwork;
+﻿using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
+using AioCore.Shared.Seedwork;
 using Nest;
 using System;
+using System.Collections.Generic;
 
 namespace AioCore.Domain.AggregatesModel.SettingTenantAggregate
 {
@@ -17,6 +19,8 @@ namespace AioCore.Domain.AggregatesModel.SettingTenantAggregate
 
         [Keyword]
         public Guid LogoId { get; set; }
+
+        public virtual ICollection<SecurityUser> Users { get; set; }
 
         public SettingTenant()
         {
