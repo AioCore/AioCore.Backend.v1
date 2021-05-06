@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Nest;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AioCore.Shared.Seedwork
 {
@@ -15,6 +17,11 @@ namespace AioCore.Shared.Seedwork
             get => _id;
             protected set => _id = value;
         }
+
+        [Keyword]
+        [JsonIgnore]
+        [NotMapped]
+        public string IndexType => GetType().Name;
 
         [JsonIgnore]
         private List<INotification> _domainEvents;

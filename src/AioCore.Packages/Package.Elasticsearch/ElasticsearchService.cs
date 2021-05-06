@@ -109,7 +109,7 @@ namespace Package.Elasticsearch
             return response.Documents.ToList();
         }
 
-        private static List<QueryContainer> QueryContainers<T>(string keyword, List<QueryAdvanced> filter)
+        private static IEnumerable<QueryContainer> QueryContainers<T>(string keyword, List<QueryAdvanced> filter)
         {
             var queryContainers = new List<QueryContainer>
             {
@@ -181,6 +181,8 @@ namespace Package.Elasticsearch
                                 break;
                         }
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             });
             return queryContainers;
