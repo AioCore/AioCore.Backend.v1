@@ -79,7 +79,7 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
                             FileName = file.FileName,
 
-                            FilePath = filePath,
+                            FilePath = filePathResize,
 
                             Created = DateTimeOffset.Now,
 
@@ -104,7 +104,7 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
                     FileName = file.FileName,
 
-                    FilePath = filePath,
+                    FilePath = filePathExtension,
 
                     Created = DateTimeOffset.Now,
 
