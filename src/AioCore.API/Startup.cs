@@ -21,7 +21,6 @@ using Package.EventBus.EventBus.RabbitMQ;
 using Package.EventBus.EventBus.ServiceBus;
 using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
-using Package.Extensions;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
@@ -49,7 +48,7 @@ namespace AioCore.API
                 .AddCustomIntegrations(_configuration)
                 .AddEventBus(_configuration)
                 .AddElasticsearch(_configuration)
-                .AddAutoMapper(AssemblyHelper.Assemblies);
+                .AddMapper();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -240,6 +239,17 @@ namespace AioCore.API
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
+            return services;
+        }
+
+        public static IServiceCollection AddMapper(this IServiceCollection services)
+        {
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MappingProfile());
+            });
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper.RegisterMap());
             return services;
         }
     }

@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using System.Reflection;
+using System;
 
 namespace Package.AutoMapper
 {
@@ -10,40 +7,30 @@ namespace Package.AutoMapper
     {
         private static IMapper _mapper;
 
-        public static void AddAutoMapper(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+        public static IMapper RegisterMap(this IMapper mapper)
         {
-            static void IgnoreUnmapped(IProfileExpression cfg)
-            {
-                cfg.ForAllMaps((map, expr) =>
-                {
-                    if (map.Profile.Name != typeof(MapperConfigurationExpression).FullName) return;
-                    foreach (var prop in map.GetUnmappedPropertyNames())
-                    {
-                        if (map.SourceType.GetProperty(prop) != null)
-                        {
-                            expr.ForSourceMember(prop, opt => opt.DoNotValidate());
-                        }
-                        if (map.DestinationType.GetProperty(prop) != null)
-                        {
-                            expr.ForMember(prop, opt => opt.Ignore());
-                        }
-                    }
-                });
-            }
-
-            _mapper = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddMaps(assemblies);
-                    IgnoreUnmapped(cfg);
-                })
-                .CreateMapper();
-
-            services.AddSingleton(_mapper);
+            _mapper = mapper;
+            return mapper;
         }
 
         public static T To<T>(this object source)
         {
             return _mapper.Map<T>(source);
+        }
+
+        public static object To(this object source, Type destinationType)
+        {
+            return _mapper.Map(source, source.GetType(), destinationType);
+        }
+
+        public static T To<T>(this object source, Action<IMappingOperationOptions> opts)
+        {
+            return _mapper.Map<T>(source, opts);
+        }
+
+        public static T To<T>(this object source, T dest)
+        {
+            return _mapper.Map(source, dest);
         }
     }
 }

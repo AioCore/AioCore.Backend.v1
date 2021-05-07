@@ -1,6 +1,7 @@
 ﻿using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Package.Elasticsearch;
 using Package.Extensions;
 using Package.FileServer;
 using SkiaSharp;
@@ -16,7 +17,7 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
     {
         public IFormFile File { get; set; }
 
-        public Guid ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
         internal class Handler : IRequestHandler<CreateBinaryCommand, string>
         {
@@ -24,11 +25,16 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
             private readonly IFileServerService _fileServerService;
             private readonly IDynamicBinaryRepository _dynamicBinaryRepository;
+            private readonly IElasticsearchService _elasticsearchService;
 
-            public Handler(IFileServerService fileServerService, IDynamicBinaryRepository dynamicBinaryRepository)
+            public Handler(
+                IFileServerService fileServerService,
+                IDynamicBinaryRepository dynamicBinaryRepository,
+                IElasticsearchService elasticsearchService)
             {
                 _fileServerService = fileServerService ?? throw new ArgumentNullException(nameof(fileServerService));
                 _dynamicBinaryRepository = dynamicBinaryRepository ?? throw new ArgumentNullException(nameof(dynamicBinaryRepository));
+                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
             public async Task<string> Handle(CreateBinaryCommand request, CancellationToken cancellationToken)
@@ -89,34 +95,39 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         });
                     }
 
-                    _dynamicBinaryRepository.AddRange(files);
+                    var entities = _dynamicBinaryRepository.AddRange(files);
 
                     await _dynamicBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-                    return fileId;
+                    await _elasticsearchService.IndexManyAsync(entities);
                 }
-
-                var filePathExtension = filePath + fileExtension;
-
-                var binary = new DynamicBinary
+                else
                 {
-                    ParentId = request.ParentId,
+                    var filePathExtension = filePath + fileExtension;
 
-                    FileName = file.FileName,
+                    await _fileServerService.UploadFileAsync(filePathExtension, buffer);
 
-                    FilePath = filePathExtension,
+                    var binary = new DynamicBinary
+                    {
+                        ParentId = request.ParentId,
 
-                    Created = DateTimeOffset.Now,
+                        FileName = file.FileName,
 
-                    Size = file.Length,
+                        FilePath = filePathExtension,
 
-                    ContentType = file.ContentType
-                };
-                _dynamicBinaryRepository.Add(binary);
+                        Created = DateTimeOffset.Now,
 
-                await _fileServerService.UploadFileAsync(filePathExtension, buffer);
+                        Size = file.Length,
 
-                await _dynamicBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                        ContentType = file.ContentType
+                    };
+
+                    var entity = _dynamicBinaryRepository.Add(binary);
+
+                    await _dynamicBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+
+                    await _elasticsearchService.IndexAsync(entity);
+                }
 
                 return fileId;
             }

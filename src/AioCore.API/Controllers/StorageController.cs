@@ -1,4 +1,6 @@
 ﻿using AioCore.Application.Commands.DynamicBinaryCommands;
+using AioCore.Application.Queries.DynamicBinaryQueries;
+using AioCore.Application.Queries.SettingTenantQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,6 +30,26 @@ namespace AioCore.API.Controllers
             {
                 var res = await _mediator.Send(command);
                 return Ok(res);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [Route("file")]
+        [ProducesResponseType(typeof(GetTenantResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> File([FromQuery] Guid id)
+        {
+            try
+            {
+                var query = new GetBinaryQuery();
+                query.MergeParams(id);
+                var res = await _mediator.Send(query);
+                return File(res.Bytes, res.ContentType, res.FileName);
             }
             catch
             {
