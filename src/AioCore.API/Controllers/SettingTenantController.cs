@@ -63,10 +63,29 @@ namespace AioCore.API.Controllers
         [HttpPost]
         [Route("create")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<ActionResult> CreateAsync([FromBody] CreateTenantCommand command)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateTenantCommand command)
         {
             var id = await _mediator.Send(command);
             return Ok(id);
+        }
+
+        [HttpPost]
+        [Route("users/{tenantId:guid}")]
+        [ProducesResponseType(typeof(ListTenantUsersQuery), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Users([FromQuery] Guid tenantId)
+        {
+            try
+            {
+                var query = new ListTenantUsersQuery();
+                query.MergeParams(tenantId);
+                var users = await _mediator.Send(query);
+                return Ok(users);
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
     }
 }

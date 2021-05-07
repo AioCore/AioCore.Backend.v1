@@ -1,23 +1,21 @@
-﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
+﻿using AioCore.Application.Responses.SettingTenantResponses;
+using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using MediatR;
+using Package.AutoMapper;
 using Package.Elasticsearch;
 using System;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AioCore.Application.Commands.SettingTenantCommands
 {
-    [DataContract]
-    public class CreateTenantCommand : IRequest<SettingTenant>
+    public class CreateTenantCommand : IRequest<CreateTenantResponse>
     {
-        [DataMember]
         public string Name { get; set; }
 
-        [DataMember]
         public string Description { get; set; }
 
-        internal class Handler : IRequestHandler<CreateTenantCommand, SettingTenant>
+        internal class Handler : IRequestHandler<CreateTenantCommand, CreateTenantResponse>
         {
             private readonly ISettingTenantRepository _settingTenantRepository;
             private readonly IElasticsearchService _elasticsearchService;
@@ -30,12 +28,12 @@ namespace AioCore.Application.Commands.SettingTenantCommands
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
-            public async Task<SettingTenant> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+            public async Task<CreateTenantResponse> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
             {
                 var item = _settingTenantRepository.Add(new SettingTenant(request.Name, request.Description));
                 await _settingTenantRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.IndexAsync(item);
-                return item;
+                return item.To<CreateTenantResponse>();
             }
         }
     }

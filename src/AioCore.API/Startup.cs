@@ -1,4 +1,3 @@
-using AioCore.Application;
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Infrastructure;
@@ -14,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Package.AutoMapper;
 using Package.Elasticsearch;
 using Package.EventBus.EventBus;
 using Package.EventBus.EventBus.Abstractions;
@@ -21,10 +21,12 @@ using Package.EventBus.EventBus.RabbitMQ;
 using Package.EventBus.EventBus.ServiceBus;
 using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
+using Package.Extensions;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
 using System.Reflection;
+using Assembly = AioCore.Application.Assembly;
 
 namespace AioCore.API
 {
@@ -39,14 +41,15 @@ namespace AioCore.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(ApplicationHelper).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(Assembly).GetTypeInfo().Assembly);
 
             services.AddCustomMvc()
                 .AddCustomDbContext()
                 .AddCustomSwagger(_configuration)
                 .AddCustomIntegrations(_configuration)
                 .AddEventBus(_configuration)
-                .AddElasticsearch(_configuration);
+                .AddElasticsearch(_configuration)
+                .AddAutoMapper(AssemblyHelper.Assemblies);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -71,17 +74,18 @@ namespace AioCore.API
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
             });
-            ConfigureEventBus(app);
-        }
-
-        private void ConfigureEventBus(IApplicationBuilder app)
-        {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            app.UseEventBus();
         }
     }
 
     public static class StartupExtensions
     {
+        public static IApplicationBuilder UseEventBus(this IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            return app;
+        }
+
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
             services.AddControllers(options =>
@@ -134,6 +138,7 @@ namespace AioCore.API
             services.AddSwaggerGen(options =>
             {
                 options.SchemaFilter<EnumSchemaFilter>();
+                options.OperationFilter<FormFileSwaggerFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Document API aioc.vn",

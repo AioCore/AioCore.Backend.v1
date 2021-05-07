@@ -3,15 +3,17 @@ using System;
 using AioCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AioCore.API.Migrations
 {
     [DbContext(typeof(AioCoreContext))]
-    partial class AioCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210507064351_CreateDynamicBinary")]
+    partial class CreateDynamicBinary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +27,7 @@ namespace AioCore.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("AuthorId")
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ContentType")
@@ -626,7 +628,9 @@ namespace AioCore.API.Migrations
                 {
                     b.HasOne("AioCore.Domain.AggregatesModel.SecurityUserAggregate.SecurityUser", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
                 });

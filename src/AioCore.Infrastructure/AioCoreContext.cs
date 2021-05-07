@@ -29,6 +29,7 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 
 namespace AioCore.Infrastructure
 {
@@ -51,6 +52,8 @@ namespace AioCore.Infrastructure
 
             System.Diagnostics.Debug.WriteLine($"{nameof(AioCoreContext)}::ctor ->" + GetHashCode());
         }
+
+        public DbSet<DynamicBinary> DynamicBinaries { get; set; }
 
         public DbSet<DynamicDateAttribute> DynamicDateAttributes { get; set; }
 

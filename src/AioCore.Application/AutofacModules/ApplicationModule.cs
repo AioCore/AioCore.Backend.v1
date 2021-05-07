@@ -1,10 +1,12 @@
 ﻿using AioCore.Application.Behaviors;
+using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
 using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Infrastructure.Repositories;
 using Autofac;
 using MediatR;
 using Package.Elasticsearch;
+using Package.FileServer;
 
 namespace AioCore.Application.AutofacModules
 {
@@ -16,6 +18,10 @@ namespace AioCore.Application.AutofacModules
             builder.RegisterGeneric(typeof(TransactionBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
 
+            builder.RegisterType<FileServerService>()
+                .As<IFileServerService>()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<ElasticsearchService>()
                 .As<IElasticsearchService>()
                 .InstancePerLifetimeScope();
@@ -26,6 +32,10 @@ namespace AioCore.Application.AutofacModules
 
             builder.RegisterType<SettingTenantRepository>()
                 .As<ISettingTenantRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DynamicBinaryRepository>()
+                .As<IDynamicBinaryRepository>()
                 .InstancePerLifetimeScope();
         }
     }

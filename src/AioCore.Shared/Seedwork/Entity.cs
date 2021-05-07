@@ -12,6 +12,7 @@ namespace AioCore.Shared.Seedwork
         private int? _requestedHashCode;
         private Guid _id;
 
+        [Keyword]
         public virtual Guid Id
         {
             get => _id;

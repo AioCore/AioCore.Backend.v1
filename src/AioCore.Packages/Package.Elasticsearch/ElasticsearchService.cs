@@ -181,6 +181,7 @@ namespace Package.Elasticsearch
                                 break;
                         }
                         break;
+
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

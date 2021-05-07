@@ -1,12 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <Compile Remove="AggregatesModel\NewFolder\**" />
-    <EmbeddedResource Remove="AggregatesModel\NewFolder\**" />
-    <None Remove="AggregatesModel\NewFolder\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
   </ItemGroup>
 

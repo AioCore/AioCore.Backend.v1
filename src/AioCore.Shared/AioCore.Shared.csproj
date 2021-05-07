@@ -20,8 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AioCore.Packages\Package.AutoMapper\Package.AutoMapper.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.Elasticsearch\Package.Elasticsearch.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.FileServer\Package.FileServer.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.Mongo\Package.Mongo.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.NestedSet\Package.NestedSet.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.Redis\Package.Redis.csproj" />
