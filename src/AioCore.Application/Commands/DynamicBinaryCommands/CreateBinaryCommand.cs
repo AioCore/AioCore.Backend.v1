@@ -39,13 +39,13 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
             public async Task<string> Handle(CreateBinaryCommand request, CancellationToken cancellationToken)
             {
-                var fileId = Guid.NewGuid().ToString("N");
-
                 var file = request.File;
+
+                var fileId = file.FileName.CreateMd5().ToLower();
 
                 var fullPath = GetPhysicalPath(file.FileName);
 
-                var fileExtension = Path.GetExtension(file.FileName);
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
 
                 var buffer = file.OpenReadStream().ReadToEnd();
 
@@ -83,13 +83,17 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         {
                             ParentId = request.ParentId,
 
-                            FileName = file.FileName,
+                            SourceName = file.FileName,
+
+                            DestinationName = fileId + $"-x{size}" + fileExtension,
 
                             FilePath = filePathResize,
 
                             Created = DateTimeOffset.Now,
 
                             Size = fileResize.Length,
+
+                            SizeType = size.ToSizeType(),
 
                             ContentType = file.ContentType
                         });
@@ -111,7 +115,9 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                     {
                         ParentId = request.ParentId,
 
-                        FileName = file.FileName,
+                        SourceName = file.FileName,
+
+                        DestinationName = file.FileName,
 
                         FilePath = filePathExtension,
 
@@ -137,12 +143,6 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                 var fileExtension = Path.GetExtension(fileName)?.Replace(".", string.Empty).ToLower();
                 return $"{DirectoryExtensions.GenerateDirectory()}\\{fileExtension}";
             }
-        }
-
-        public void MergeParams(Guid parentId, IFormFile file)
-        {
-            ParentId = parentId;
-            File = file;
         }
     }
 }

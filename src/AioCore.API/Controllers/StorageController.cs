@@ -49,7 +49,7 @@ namespace AioCore.API.Controllers
                 var query = new GetBinaryQuery();
                 query.MergeParams(id);
                 var res = await _mediator.Send(query);
-                return File(res.Bytes, res.ContentType, res.FileName);
+                return File(res.Bytes, res.ContentType, res.SourceName);
             }
             catch
             {

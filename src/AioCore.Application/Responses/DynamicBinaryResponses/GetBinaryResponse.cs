@@ -8,7 +8,7 @@ namespace AioCore.Application.Responses.DynamicBinaryResponses
     {
         public byte[] Bytes { get; set; }
 
-        public string FileName { get; set; }
+        public string SourceName { get; set; }
 
         public string ContentType { get; set; }
 

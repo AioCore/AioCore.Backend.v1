@@ -8,7 +8,10 @@ namespace AioCore.Domain.AggregatesModel.DynamicBinaryAggregate
     public class DynamicBinary : Entity, IAggregateRoot
     {
         [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
-        public string FileName { get; set; }
+        public string SourceName { get; set; }
+
+        [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
+        public string DestinationName { get; set; }
 
         [Text]
         public string FilePath { get; set; }
@@ -29,6 +32,9 @@ namespace AioCore.Domain.AggregatesModel.DynamicBinaryAggregate
 
         [Number]
         public long Size { get; set; }
+
+        [Keyword] 
+        public SizeType SizeType { get; set; }
 
         [Text]
         public string ContentType { get; set; }

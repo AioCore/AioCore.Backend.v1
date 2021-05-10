@@ -20,7 +20,7 @@ namespace AioCore.API.Controllers
         }
 
         [HttpGet]
-        [Route("items/{tenantId:guid}")]
+        [Route("item")]
         [ProducesResponseType(typeof(GetTenantResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -69,8 +69,8 @@ namespace AioCore.API.Controllers
             return Ok(id);
         }
 
-        [HttpPost]
-        [Route("users/{tenantId:guid}")]
+        [HttpGet]
+        [Route("users")]
         [ProducesResponseType(typeof(ListTenantUsersQuery), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Users([FromQuery] Guid tenantId)
@@ -81,6 +81,22 @@ namespace AioCore.API.Controllers
                 query.MergeParams(tenantId);
                 var users = await _mediator.Send(query);
                 return Ok(users);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [Route("push-user/{tenantId:guid}")]
+        [ProducesResponseType(typeof(ListTenantUsersQuery), (int) HttpStatusCode.OK)]
+        [ProducesResponseType((int) HttpStatusCode.NotFound)]
+        public async Task<IActionResult> PushUser([FromQuery] Guid tenantId)
+        {
+            try
+            {
+                return Ok();
             }
             catch
             {
