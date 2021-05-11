@@ -59,7 +59,9 @@ namespace AioCore.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<StringLocalizer<Localization>>().As<IStringLocalizer>().InstancePerLifetimeScope();
+            builder.RegisterType<StringLocalizer<Localization>>()
+                .As<IStringLocalizer>()
+                .InstancePerLifetimeScope();
             builder.RegisterModule(new ApplicationModule());
         }
 
