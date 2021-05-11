@@ -40,5 +40,15 @@ namespace AioCore.Domain.AggregatesModel.SecurityUserAggregate
             TenantId = tenantId;
             PasswordHash = password.CreateMd5();
         }
+
+        public SecurityUser(
+            string name,
+            string email,
+            string password)
+        {
+            Name = name;
+            Email = email;
+            PasswordHash = password.CreateMd5();
+        }
     }
 }

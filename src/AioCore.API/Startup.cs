@@ -1,3 +1,4 @@
+using AioCore.API.Resources;
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Infrastructure;
@@ -7,10 +8,13 @@ using Autofac;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Package.AutoMapper;
@@ -23,7 +27,9 @@ using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
 using RabbitMQ.Client;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Globalization;
 using System.Reflection;
 using Assembly = AioCore.Application.Assembly;
 
@@ -53,6 +59,7 @@ namespace AioCore.API
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterType<StringLocalizer<Localization>>().As<IStringLocalizer>().InstancePerLifetimeScope();
             builder.RegisterModule(new ApplicationModule());
         }
 
@@ -65,6 +72,8 @@ namespace AioCore.API
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Document API aioc.vn");
                 });
+
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
@@ -87,11 +96,31 @@ namespace AioCore.API
 
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo> { new("vi-VN"), new("en-US") };
+                options.DefaultRequestCulture = new RequestCulture("vi-VN", "vi-VN");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+
+                options.RequestCultureProviders.Clear();
+                options.RequestCultureProviders.Add(new RouteDataRequestCultureProvider());
+                options.RequestCultureProviders.Add(new QueryStringRequestCultureProvider());
+                options.RequestCultureProviders.Add(new CookieRequestCultureProvider());
+                options.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider());
+            });
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddControllers(options =>
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 })
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(Localization));
+                });
 
             services.AddCors(options =>
             {
@@ -102,6 +131,9 @@ namespace AioCore.API
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
+
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("vi-VN");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("vi-VN");
 
             return services;
         }
