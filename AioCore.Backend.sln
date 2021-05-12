@@ -31,9 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Package.Elasticsearch", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Package.Extensions", "src\AioCore.Packages\Package.Extensions\Package.Extensions.csproj", "{07592FF3-7D3A-4E19-BC2E-66F6772121BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.FileServer", "src\AioCore.Packages\Package.FileServer\Package.FileServer.csproj", "{7F577448-A64A-460C-AFDA-D68B2CED0BF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Package.FileServer", "src\AioCore.Packages\Package.FileServer\Package.FileServer.csproj", "{7F577448-A64A-460C-AFDA-D68B2CED0BF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.AutoMapper", "src\AioCore.Packages\Package.AutoMapper\Package.AutoMapper.csproj", "{2A7A8044-E4AC-46E7-BCCA-4CFC5D74FAF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Package.AutoMapper", "src\AioCore.Packages\Package.AutoMapper\Package.AutoMapper.csproj", "{2A7A8044-E4AC-46E7-BCCA-4CFC5D74FAF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

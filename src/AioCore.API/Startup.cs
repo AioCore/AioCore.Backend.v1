@@ -1,3 +1,4 @@
+using AioCore.API.Resources;
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Infrastructure;
@@ -7,10 +8,12 @@ using Autofac;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Package.AutoMapper;
@@ -23,7 +26,9 @@ using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
 using RabbitMQ.Client;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Globalization;
 using System.Reflection;
 using Assembly = AioCore.Application.Assembly;
 
@@ -58,7 +63,11 @@ namespace AioCore.API
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            loggerFactory.CreateLogger<Startup>().LogDebug("LogDebug Starting...");
+            loggerFactory.CreateLogger<Startup>().LogDebug("Logging..."); ;
+
+            app.UseStaticFiles();
+
+            app.UseRequestLocalization();
 
             app.UseSwagger()
                 .UseSwaggerUI(c =>
@@ -79,6 +88,12 @@ namespace AioCore.API
 
     public static class StartupExtensions
     {
+        private static List<CultureInfo> SupportedCultures => new()
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("vi-VN")
+        };
+
         public static IApplicationBuilder UseEventBus(this IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
@@ -87,11 +102,17 @@ namespace AioCore.API
 
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
+            services.AddScoped<IStringLocalizer, StringLocalizer<Localization>>();
+
             services.AddControllers(options =>
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 })
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(Localization));
+                });
 
             services.AddCors(options =>
             {
@@ -101,6 +122,15 @@ namespace AioCore.API
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
+            });
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = SupportedCultures;
+                options.SupportedUICultures = SupportedCultures;
             });
 
             return services;
