@@ -1,4 +1,4 @@
-﻿namespace AioCore.API.Resources
+﻿namespace Package.Localization
 {
     public class Localization
     {

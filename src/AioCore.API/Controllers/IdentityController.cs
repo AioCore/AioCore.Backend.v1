@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Package.Localization;
 
 namespace AioCore.API.Controllers
 {
-    [Route("api/v1/identity")]
+    [Route("{culture}/api/v1/identity")]
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private readonly IStringLocalizer _localizer;
+        private readonly IStringLocalizer<Localization> _localizer;
 
-        public IdentityController(IStringLocalizer localizer)
+        public IdentityController(IStringLocalizer<Localization> localizer)
         {
             _localizer = localizer;
         }

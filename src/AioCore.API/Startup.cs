@@ -1,4 +1,3 @@
-using AioCore.API.Resources;
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Infrastructure;
@@ -8,12 +7,10 @@ using Autofac;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Package.AutoMapper;
@@ -24,6 +21,7 @@ using Package.EventBus.EventBus.RabbitMQ;
 using Package.EventBus.EventBus.ServiceBus;
 using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
+using Package.Localization;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -47,7 +45,8 @@ namespace AioCore.API
         {
             services.AddMediatR(typeof(Assembly).GetTypeInfo().Assembly);
 
-            services.AddCustomMvc()
+            services.AddAioLocalization()
+                .AddCustomMvc()
                 .AddCustomDbContext()
                 .AddCustomSwagger(_configuration)
                 .AddCustomIntegrations(_configuration)
@@ -67,7 +66,7 @@ namespace AioCore.API
 
             app.UseStaticFiles();
 
-            app.UseRequestLocalization();
+            app.UseAioLocalization();
 
             app.UseSwagger()
                 .UseSwaggerUI(c =>
@@ -76,12 +75,15 @@ namespace AioCore.API
                 });
 
             app.UseRouting();
+
             app.UseCors("CorsPolicy");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
             });
+
             app.UseEventBus();
         }
     }
@@ -102,17 +104,11 @@ namespace AioCore.API
 
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
-            services.AddScoped<IStringLocalizer, StringLocalizer<Localization>>();
-
             services.AddControllers(options =>
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 })
-                .AddNewtonsoftJson()
-                .AddDataAnnotationsLocalization(options =>
-                {
-                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(Localization));
-                });
+                .AddNewtonsoftJson();
 
             services.AddCors(options =>
             {
@@ -122,15 +118,6 @@ namespace AioCore.API
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
-            });
-
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                options.DefaultRequestCulture = new RequestCulture("en-US");
-                options.SupportedCultures = SupportedCultures;
-                options.SupportedUICultures = SupportedCultures;
             });
 
             return services;
