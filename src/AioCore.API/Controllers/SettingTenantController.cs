@@ -1,16 +1,15 @@
 ﻿using AioCore.Application.Commands.SettingTenantCommands;
 using AioCore.Application.Queries.SettingTenantQueries;
+using AioCore.Shared.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace AioCore.API.Controllers
 {
-    [Route("api/settings/v1/tenant")]
-    [ApiController]
-    public class SettingTenantController : ControllerBase
+    [Route("{culture}/api/v1/tenant")]
+    public class SettingTenantController : AioController
     {
         private readonly IMediator _mediator;
 
@@ -21,9 +20,6 @@ namespace AioCore.API.Controllers
 
         [HttpGet]
         [Route("item")]
-        [ProducesResponseType(typeof(GetTenantResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<GetTenantResponse>> GetTenantAsync([FromQuery] Guid tenantId)
         {
             if (tenantId.Equals(Guid.Empty)) return BadRequest();
@@ -43,8 +39,6 @@ namespace AioCore.API.Controllers
 
         [HttpGet]
         [Route("items")]
-        [ProducesResponseType(typeof(ListTenantQuery), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> ItemsAsync([FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 1, string keyword = null)
         {
             try
@@ -62,7 +56,6 @@ namespace AioCore.API.Controllers
 
         [HttpPost]
         [Route("create")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTenantCommand command)
         {
             var id = await _mediator.Send(command);
@@ -71,8 +64,6 @@ namespace AioCore.API.Controllers
 
         [HttpGet]
         [Route("users")]
-        [ProducesResponseType(typeof(ListTenantUsersQuery), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Users([FromQuery] Guid tenantId)
         {
             try
@@ -90,8 +81,6 @@ namespace AioCore.API.Controllers
 
         [HttpPost]
         [Route("push-user/{tenantId:guid}")]
-        [ProducesResponseType(typeof(ListTenantUsersQuery), (int) HttpStatusCode.OK)]
-        [ProducesResponseType((int) HttpStatusCode.NotFound)]
         public async Task<IActionResult> PushUser([FromQuery] Guid tenantId)
         {
             try

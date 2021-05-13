@@ -1,4 +1,5 @@
 ﻿using AioCore.Shared.Seedwork;
+using System;
 
 namespace AioCore.Domain.AggregatesModel.SecurityUserAggregate
 {
@@ -7,5 +8,7 @@ namespace AioCore.Domain.AggregatesModel.SecurityUserAggregate
         SecurityUser Add(SecurityUser user);
 
         void Update(SecurityUser user);
+
+        void Delete(Guid id);
     }
 }

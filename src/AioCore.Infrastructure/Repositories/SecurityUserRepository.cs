@@ -25,5 +25,11 @@ namespace AioCore.Infrastructure.Repositories
         {
             _context.Entry(user).State = EntityState.Modified;
         }
+
+        public void Delete(Guid id)
+        {
+            var user = _context.SecurityUsers.Find(id);
+            _context.Entry(user).State = EntityState.Deleted;
+        }
     }
 }

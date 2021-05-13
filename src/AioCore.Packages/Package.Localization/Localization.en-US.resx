@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SecurityUser.Delete.Message.Fail" xml:space="preserve">
+    <value>Delete user fail</value>
+  </data>
+  <data name="SecurityUser.Delete.Message.Success" xml:space="preserve">
+    <value>Delete user success</value>
+  </data>
+  <data name="SignIn.Message.Fail" xml:space="preserve">
+    <value>Sign in fail</value>
+  </data>
   <data name="SignIn.Message.Success" xml:space="preserve">
-    <value>Sign in successfully</value>
+    <value>Sign in success</value>
+  </data>
+  <data name="SignUp.Message.Fail" xml:space="preserve">
+    <value>Sign up fail with error</value>
+  </data>
+  <data name="SignUp.Message.PasswordNotMatch" xml:space="preserve">
+    <value>Password not match</value>
+  </data>
+  <data name="SignUp.Message.Success" xml:space="preserve">
+    <value>Sign up success</value>
   </data>
 </root>

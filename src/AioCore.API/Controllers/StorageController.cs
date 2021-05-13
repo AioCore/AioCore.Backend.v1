@@ -1,17 +1,15 @@
 ﻿using AioCore.Application.Commands.DynamicBinaryCommands;
 using AioCore.Application.Queries.DynamicBinaryQueries;
-using AioCore.Application.Queries.SettingTenantQueries;
+using AioCore.Shared.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace AioCore.API.Controllers
 {
-    [Route("api/storage/v1/binary")]
-    [ApiController]
-    public class StorageController : ControllerBase
+    [Route("{culture:alpha}/api/v1/storage")]
+    public class StorageController : AioController
     {
         private readonly IMediator _mediator;
 
@@ -22,8 +20,6 @@ namespace AioCore.API.Controllers
 
         [HttpPost]
         [Route("upload")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Upload([FromForm] CreateBinaryCommand command)
         {
             try
@@ -39,9 +35,6 @@ namespace AioCore.API.Controllers
 
         [HttpGet]
         [Route("file")]
-        [ProducesResponseType(typeof(GetTenantResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> File([FromQuery] Guid id)
         {
             try

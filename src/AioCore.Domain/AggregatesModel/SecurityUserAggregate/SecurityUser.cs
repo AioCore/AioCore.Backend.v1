@@ -12,7 +12,12 @@ namespace AioCore.Domain.AggregatesModel.SecurityUserAggregate
         public string Name { get; set; }
 
         [Keyword]
+        public string Account { get; set; }
+
+        [Keyword]
         public string Email { get; set; }
+
+        public bool EmailConfirmed { get; set; }
 
         public string PasswordHash { get; set; }
 
@@ -39,6 +44,26 @@ namespace AioCore.Domain.AggregatesModel.SecurityUserAggregate
             Email = email;
             TenantId = tenantId;
             PasswordHash = password.CreateMd5();
+        }
+
+        public SecurityUser(
+            string name,
+            string account,
+            string email,
+            string password)
+        {
+            Name = name;
+            Account = account;
+            Email = email;
+            PasswordHash = password.CreateMd5();
+        }
+
+        public void Update(
+            string name,
+            string email)
+        {
+            Name = name;
+            Email = email;
         }
     }
 }

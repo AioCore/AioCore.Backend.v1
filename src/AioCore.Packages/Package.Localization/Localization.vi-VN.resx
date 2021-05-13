@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SecurityUser.Delete.Message.Fail" xml:space="preserve">
+    <value>Xóa user không thành công</value>
+  </data>
+  <data name="SecurityUser.Delete.Message.Success" xml:space="preserve">
+    <value>Xóa user thành công</value>
+  </data>
+  <data name="SignIn.Message.Fail" xml:space="preserve">
+    <value>Đăng ký không thành công</value>
+  </data>
   <data name="SignIn.Message.Success" xml:space="preserve">
+    <value>Đăng nhập thành công</value>
+  </data>
+  <data name="SignUp.Message.Fail" xml:space="preserve">
+    <value>Đăng ký không thành công</value>
+  </data>
+  <data name="SignUp.Message.PasswordNotMatch" xml:space="preserve">
+    <value>Mật khẩu không khớp</value>
+  </data>
+  <data name="SignUp.Message.Success" xml:space="preserve">
     <value>Đăng ký thành công</value>
   </data>
 </root>

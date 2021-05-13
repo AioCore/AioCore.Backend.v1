@@ -1,25 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using Package.Localization;
+﻿using AioCore.Application.Commands.IdentityCommands;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace AioCore.API.Controllers
 {
-    [Route("{culture}/api/v1/identity")]
-    [ApiController]
+    [Route("{culture}/api/v1/[controller]")]
     public class IdentityController : ControllerBase
     {
-        private readonly IStringLocalizer<Localization> _localizer;
+        private readonly IMediator _mediator;
 
-        public IdentityController(IStringLocalizer<Localization> localizer)
+        public IdentityController(IMediator mediator)
         {
-            _localizer = localizer;
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet]
-        [Route("key")]
-        public string Key(string key)
+        [HttpPost]
+        [Route("sign-in")]
+        public async Task<IActionResult> SignIn(SignInCommand command)
         {
-            return _localizer[key];
+            return Ok(await _mediator.Send(command));
+        }
+
+        [HttpPost]
+        [Route("sign-up")]
+        public async Task<IActionResult> SignUp(SignUpCommand command)
+        {
+            return Ok(await _mediator.Send(command));
         }
     }
 }
