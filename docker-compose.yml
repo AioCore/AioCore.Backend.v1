@@ -61,6 +61,15 @@ services:
     - rabbitmq
     - redis
 
+  aiocore-backgroundtasks:
+    image: aiocore/aiocore-backgroundtasks:latest
+    build:
+      context: .
+      dockerfile: src/AioCore.BackgroundTasks/Dockerfile
+    depends_on:
+      - sqldata
+      - rabbitmq
+
 volumes:
   sqldata:
     external: true
