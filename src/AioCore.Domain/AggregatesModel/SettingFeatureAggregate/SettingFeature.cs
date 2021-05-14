@@ -22,5 +22,11 @@ namespace AioCore.Domain.AggregatesModel.SettingFeatureAggregate
         public Guid LayoutId { get; set; }
 
         public virtual SettingLayout Layout { get; set; }
+
+        [Keyword]
+        public int IndexLeft { get; set; }
+
+        [Keyword]
+        public int IndexRight { get; set; }
     }
 }

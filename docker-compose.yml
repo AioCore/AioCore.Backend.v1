@@ -35,8 +35,8 @@ services:
       - "15672:15672"
       - "5672:5672"
 
-  aiocore-backend:
-    image: aiocore/aiocore-backend:latest
+  aiocore-api:
+    image: aiocore/aiocore-api:latest
     build:
       context: .
       dockerfile: src/AioCore.API/Dockerfile

@@ -84,7 +84,7 @@ namespace AioCore.API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(await _mediator.Send(command));
             }
             catch
             {
