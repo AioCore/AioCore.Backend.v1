@@ -2,6 +2,7 @@
 using AioCore.Shared.Seedwork;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace AioCore.Infrastructure.Repositories
 {
@@ -15,6 +16,11 @@ namespace AioCore.Infrastructure.Repositories
         }
 
         public IUnitOfWork UnitOfWork => _context;
+
+        public async Task<SecurityUser> GetAsync(Guid id)
+        {
+            return await _context.SecurityUsers.FindAsync(id);
+        }
 
         public SecurityUser Add(SecurityUser user)
         {

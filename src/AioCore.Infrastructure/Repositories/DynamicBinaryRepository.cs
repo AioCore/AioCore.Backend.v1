@@ -1,7 +1,9 @@
 ﻿using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 using AioCore.Shared.Seedwork;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AioCore.Infrastructure.Repositories
 {
@@ -15,6 +17,11 @@ namespace AioCore.Infrastructure.Repositories
         }
 
         public IUnitOfWork UnitOfWork => _context;
+
+        public async Task<DynamicBinary> GetAsync(Guid id)
+        {
+            return await _context.DynamicBinaries.FindAsync(id);
+        }
 
         public List<DynamicBinary> AddRange(IEnumerable<DynamicBinary> binaries)
         {

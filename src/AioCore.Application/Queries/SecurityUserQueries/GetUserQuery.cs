@@ -1,6 +1,5 @@
 ﻿using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
 using MediatR;
-using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,16 +17,16 @@ namespace AioCore.Application.Queries.SecurityUserQueries
 
         internal class Handler : IRequestHandler<GetUserQuery, GetUserResponse>
         {
-            private readonly IElasticsearchService _elasticsearchService;
+            private readonly ISecurityUserRepository _securityUserRepository;
 
-            public Handler(IElasticsearchService elasticsearchService)
+            public Handler(ISecurityUserRepository securityUserRepository)
             {
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
+                _securityUserRepository = securityUserRepository ?? throw new ArgumentNullException(nameof(securityUserRepository));
             }
 
             public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
             {
-                var user = await _elasticsearchService.GetAsync<SecurityUser>(request.Id);
+                var user = await _securityUserRepository.GetAsync(request.Id);
                 return new GetUserResponse(user.Id, user.Name, user.Email);
             }
         }

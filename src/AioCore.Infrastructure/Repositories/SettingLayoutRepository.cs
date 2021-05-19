@@ -1,6 +1,8 @@
 ﻿using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
 using AioCore.Shared.Seedwork;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace AioCore.Infrastructure.Repositories
 {
@@ -14,19 +16,26 @@ namespace AioCore.Infrastructure.Repositories
         }
 
         public IUnitOfWork UnitOfWork => _context;
+
+        public async Task<SettingLayout> GetAsync(Guid id)
+        {
+            return await _context.SettingLayouts.FindAsync(id);
+        }
+
         public SettingLayout Add(SettingLayout layout)
         {
-            throw new NotImplementedException();
+            return _context.SettingLayouts.Add(layout).Entity;
         }
 
         public void Update(SettingLayout layout)
         {
-            throw new NotImplementedException();
+            _context.Entry(layout).State = EntityState.Modified;
         }
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var layout = _context.SettingLayouts.Find(id);
+            _context.Entry(layout).State = EntityState.Deleted;
         }
     }
 }

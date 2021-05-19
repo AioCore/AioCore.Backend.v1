@@ -1,6 +1,6 @@
-﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
+﻿using AioCore.Application.Responses.SettingTenantResponses;
+using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using MediatR;
-using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,33 +18,18 @@ namespace AioCore.Application.Queries.SettingTenantQueries
 
         internal class Handler : IRequestHandler<GetTenantQuery, GetTenantResponse>
         {
-            private readonly IElasticsearchService _elasticsearchService;
+            private readonly ISettingTenantRepository _settingTenantRepository;
 
-            public Handler(IElasticsearchService elasticsearchService)
+            public Handler(ISettingTenantRepository settingTenantRepository)
             {
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
+                _settingTenantRepository = settingTenantRepository ?? throw new ArgumentNullException(nameof(settingTenantRepository));
             }
 
             public async Task<GetTenantResponse> Handle(GetTenantQuery request, CancellationToken cancellationToken)
             {
-                var tenant = await _elasticsearchService.GetAsync<SettingTenant>(request.Id);
+                var tenant = await _settingTenantRepository.GetAsync(request.Id);
                 return new GetTenantResponse(tenant.Id, tenant.Name);
             }
-        }
-    }
-
-    public record GetTenantResponse
-    {
-        public Guid Id { get; set; }
-
-        public string Name { get; set; }
-
-        public GetTenantResponse(
-            Guid id,
-            string name)
-        {
-            Id = id;
-            Name = name;
         }
     }
 }

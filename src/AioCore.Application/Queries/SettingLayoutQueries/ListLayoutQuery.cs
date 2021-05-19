@@ -1,13 +1,13 @@
-﻿using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
+﻿using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
 using MediatR;
 using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AioCore.Application.Queries.SettingTenantQueries
+namespace AioCore.Application.Queries.SettingLayoutQueries
 {
-    public class ListTenantQuery : IRequest<Pagination<SettingTenant>>
+    public class ListLayoutQuery : IRequest<Pagination<SettingLayout>>
     {
         public int PageSize { get; private set; }
 
@@ -22,7 +22,7 @@ namespace AioCore.Application.Queries.SettingTenantQueries
             Keyword = keyword;
         }
 
-        internal class Handler : IRequestHandler<ListTenantQuery, Pagination<SettingTenant>>
+        internal class Handler : IRequestHandler<ListLayoutQuery, Pagination<SettingLayout>>
         {
             private readonly IElasticsearchService _elasticsearchService;
 
@@ -31,9 +31,9 @@ namespace AioCore.Application.Queries.SettingTenantQueries
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
-            public async Task<Pagination<SettingTenant>> Handle(ListTenantQuery request, CancellationToken cancellationToken)
+            public async Task<Pagination<SettingLayout>> Handle(ListLayoutQuery request, CancellationToken cancellationToken)
             {
-                return await _elasticsearchService.SearchAsync<SettingTenant>(request.PageIndex, request.PageSize, request.Keyword);
+                return await _elasticsearchService.SearchAsync<SettingLayout>(request.PageIndex, request.PageSize, request.Keyword);
             }
         }
     }

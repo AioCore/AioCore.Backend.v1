@@ -2,7 +2,6 @@
 using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 using MediatR;
 using Package.AutoMapper;
-using Package.Elasticsearch;
 using Package.FileServer;
 using System;
 using System.Threading;
@@ -22,19 +21,19 @@ namespace AioCore.Application.Queries.DynamicBinaryQueries
         internal class Handler : IRequestHandler<GetBinaryQuery, GetBinaryResponse>
         {
             private readonly IFileServerService _fileServerService;
-            private readonly IElasticsearchService _elasticsearchService;
+            private readonly IDynamicBinaryRepository _dynamicBinaryRepository;
 
             public Handler(
                 IFileServerService fileServerService,
-                IElasticsearchService elasticsearchService)
+                IDynamicBinaryRepository dynamicBinaryRepository)
             {
                 _fileServerService = fileServerService ?? throw new ArgumentNullException(nameof(fileServerService));
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
+                _dynamicBinaryRepository = dynamicBinaryRepository ?? throw new ArgumentNullException(nameof(dynamicBinaryRepository));
             }
 
             public async Task<GetBinaryResponse> Handle(GetBinaryQuery request, CancellationToken cancellationToken)
             {
-                var binary = await _elasticsearchService.GetAsync<DynamicBinary>(request.Id);
+                var binary = await _dynamicBinaryRepository.GetAsync(request.Id);
                 var bytes = await _fileServerService.DownloadFileByteAsync(binary.FilePath);
                 var res = binary.To<GetBinaryResponse>();
                 res.MergeParams(bytes);

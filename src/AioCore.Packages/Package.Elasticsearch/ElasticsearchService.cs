@@ -17,8 +17,6 @@ namespace Package.Elasticsearch
 
         Task IndexManyAsync<T>(List<T> documents) where T : class;
 
-        Task<T> GetAsync<T>(Guid id) where T : class;
-
         Task UpdateAsync<T>(T document) where T : class;
 
         Task DeleteAsync<T>(Guid id) where T : class;
@@ -54,12 +52,6 @@ namespace Package.Elasticsearch
             if (!response.IsValid)
                 throw new ApplicationException(response.DebugInformation);
             await _elasticClient.Indices.RefreshAsync(Indices.All);
-        }
-
-        public async Task<T> GetAsync<T>(Guid id) where T : class
-        {
-            var query = await _elasticClient.GetAsync(DocumentPath<T>.Id(id));
-            return query?.Source;
         }
 
         public async Task UpdateAsync<T>(T document) where T : class
