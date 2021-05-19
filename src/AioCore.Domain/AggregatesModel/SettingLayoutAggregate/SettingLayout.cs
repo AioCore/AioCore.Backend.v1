@@ -17,5 +17,17 @@ namespace AioCore.Domain.AggregatesModel.SettingLayoutAggregate
         public virtual ICollection<SettingComponent> Components { get; set; }
 
         public virtual ICollection<SettingDom> Doms { get; set; }
+
+        public SettingLayout()
+        {
+        }
+
+        public SettingLayout(
+            string name,
+            string description)
+        {
+            Name = name;
+            Description = description;
+        }
     }
 }

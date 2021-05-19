@@ -2,6 +2,7 @@
 using AioCore.Shared.Seedwork;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace AioCore.Infrastructure.Repositories
 {
@@ -16,6 +17,11 @@ namespace AioCore.Infrastructure.Repositories
 
         public IUnitOfWork UnitOfWork => _context;
 
+        public async Task<SettingTenant> GetAsync(Guid id)
+        {
+            return await _context.SettingTenants.FindAsync(id);
+        }
+
         public SettingTenant Add(SettingTenant tenant)
         {
             return _context.SettingTenants.Add(tenant).Entity;
@@ -24,6 +30,12 @@ namespace AioCore.Infrastructure.Repositories
         public void Update(SettingTenant tenant)
         {
             _context.Entry(tenant).State = EntityState.Modified;
+        }
+
+        public void Delete(Guid id)
+        {
+            var tenant = _context.SettingTenants.Find(id);
+            _context.Entry(tenant).State = EntityState.Deleted;
         }
     }
 }

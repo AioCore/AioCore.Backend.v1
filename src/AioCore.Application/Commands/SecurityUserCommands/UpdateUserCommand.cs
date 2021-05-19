@@ -37,7 +37,7 @@ namespace AioCore.Application.Commands.SecurityUserCommands
 
             public async Task<UpdateUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
-                var user = await _elasticsearchService.GetAsync<SecurityUser>(request.Id);
+                var user = await _securityUserRepository.GetAsync(request.Id);
                 user.Update(request.Name, request.Email);
                 _securityUserRepository.Update(user);
                 var res = await _securityUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

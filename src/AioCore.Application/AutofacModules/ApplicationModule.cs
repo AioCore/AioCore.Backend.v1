@@ -1,6 +1,8 @@
 ﻿using AioCore.Application.Behaviors;
 using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
+using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
+using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
 using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Infrastructure.Repositories;
 using Autofac;
@@ -28,6 +30,14 @@ namespace AioCore.Application.AutofacModules
 
             builder.RegisterType<SecurityUserRepository>()
                 .As<ISecurityUserRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<SettingLayoutRepository>()
+                .As<ISettingLayoutRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<SettingFeatureRepository>()
+                .As<ISettingFeatureRepository>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<SettingTenantRepository>()

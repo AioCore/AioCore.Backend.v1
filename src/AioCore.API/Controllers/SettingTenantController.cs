@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AioCore.API.Controllers
 {
-    [Route("{culture}/api/v1/tenant")]
+    [Route("{culture}/settings/api/v1/tenant")]
     public class SettingTenantController : AioController
     {
         private readonly IMediator _mediator;
@@ -18,9 +18,8 @@ namespace AioCore.API.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet]
-        [Route("item")]
-        public async Task<ActionResult<GetTenantResponse>> GetTenantAsync([FromQuery] Guid tenantId)
+        [HttpGet("item")]
+        public async Task<IActionResult> ItemAsync([FromQuery] Guid tenantId)
         {
             if (tenantId.Equals(Guid.Empty)) return BadRequest();
 
@@ -37,8 +36,7 @@ namespace AioCore.API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("items")]
+        [HttpGet("items")]
         public async Task<IActionResult> ItemsAsync([FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 1, string keyword = null)
         {
             try
@@ -54,16 +52,14 @@ namespace AioCore.API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("create")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTenantCommand command)
         {
             var id = await _mediator.Send(command);
             return Ok(id);
         }
 
-        [HttpGet]
-        [Route("users")]
+        [HttpGet("users")]
         public async Task<IActionResult> Users([FromQuery] Guid tenantId)
         {
             try
@@ -79,8 +75,7 @@ namespace AioCore.API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("push-user/{tenantId:guid}")]
+        [HttpPost("push-user/{tenantId:guid}")]
         public async Task<IActionResult> PushUser([FromQuery] Guid tenantId)
         {
             try

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AioCore.Application.Responses.SettingTenantResponses
 {
-    public class CreateTenantResponse
+    public record CreateTenantResponse
     {
         public string Name { get; set; }
 
