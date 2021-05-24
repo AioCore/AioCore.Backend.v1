@@ -7,7 +7,7 @@ using MediatR;
 using Package.AutoMapper;
 using Package.Elasticsearch;
 
-namespace AioCore.Application.Commands.SecurityUserCommands
+namespace AioCore.Application.Commands.SystemUserCommands
 {
     public class CreateUserCommand : IRequest<CreateUserResponse>
     {

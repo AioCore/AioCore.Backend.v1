@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using AioCore.Application.Commands.SecurityUserCommands;
-using AioCore.Application.Queries.SecurityUserQueries;
+using AioCore.Application.Commands.SystemUserCommands;
+using AioCore.Application.Queries.SystemUserQueries;
 
 namespace AioCore.API.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace AioCore.Application.Commands.SecurityUserCommands
+namespace AioCore.Application.Commands.SystemUserCommands
 {
     public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {

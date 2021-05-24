@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using MediatR;
 
-namespace AioCore.Application.Queries.SecurityUserQueries
+namespace AioCore.Application.Queries.SystemUserQueries
 {
     public class GetUserQuery : IRequest<GetUserResponse>
     {

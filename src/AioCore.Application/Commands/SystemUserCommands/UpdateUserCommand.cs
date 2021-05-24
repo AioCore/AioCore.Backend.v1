@@ -1,15 +1,15 @@
-﻿using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AioCore.Application.Responses.SystemUserResponses;
+using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using Package.Elasticsearch;
 using Package.Localization;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AioCore.Application.Responses.SystemUserResponses;
 
-namespace AioCore.Application.Commands.SecurityUserCommands
+namespace AioCore.Application.Commands.SystemUserCommands
 {
     public class UpdateUserCommand : IRequest<UpdateUserResponse>
     {

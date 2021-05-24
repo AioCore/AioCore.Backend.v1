@@ -5,7 +5,7 @@ using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using MediatR;
 using Package.Elasticsearch;
 
-namespace AioCore.Application.Queries.SecurityUserQueries
+namespace AioCore.Application.Queries.SystemUserQueries
 {
     public class ListUserQuery : IRequest<Pagination<SystemUser>>
     {

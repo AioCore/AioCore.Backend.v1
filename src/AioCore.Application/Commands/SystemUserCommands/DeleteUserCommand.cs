@@ -9,7 +9,7 @@ using Microsoft.Extensions.Localization;
 using Package.Elasticsearch;
 using Package.Localization;
 
-namespace AioCore.Application.Commands.SecurityUserCommands
+namespace AioCore.Application.Commands.SystemUserCommands
 {
     public class DeleteUserCommand : IRequest<DeleteUserResponse>
     {
