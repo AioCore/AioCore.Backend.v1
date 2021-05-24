@@ -1,12 +1,12 @@
-﻿using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.AggregatesModel.SystemPermissionSetAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SettingTenantTypeConfiguration : IEntityTypeConfiguration<SystemTenant>
+    public class SystemPermissionSetTypeConfiguration : IEntityTypeConfiguration<SystemPermissionSet>
     {
-        public void Configure(EntityTypeBuilder<SystemTenant> builder)
+        public void Configure(EntityTypeBuilder<SystemPermissionSet> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Ignore(x => x.DomainEvents);

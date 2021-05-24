@@ -1,5 +1,4 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
-using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -8,6 +7,7 @@ using Package.Localization;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {
@@ -26,15 +26,15 @@ namespace AioCore.Application.Commands.IdentityCommands
         internal class Handler : IRequestHandler<SignUpCommand, SignUpResponse>
         {
             private readonly IStringLocalizer<Localization> _localizer;
-            private readonly ISecurityUserRepository _securityUserRepository;
+            private readonly ISystemUserRepository _systemUserRepository;
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
-                ISecurityUserRepository securityUserRepository,
+                ISystemUserRepository systemUserRepository,
                 IStringLocalizer<Localization> localizer,
                 IElasticsearchService elasticsearchService)
             {
-                _securityUserRepository = securityUserRepository ?? throw new ArgumentNullException(nameof(securityUserRepository));
+                _systemUserRepository = systemUserRepository ?? throw new ArgumentNullException(nameof(systemUserRepository));
                 _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
@@ -45,9 +45,9 @@ namespace AioCore.Application.Commands.IdentityCommands
                 {
                     if (!request.Password.Equals(request.ConfirmPassword))
                         return new SignUpResponse { Message = _localizer[Message.SignUpMessagePasswordNotMatch] };
-                    var user = _securityUserRepository.Add(new SecurityUser(request.Name, request.Account,
+                    var user = _systemUserRepository.Add(new SystemUser(request.Name, request.Account,
                         request.Email, request.Password));
-                    await _securityUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                    await _systemUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
                     await _elasticsearchService.IndexAsync(user);
                     return new SignUpResponse { Message = _localizer[Message.SignUpMessageSuccess] };
                 }

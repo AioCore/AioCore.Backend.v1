@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
 using MediatR;
 using Package.Elasticsearch;
 
-namespace AioCore.Application.Queries.SecurityUserQueries
+namespace AioCore.Application.Queries.SystemTenantQueries
 {
-    public class ListUserQuery : IRequest<Pagination<SystemUser>>
+    public class ListTenantQuery : IRequest<Pagination<SystemTenant>>
     {
         public int PageSize { get; private set; }
 
@@ -22,19 +22,18 @@ namespace AioCore.Application.Queries.SecurityUserQueries
             Keyword = keyword;
         }
 
-        internal class Handler : IRequestHandler<ListUserQuery, Pagination<SystemUser>>
+        internal class Handler : IRequestHandler<ListTenantQuery, Pagination<SystemTenant>>
         {
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(IElasticsearchService elasticsearchService)
             {
-                _elasticsearchService = elasticsearchService;
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
-            public async Task<Pagination<SystemUser>> Handle(ListUserQuery request, CancellationToken cancellationToken)
+            public async Task<Pagination<SystemTenant>> Handle(ListTenantQuery request, CancellationToken cancellationToken)
             {
-                return await _elasticsearchService.SearchAsync<SystemUser>(request.PageIndex, request.PageSize, request.Keyword);
+                return await _elasticsearchService.SearchAsync<SystemTenant>(request.PageIndex, request.PageSize, request.Keyword);
             }
         }
     }

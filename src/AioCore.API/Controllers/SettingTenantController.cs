@@ -1,10 +1,10 @@
-﻿using AioCore.Application.Commands.SettingTenantCommands;
-using AioCore.Application.Queries.SettingTenantQueries;
-using AioCore.Shared.Mvc;
+﻿using AioCore.Shared.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using AioCore.Application.Commands.SystemTenantCommands;
+using AioCore.Application.Queries.SystemTenantQueries;
 
 namespace AioCore.API.Controllers
 {

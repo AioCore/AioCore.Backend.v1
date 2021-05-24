@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
+﻿using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Shared.Seedwork;
 using Nest;
 using System;
@@ -23,7 +23,7 @@ namespace AioCore.Domain.AggregatesModel.DynamicBinaryAggregate
 
         public Guid? AuthorId { get; set; }
 
-        public virtual SecurityUser Author { get; set; }
+        public virtual SystemUser Author { get; set; }
 
         public long Size { get; set; }
 

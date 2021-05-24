@@ -31,7 +31,7 @@ namespace AioCore.Application.Commands.IdentityCommands
 
             public async Task<SignInResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
             {
-                var res = await _context.SecurityUsers.FirstOrDefaultAsync(
+                var res = await _context.SystemUsers.FirstOrDefaultAsync(
                     x => x.Account == request.Key || x.Email == request.Key, cancellationToken);
                 var message = res.PasswordHash.Equals(request.Password.CreateMd5())
                     ? _localizer[Message.SignInMessageSuccess]
