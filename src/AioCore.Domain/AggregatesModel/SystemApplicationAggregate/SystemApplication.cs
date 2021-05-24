@@ -1,11 +1,11 @@
 ﻿using AioCore.Shared.Seedwork;
 using Nest;
 using System;
-using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
+using System.Collections.Generic;
 
-namespace AioCore.Domain.AggregatesModel.SettingEntityAggregate
+namespace AioCore.Domain.AggregatesModel.SystemApplicationAggregate
 {
-    public class SettingEntity : Entity, IAggregateRoot
+    public class SystemApplication : Entity, IAggregateRoot
     {
         [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Name { get; set; }
@@ -14,8 +14,8 @@ namespace AioCore.Domain.AggregatesModel.SettingEntityAggregate
         public string Description { get; set; }
 
         [Keyword]
-        public Guid TenantId { get; set; }
+        public Guid LogoId { get; set; }
 
-        public virtual SystemTenant Tenant { get; set; }
+        public virtual ICollection<SystemApplicationTenant> ApplicationTenants { get; set; }
     }
 }

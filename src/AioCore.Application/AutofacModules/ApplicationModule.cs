@@ -1,9 +1,9 @@
 ﻿using AioCore.Application.Behaviors;
 using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
-using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
 using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
 using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
-using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
+using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Infrastructure.Repositories;
 using Autofac;
 using MediatR;
@@ -28,8 +28,8 @@ namespace AioCore.Application.AutofacModules
                 .As<IElasticsearchService>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<SecurityUserRepository>()
-                .As<ISecurityUserRepository>()
+            builder.RegisterType<SystemUserRepository>()
+                .As<ISystemUserRepository>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<SettingLayoutRepository>()
@@ -40,7 +40,7 @@ namespace AioCore.Application.AutofacModules
                 .As<ISettingFeatureRepository>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<SettingTenantRepository>()
+            builder.RegisterType<SystemTenantRepository>()
                 .As<ISettingTenantRepository>()
                 .InstancePerLifetimeScope();
 

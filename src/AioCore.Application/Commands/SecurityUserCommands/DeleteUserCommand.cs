@@ -1,13 +1,13 @@
-﻿using AioCore.Application.Responses.SecurityUserResponses;
-using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AioCore.Application.Responses.SystemUserResponses;
+using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using Package.Elasticsearch;
 using Package.Localization;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AioCore.Application.Commands.SecurityUserCommands
 {
@@ -17,30 +17,30 @@ namespace AioCore.Application.Commands.SecurityUserCommands
 
         internal class Handler : IRequestHandler<DeleteUserCommand, DeleteUserResponse>
         {
-            private readonly ISecurityUserRepository _securityUserRepository;
+            private readonly ISystemUserRepository _systemUserRepository;
             private readonly IStringLocalizer<Localization> _localizer;
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
-                ISecurityUserRepository securityUserRepository,
+                ISystemUserRepository systemUserRepository,
                 IStringLocalizer<Localization> localizer,
                 IElasticsearchService elasticsearchService)
             {
-                _securityUserRepository = securityUserRepository ?? throw new ArgumentNullException(nameof(securityUserRepository));
+                _systemUserRepository = systemUserRepository ?? throw new ArgumentNullException(nameof(systemUserRepository));
                 _localizer = localizer ?? throw new ArgumentNullException();
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
             public async Task<DeleteUserResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
-                _securityUserRepository.Delete(request.Id);
-                var res = await _securityUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
-                await _elasticsearchService.DeleteAsync<SecurityUser>(request.Id);
+                _systemUserRepository.Delete(request.Id);
+                var res = await _systemUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                await _elasticsearchService.DeleteAsync<SystemUser>(request.Id);
                 return new DeleteUserResponse
                 {
                     Message = res.Equals(1)
-                        ? _localizer[Message.SecurityUserDeleteMessageSuccess]
-                        : _localizer[Message.SecurityUserDeleteMessageFail]
+                        ? _localizer[Message.SystemUserDeleteMessageSuccess]
+                        : _localizer[Message.SystemUserDeleteMessageFail]
                 };
             }
         }

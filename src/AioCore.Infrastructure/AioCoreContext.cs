@@ -1,14 +1,10 @@
+using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 using AioCore.Domain.AggregatesModel.DynamicDateAggregate;
 using AioCore.Domain.AggregatesModel.DynamicEntityAggregate;
 using AioCore.Domain.AggregatesModel.DynamicFloatAggregate;
 using AioCore.Domain.AggregatesModel.DynamicGuidAggregate;
 using AioCore.Domain.AggregatesModel.DynamicIntegerAggregate;
 using AioCore.Domain.AggregatesModel.DynamicStringAggregate;
-using AioCore.Domain.AggregatesModel.SecurityGroupAggregate;
-using AioCore.Domain.AggregatesModel.SecurityPermissionAggregate;
-using AioCore.Domain.AggregatesModel.SecurityPermissionSetAggregate;
-using AioCore.Domain.AggregatesModel.SecurityPolicyAggregate;
-using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
 using AioCore.Domain.AggregatesModel.SettingActionAggregate;
 using AioCore.Domain.AggregatesModel.SettingComponentAggregate;
 using AioCore.Domain.AggregatesModel.SettingDomAggregate;
@@ -17,8 +13,14 @@ using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
 using AioCore.Domain.AggregatesModel.SettingFieldAggregate;
 using AioCore.Domain.AggregatesModel.SettingFormAggregate;
 using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
-using AioCore.Domain.AggregatesModel.SettingTenantAggregate;
 using AioCore.Domain.AggregatesModel.SettingViewAggregate;
+using AioCore.Domain.AggregatesModel.SystemApplicationAggregate;
+using AioCore.Domain.AggregatesModel.SystemGroupAggregate;
+using AioCore.Domain.AggregatesModel.SystemPermissionAggregate;
+using AioCore.Domain.AggregatesModel.SystemPermissionSetAggregate;
+using AioCore.Domain.AggregatesModel.SystemPolicyAggregate;
+using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Infrastructure.EntityTypeConfigurations;
 using AioCore.Shared.Extensions;
 using AioCore.Shared.Seedwork;
@@ -29,7 +31,6 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
 
 namespace AioCore.Infrastructure
 {
@@ -77,16 +78,6 @@ namespace AioCore.Infrastructure
 
         public DbSet<DynamicStringValue> DynamicStringValues { get; set; }
 
-        public DbSet<SecurityGroup> SecurityGroups { get; set; }
-
-        public DbSet<SecurityPermissionSet> SecurityPermissionSets { get; set; }
-
-        public DbSet<SecurityPermission> SecurityPermissions { get; set; }
-
-        public DbSet<SecurityPolicy> SecurityPolicies { get; set; }
-
-        public DbSet<SecurityUser> SecurityUsers { get; set; }
-
         public DbSet<SettingAction> SettingActions { get; set; }
 
         public DbSet<SettingComponent> SettingComponents { get; set; }
@@ -103,9 +94,21 @@ namespace AioCore.Infrastructure
 
         public DbSet<SettingLayout> SettingLayouts { get; set; }
 
-        public DbSet<SettingTenant> SettingTenants { get; set; }
-
         public DbSet<SettingView> SettingViews { get; set; }
+
+        public DbSet<SystemApplication> SystemApplications { get; set; }
+
+        public DbSet<SystemGroup> SystemGroups { get; set; }
+
+        public DbSet<SystemPermissionSet> SystemPermissionSets { get; set; }
+
+        public DbSet<SystemPermission> SystemPermissions { get; set; }
+
+        public DbSet<SystemPolicy> SystemPolicies { get; set; }
+
+        public DbSet<SystemTenant> SystemTenants { get; set; }
+
+        public DbSet<SystemUser> SystemUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -123,10 +126,10 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new DynamicStringAttributeTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicStringValueTypeConfiguration());
 
-            modelBuilder.ApplyConfiguration(new SecurityGroupTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SecurityPermissionTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SecurityPermissionSetTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SecurityPolicyTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemGroupTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemPermissionTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemPermissionSetTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemPolicyTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new SettingActionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingComponentTypeConfiguration());

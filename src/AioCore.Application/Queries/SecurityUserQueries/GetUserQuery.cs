@@ -1,8 +1,8 @@
-﻿using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+using MediatR;
 
 namespace AioCore.Application.Queries.SecurityUserQueries
 {
@@ -17,16 +17,16 @@ namespace AioCore.Application.Queries.SecurityUserQueries
 
         internal class Handler : IRequestHandler<GetUserQuery, GetUserResponse>
         {
-            private readonly ISecurityUserRepository _securityUserRepository;
+            private readonly ISystemUserRepository _systemUserRepository;
 
-            public Handler(ISecurityUserRepository securityUserRepository)
+            public Handler(ISystemUserRepository systemUserRepository)
             {
-                _securityUserRepository = securityUserRepository ?? throw new ArgumentNullException(nameof(securityUserRepository));
+                _systemUserRepository = systemUserRepository ?? throw new ArgumentNullException(nameof(systemUserRepository));
             }
 
             public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
             {
-                var user = await _securityUserRepository.GetAsync(request.Id);
+                var user = await _systemUserRepository.GetAsync(request.Id);
                 return new GetUserResponse(user.Id, user.Name, user.Email);
             }
         }

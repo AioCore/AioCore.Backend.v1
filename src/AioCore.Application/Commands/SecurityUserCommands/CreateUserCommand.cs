@@ -1,11 +1,11 @@
-﻿using AioCore.Application.Responses.SecurityUserResponses;
-using AioCore.Domain.AggregatesModel.SecurityUserAggregate;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AioCore.Application.Responses.SystemUserResponses;
+using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using MediatR;
 using Package.AutoMapper;
 using Package.Elasticsearch;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AioCore.Application.Commands.SecurityUserCommands
 {
@@ -22,19 +22,19 @@ namespace AioCore.Application.Commands.SecurityUserCommands
         internal class Handler : IRequestHandler<CreateUserCommand, CreateUserResponse>
         {
             private readonly IElasticsearchService _elasticsearchService;
-            private readonly ISecurityUserRepository _securityUserRepository;
+            private readonly ISystemUserRepository _systemUserRepository;
 
             public Handler(
-                IElasticsearchService elasticsearchService, ISecurityUserRepository securityUserRepository)
+                IElasticsearchService elasticsearchService, ISystemUserRepository systemUserRepository)
             {
-                _securityUserRepository = securityUserRepository ?? throw new ArgumentNullException(nameof(securityUserRepository));
+                _systemUserRepository = systemUserRepository ?? throw new ArgumentNullException(nameof(systemUserRepository));
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
             public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
-                var item = _securityUserRepository.Add(new SecurityUser(request.Name, request.Email, request.TenantId, request.Password));
-                await _securityUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                var item = _systemUserRepository.Add(new SystemUser(request.Name, request.Email, request.TenantId, request.Password));
+                await _systemUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.IndexAsync(item);
                 return item.To<CreateUserResponse>();
             }

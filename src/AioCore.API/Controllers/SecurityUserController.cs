@@ -1,19 +1,19 @@
-﻿using AioCore.Application.Commands.SecurityUserCommands;
-using AioCore.Application.Queries.SecurityUserQueries;
-using AioCore.Shared.Mvc;
+﻿using AioCore.Shared.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using AioCore.Application.Commands.SecurityUserCommands;
+using AioCore.Application.Queries.SecurityUserQueries;
 
 namespace AioCore.API.Controllers
 {
     [Route("{culture}/api/v1/user")]
-    public class SecurityUserController : AioController
+    public class SystemUserController : AioController
     {
         private readonly IMediator _mediator;
 
-        public SecurityUserController(IMediator mediator)
+        public SystemUserController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
