@@ -53,6 +53,8 @@ namespace AioCore.API
                 .AddEventBus(_configuration)
                 .AddElasticsearch(_configuration)
                 .AddMapper();
+
+            services.Configure<AppSettings>(_configuration);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -129,7 +131,7 @@ namespace AioCore.API
 
             services.AddDbContext<AioCoreContext>(options =>
             {
-                options.UseNpgsql(configuration["ConnectionString"], b =>
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), b =>
                 {
                     b.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                     b.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
@@ -138,7 +140,7 @@ namespace AioCore.API
 
             services.AddDbContext<IntegrationEventLogContext>(options =>
             {
-                options.UseNpgsql(configuration["ConnectionString"],
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                     sqlOptions =>
                     {
                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
