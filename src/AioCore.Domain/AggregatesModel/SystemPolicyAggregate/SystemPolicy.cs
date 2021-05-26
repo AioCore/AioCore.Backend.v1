@@ -8,9 +8,5 @@ namespace AioCore.Domain.AggregatesModel.SystemPolicyAggregate
         public string Controller { get; set; }
 
         public string Action { get; set; }
-
-        public Guid UserId { get; set; }
-
-        public Guid TenantId { get; set; }
     }
 }

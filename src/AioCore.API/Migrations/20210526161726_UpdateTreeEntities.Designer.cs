@@ -3,15 +3,17 @@ using System;
 using AioCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AioCore.API.Migrations
 {
     [DbContext(typeof(AioCoreContext))]
-    partial class AioCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210526161726_UpdateTreeEntities")]
+    partial class UpdateTreeEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -607,6 +609,12 @@ namespace AioCore.API.Migrations
 
                     b.Property<string>("Controller")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
