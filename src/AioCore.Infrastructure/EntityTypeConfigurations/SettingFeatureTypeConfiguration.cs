@@ -9,6 +9,8 @@ namespace AioCore.Infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<SettingFeature> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Ignore(x => x.Parent);
+            builder.Ignore(x => x.Root);
         }
     }
 }

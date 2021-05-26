@@ -3,6 +3,7 @@ using Nest;
 using Package.NestedSet;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AioCore.Domain.AggregatesModel.SystemGroupAggregate
 {
@@ -13,6 +14,7 @@ namespace AioCore.Domain.AggregatesModel.SystemGroupAggregate
         [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Name { get; set; }
 
+        [NotMapped]
         public virtual SystemGroup Parent { get; set; }
 
         public Guid? ParentId { get; set; }
@@ -25,6 +27,7 @@ namespace AioCore.Domain.AggregatesModel.SystemGroupAggregate
 
         public bool Moving { get; set; }
 
+        [NotMapped]
         public virtual SystemGroup Root { get; set; }
 
         public Guid? RootId { get; set; }

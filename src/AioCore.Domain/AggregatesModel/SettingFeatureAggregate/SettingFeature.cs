@@ -27,6 +27,7 @@ namespace AioCore.Domain.AggregatesModel.SettingFeatureAggregate
 
         public virtual SettingLayout Layout { get; set; }
 
+        [NotMapped]
         public virtual SettingFeature Parent { get; set; }
 
         public Guid? ParentId { get; set; }
@@ -39,6 +40,7 @@ namespace AioCore.Domain.AggregatesModel.SettingFeatureAggregate
 
         public bool Moving { get; set; }
 
+        [NotMapped]
         public virtual SettingFeature Root { get; set; }
 
         public Guid? RootId { get; set; }

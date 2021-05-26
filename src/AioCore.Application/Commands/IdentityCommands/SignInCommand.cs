@@ -44,10 +44,9 @@ namespace AioCore.Application.Commands.IdentityCommands
             {
                 var user = await _context.SystemUsers
                     .Include(x => x.Tenant).ThenInclude(x => x.TenantApplications)
-                    .Include(x => x.Groups)
-                    .Include(x => x.Policies)
-                    .FirstOrDefaultAsync(
-                        x => x.Account == request.Key || x.Email == request.Key, cancellationToken);
+                    .Include(x => x.Policies).ThenInclude(x => x.Policy)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Account == request.Key || x.Email == request.Key, cancellationToken);
 
                 if (user == null || !user.PasswordHash.Equals(request.Password.CreateMd5()))
                 {
@@ -57,15 +56,19 @@ namespace AioCore.Application.Commands.IdentityCommands
                     };
                 }
 
+                var policies = string.Join(";", user.Policies.Select(t => $"{t.Policy.Controller}|{t.Policy.Action}"));
+
+                var apps = string.Join(";", user.Tenant.TenantApplications.Select(t => t.ApplicationId));
+
                 var claims = new[]
                 {
                     new Claim("email", user.Email),
                     new Claim("account", user.Account),
                     new Claim("id", user.Id.ToString()),
-                    new Claim("tenantId", user.TenantId.ToString()),
-                    new Claim("apps", string.Join(";", user.Tenant.TenantApplications.Select(x => x.ApplicationId))),
-                    new Claim("policies", string.Join(";", user.Policies.Select(x=>x.PolicyId))),
-                    new Claim("groups", string.Join(";", user.Groups.Select(x=>x.GroupId)))
+                    new Claim("tenant", user.TenantId.ToString()),
+                    new Claim("apps", apps),
+                    new Claim("policies", policies),
+                    new Claim("groups", ""),
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.Tokens.Key));
