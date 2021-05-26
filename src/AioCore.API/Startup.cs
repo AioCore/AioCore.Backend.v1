@@ -39,6 +39,7 @@ namespace AioCore.API
 
         public Startup(IConfiguration configuration)
         {
+            var tmp = configuration.GetConnectionString("DefaultConnection");
             _configuration = configuration;
         }
 
