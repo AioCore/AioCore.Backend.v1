@@ -65,9 +65,9 @@ namespace AioCore.Application.Commands.IdentityCommands
                     new Claim("account", user.Account),
                     new Claim("id", user.Id.ToString()),
                     new Claim("tenantId", user.TenantId.ToString()),
-                    new Claim("apps", string.Join(";", user.Tenant.TenantApplications.Select(x => x.ApplicationId))),
-                    new Claim("policies", string.Join(";", user.Policies.Select(x=>x.PolicyId))),
-                    new Claim("groups", string.Join(";", user.Groups.Select(x=>x.GroupId)))
+                    new Claim("apps", string.Join(";", apps)),
+                    new Claim("policies", string.Join(";", policies)),
+                    new Claim("groups", ""),
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.Tokens.Key));
