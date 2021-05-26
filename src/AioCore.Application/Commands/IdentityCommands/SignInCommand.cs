@@ -49,6 +49,8 @@ namespace AioCore.Application.Commands.IdentityCommands
                     .FirstOrDefaultAsync(
                         x => x.Account == request.Key || x.Email == request.Key, cancellationToken);
 
+                var a = user.Policies.Select(t => t.Policy.Action);
+
                 if (user == null || !user.PasswordHash.Equals(request.Password.CreateMd5()))
                 {
                     return new SignInResponse
