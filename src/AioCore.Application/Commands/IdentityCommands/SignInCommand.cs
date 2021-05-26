@@ -55,7 +55,7 @@ namespace AioCore.Application.Commands.IdentityCommands
 
                 var policies = await _context.SystemPolicies
                     .Where(t => t.UserId == user.Id && t.TenantId == user.TenantId)
-                    .Select(t => t.Id)
+                    .Select(t => new { t.Controller, t.Action })
                     .ToListAsync(cancellationToken);
 
                 var apps = await _context.SystemApplications
@@ -68,9 +68,9 @@ namespace AioCore.Application.Commands.IdentityCommands
                     new Claim("email", user.Email),
                     new Claim("account", user.Account),
                     new Claim("id", user.Id.ToString()),
-                    new Claim("tenantId", user.TenantId.ToString()),
+                    new Claim("tenant", user.TenantId.ToString()),
                     new Claim("apps", string.Join(";", apps)),
-                    new Claim("policies", string.Join(";", policies)),
+                    new Claim("policies", string.Join(";", policies.Select(x=>$"{x.Controller}|{x.Action}"))),
                     new Claim("groups", ""),
                 };
 

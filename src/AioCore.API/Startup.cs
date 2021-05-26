@@ -1,6 +1,7 @@
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Infrastructure;
+using AioCore.Infrastructure.Authorize;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
 using Autofac;
@@ -55,6 +56,8 @@ namespace AioCore.API
                 .AddMapper();
 
             services.Configure<AppSettings>(_configuration);
+
+            services.AddAioAuthorize(_configuration);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -79,6 +82,10 @@ namespace AioCore.API
             app.UseRouting();
 
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
