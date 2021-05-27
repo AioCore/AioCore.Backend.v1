@@ -63,7 +63,7 @@ namespace Package.Redis
                 return default;
             }
 
-            return Cast<T>(CacheDb.StringGet(key));
+            return Deserialize<T>(CacheDb.StringGet(key));
         }
 
         public async Task<T> GetAsync<T>(string key)
@@ -73,7 +73,7 @@ namespace Package.Redis
                 return default;
             }
 
-            return Cast<T>(await CacheDb.StringGetAsync(key));
+            return Deserialize<T>(await CacheDb.StringGetAsync(key));
         }
 
         public void Set<T>(string key, T data, int expire = 0, CacheModes cacheMode = CacheModes.Sliding)
@@ -89,12 +89,12 @@ namespace Package.Redis
                 {
                     expiry = TimeSpan.FromSeconds(expire);
                 }
-                CacheDb.StringSet(key, Cast(data), expiry, flags: CommandFlags.FireAndForget);
+                CacheDb.StringSet(key, Serialize(data), expiry, flags: CommandFlags.FireAndForget);
             }
             else
             {
                 var expireAt = DateTime.Now.AddSeconds(expire);
-                CacheDb.StringSet(key, Cast(data));
+                CacheDb.StringSet(key, Serialize(data));
                 CacheDb.KeyExpire(key, expireAt, flags: CommandFlags.FireAndForget);
             }
         }
@@ -112,12 +112,12 @@ namespace Package.Redis
                 {
                     expiry = TimeSpan.FromSeconds(expire);
                 }
-                await CacheDb.StringSetAsync(key, Cast(data), expiry, flags: CommandFlags.FireAndForget);
+                await CacheDb.StringSetAsync(key, Serialize(data), expiry, flags: CommandFlags.FireAndForget);
             }
             else
             {
                 var expireAt = DateTime.Now.AddSeconds(expire);
-                await CacheDb.StringSetAsync(key, Cast(data));
+                await CacheDb.StringSetAsync(key, Serialize(data));
                 await CacheDb.KeyExpireAsync(key, expireAt, flags: CommandFlags.FireAndForget);
             }
         }
@@ -139,7 +139,7 @@ namespace Package.Redis
                 return;
             }
 
-            await CacheDb.HashSetAsync(key, field, Cast(data));
+            await CacheDb.HashSetAsync(key, field, Serialize(data));
             var ttl = CacheDb.KeyTimeToLive(key);
             if (!ttl.HasValue || ttl.Value.TotalSeconds < 0)
             {
@@ -155,18 +155,18 @@ namespace Package.Redis
 
         public async Task<T> HashGetAsync<T>(string key, string field)
         {
-            return Cast<T>(await CacheDb.HashGetAsync(key, field));
+            return Deserialize<T>(await CacheDb.HashGetAsync(key, field));
         }
 
         public T HashGet<T>(string key, string field)
         {
-            return Cast<T>(CacheDb.HashGet(key, field));
+            return Deserialize<T>(CacheDb.HashGet(key, field));
         }
 
         public IEnumerable<T> HashGetAll<T>(string key)
         {
             return CacheDb.HashGetAll(key)
-                ?.Select(t => (T)Cast<T>(t.Value))
+                ?.Select(t => (T)Deserialize<T>(t.Value))
                 ?.ToList();
         }
 
@@ -177,7 +177,7 @@ namespace Package.Redis
                 return;
             }
 
-            CacheDb.HashSet(key, field, Cast(data));
+            CacheDb.HashSet(key, field, Serialize(data));
             var ttl = CacheDb.KeyTimeToLive(key);
             if (!ttl.HasValue || ttl.Value.TotalSeconds < 0)
             {
@@ -249,7 +249,7 @@ namespace Package.Redis
             return result;
         }
 
-        static NullableObject<T> Cast<T>(RedisValue redisValue)
+        static NullableObject<T> Deserialize<T>(RedisValue redisValue)
         {
             if (redisValue.HasValue)
             {
@@ -258,7 +258,7 @@ namespace Package.Redis
             return new NullableObject<T>(default);
         }
 
-        static RedisValue Cast<T>(T data)
+        static RedisValue Serialize<T>(T data)
         {
             return JsonConvert.SerializeObject(new NullableObject<T>(data), new JsonSerializerSettings
             {
