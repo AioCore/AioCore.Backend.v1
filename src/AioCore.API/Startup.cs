@@ -39,7 +39,6 @@ namespace AioCore.API
 
         public Startup(IConfiguration configuration)
         {
-            var tmp = configuration.GetConnectionString("DefaultConnection");
             _configuration = configuration;
         }
 
@@ -47,9 +46,11 @@ namespace AioCore.API
         {
             services.AddMediatR(typeof(Assembly).GetTypeInfo().Assembly);
 
+            services.AddHttpContextAccessor();
+
             services.AddAioLocalization()
                 .AddCustomMvc()
-                .AddCustomDbContext()
+                .AddCustomDbContext(_configuration)
                 .AddCustomSwagger(_configuration)
                 .AddCustomIntegrations(_configuration)
                 .AddEventBus(_configuration)
@@ -133,10 +134,8 @@ namespace AioCore.API
             return services;
         }
 
-        public static IServiceCollection AddCustomDbContext(this IServiceCollection services)
+        public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            var configuration = AioCoreConfigs.Configuration();
-
             services.AddDbContext<AioCoreContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), b =>
@@ -154,6 +153,18 @@ namespace AioCore.API
                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                         sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                     });
+            });
+
+            services.AddDbContext<AioDynamicContext>((serviceProvider, options) =>
+            {
+                var schema = serviceProvider
+                    .GetRequiredService<IHttpContextAccessor>()
+                    .HttpContext?.User.FindFirst("schema")?.Value;
+                options.UseNpgsql(configuration.GetConnectionString(schema ?? "DefaultConnection"), sqlOptions =>
+                {
+                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                });
             });
 
             return services;

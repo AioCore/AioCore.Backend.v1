@@ -9,9 +9,9 @@ namespace AioCore.Infrastructure.Repositories
 {
     public class DynamicBinaryRepository : IDynamicBinaryRepository
     {
-        private readonly AioCoreContext _context;
+        private readonly AioDynamicContext _context;
 
-        public DynamicBinaryRepository(AioCoreContext context)
+        public DynamicBinaryRepository(AioDynamicContext context)
         {
             _context = context;
         }
