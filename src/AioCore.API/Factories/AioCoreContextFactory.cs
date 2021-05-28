@@ -1,7 +1,8 @@
 ﻿using AioCore.Infrastructure;
+using AioCore.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System.Reflection;
+using Microsoft.Extensions.Configuration;
 
 namespace AioCore.API.Factories
 {
@@ -9,8 +10,10 @@ namespace AioCore.API.Factories
     {
         public AioCoreContext CreateDbContext(string[] args)
         {
+            var configuration = AioCoreConfigs.Configuration();
             var optionsBuilder = new DbContextOptionsBuilder<AioCoreContext>();
-            optionsBuilder.UseNpgsql(b => b.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+            optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                b => b.MigrationsAssembly("AioCore.API"));
             return new AioCoreContext(optionsBuilder.Options);
         }
     }
