@@ -2,7 +2,7 @@
 {
     internal sealed class NullableObject<T>
     {
-        public T Value { get; }
+        private T Value { get; }
 
         public NullableObject(T value)
         {
@@ -16,7 +16,7 @@
 
         public static implicit operator NullableObject<T>(T objectValue)
         {
-            return new NullableObject<T>(objectValue);
+            return new(objectValue);
         }
     }
 }

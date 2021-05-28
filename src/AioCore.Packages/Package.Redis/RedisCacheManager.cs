@@ -10,30 +10,15 @@ namespace Package.Redis
 {
     public class RedisCacheManager : ICacheManager
     {
-        private readonly IConfiguration _configuration;
-
         private readonly Lazy<ConnectionMultiplexer> _lazyConnection;
 
-        private ConnectionMultiplexer Connection
-        {
-            get
-            {
-                return _lazyConnection.Value;
-            }
-        }
+        private ConnectionMultiplexer Connection => _lazyConnection.Value;
 
-        private IDatabase CacheDb
-        {
-            get
-            {
-                return Connection.GetDatabase();
-            }
-        }
+        private IDatabase CacheDb => Connection.GetDatabase();
 
         public RedisCacheManager(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _lazyConnection = new Lazy<ConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(_configuration["Redis"]));
+            _lazyConnection = new Lazy<ConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(configuration["Redis"]));
         }
 
         public bool Delete(string key)
@@ -165,9 +150,7 @@ namespace Package.Redis
 
         public IEnumerable<T> HashGetAll<T>(string key)
         {
-            return CacheDb.HashGetAll(key)
-                ?.Select(t => (T)Deserialize<T>(t.Value))
-                ?.ToList();
+            return CacheDb.HashGetAll(key)?.Select(t => (T)Deserialize<T>(t.Value)).ToList();
         }
 
         public void HashSet<T>(string key, string field, T data, DateTime expiry)
@@ -249,7 +232,7 @@ namespace Package.Redis
             return result;
         }
 
-        static NullableObject<T> Deserialize<T>(RedisValue redisValue)
+        private static NullableObject<T> Deserialize<T>(RedisValue redisValue)
         {
             if (redisValue.HasValue)
             {
@@ -258,7 +241,7 @@ namespace Package.Redis
             return new NullableObject<T>(default);
         }
 
-        static RedisValue Serialize<T>(T data)
+        private static RedisValue Serialize<T>(T data)
         {
             return JsonConvert.SerializeObject(new NullableObject<T>(data), new JsonSerializerSettings
             {
