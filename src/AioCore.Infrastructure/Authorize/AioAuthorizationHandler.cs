@@ -10,13 +10,13 @@ namespace AioCore.Infrastructure.Authorize
     {
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AioPolicyRequirement requirement)
         {
-            if (!context.User.Identity.IsAuthenticated)
+            if (context.User.Identity is { IsAuthenticated: false })
             {
                 context.Fail();
                 return;
             }
 
-            var policyClaims = context.User.FindFirst(t => t.Type == "policies").Value;
+            var policyClaims = context.User.FindFirst(t => t.Type == "policies")?.Value;
 
             if (string.IsNullOrEmpty(policyClaims))
             {
@@ -25,27 +25,30 @@ namespace AioCore.Infrastructure.Authorize
             }
 
             var httpContext = (HttpContext)context.Resource;
-            var routeValues = httpContext.Request.RouteValues;
-            var controller = routeValues["controller"].ToString();
-            var action = routeValues["action"].ToString();
-
-            var policies = policyClaims.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(t =>
+            if (httpContext != null)
             {
-                var arr = t.Split("|", StringSplitOptions.RemoveEmptyEntries);
-                return new
+                var routeValues = httpContext.Request.RouteValues;
+                var controller = routeValues["controller"]?.ToString();
+                var action = routeValues["action"]?.ToString();
+
+                var policies = policyClaims.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(t =>
                 {
-                    Controller = arr[0],
-                    Action = arr[1]
-                };
-            });
+                    var arr = t.Split("|", StringSplitOptions.RemoveEmptyEntries);
+                    return new
+                    {
+                        Controller = arr[0],
+                        Action = arr[1]
+                    };
+                });
 
-            if (policies.Any(t => t.Controller == controller && t.Action == action))
-            {
-                context.Succeed(requirement);
-            }
-            else
-            {
-                context.Fail();
+                if (policies.Any(t => t.Controller == controller && t.Action == action))
+                {
+                    context.Succeed(requirement);
+                }
+                else
+                {
+                    context.Fail();
+                }
             }
 
             await Task.CompletedTask;
