@@ -1,10 +1,3 @@
-using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
-using AioCore.Domain.AggregatesModel.DynamicDateAggregate;
-using AioCore.Domain.AggregatesModel.DynamicEntityAggregate;
-using AioCore.Domain.AggregatesModel.DynamicFloatAggregate;
-using AioCore.Domain.AggregatesModel.DynamicGuidAggregate;
-using AioCore.Domain.AggregatesModel.DynamicIntegerAggregate;
-using AioCore.Domain.AggregatesModel.DynamicStringAggregate;
 using AioCore.Domain.AggregatesModel.SettingActionAggregate;
 using AioCore.Domain.AggregatesModel.SettingComponentAggregate;
 using AioCore.Domain.AggregatesModel.SettingDomAggregate;
@@ -52,31 +45,7 @@ namespace AioCore.Infrastructure
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
             System.Diagnostics.Debug.WriteLine($"{nameof(AioCoreContext)}::ctor ->" + GetHashCode());
-        }
-
-        public DbSet<DynamicBinary> DynamicBinaries { get; set; }
-
-        public DbSet<DynamicDateAttribute> DynamicDateAttributes { get; set; }
-
-        public DbSet<DynamicDateValue> DynamicDateValues { get; set; }
-
-        public DbSet<DynamicEntity> DynamicEntities { get; set; }
-
-        public DbSet<DynamicFloatAttribute> DynamicFloatAttributes { get; set; }
-
-        public DbSet<DynamicFloatValue> DynamicFloatValues { get; set; }
-
-        public DbSet<DynamicGuidAttribute> DynamicGuidAttributes { get; set; }
-
-        public DbSet<DynamicGuidValue> DynamicGuidValues { get; set; }
-
-        public DbSet<DynamicIntegerAttribute> DynamicIntegerAttributes { get; set; }
-
-        public DbSet<DynamicIntegerValue> DynamicIntegerValues { get; set; }
-
-        public DbSet<DynamicStringAttribute> DynamicStringAttributes { get; set; }
-
-        public DbSet<DynamicStringValue> DynamicStringValues { get; set; }
+        }        
 
         public DbSet<SettingAction> SettingActions { get; set; }
 
@@ -119,18 +88,6 @@ namespace AioCore.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.ApplyConfiguration(new DynamicDateAttributeTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicDateValueTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicFloatAttributeTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicFloatValueTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicGuidAttributeTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicGuidValueTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicIntegerAttributeTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicIntegerValueTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicStringAttributeTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new DynamicStringValueTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new SystemGroupTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SystemPermissionTypeConfiguration());

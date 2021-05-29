@@ -23,8 +23,6 @@ namespace AioCore.Domain.AggregatesModel.DynamicBinaryAggregate
 
         public Guid? AuthorId { get; set; }
 
-        public virtual SystemUser Author { get; set; }
-
         public long Size { get; set; }
 
         public SizeType SizeType { get; set; }
