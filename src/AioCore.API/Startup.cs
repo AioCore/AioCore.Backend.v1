@@ -1,5 +1,6 @@
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
+using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
 using AioCore.Infrastructure;
 using AioCore.Infrastructure.Authorize;
 using AioCore.Shared;
@@ -29,6 +30,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
+using System.Security.Claims;
 using Assembly = AioCore.Application.Assembly;
 
 namespace AioCore.API
@@ -157,14 +159,12 @@ namespace AioCore.API
 
             services.AddDbContext<AioDynamicContext>((serviceProvider, options) =>
             {
-                var schema = serviceProvider
-                    .GetRequiredService<IHttpContextAccessor>()
-                    .HttpContext?.User.FindFirst("schema")?.Value;
-                options.UseNpgsql(configuration.GetConnectionString(schema ?? "DefaultConnection"), sqlOptions =>
-                {
-                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
-                });
+                var repository = serviceProvider.GetRequiredService<ISettingTenantRepository>();
+                var contextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+                var tenantId = Guid.Parse(contextAccessor.HttpContext.User.FindFirst("tenant").Value);
+                var tenant = repository.GetAsync(tenantId).GetAwaiter().GetResult();
+                var connectionString = repository.GetConnectionString(tenant);
+                options.UseSql(DatabaseType.PostgresSql, configuration.GetConnectionString(connectionString));
             });
 
             return services;
@@ -289,6 +289,23 @@ namespace AioCore.API
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper.RegisterMap());
             return services;
+        }
+
+        public static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseType databaseType, string connectionString)
+        {
+            return databaseType switch
+            {
+                DatabaseType.PostgresSql => optionsBuilder.UseNpgsql(connectionString, sqlOptions =>
+                {
+                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                }),
+                _ => optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
+                {
+                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                }),
+            };
         }
     }
 }

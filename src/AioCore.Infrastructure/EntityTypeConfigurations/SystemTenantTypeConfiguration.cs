@@ -10,12 +10,13 @@ namespace AioCore.Infrastructure.EntityTypeConfigurations
         {
             builder.HasKey(x => x.Id);
             builder.Ignore(x => x.DomainEvents);
-            builder.Property(t => t.Name).HasMaxLength(50);
-            builder.Property(t => t.Server).HasMaxLength(50);
-            builder.Property(t => t.User).HasMaxLength(50);
-            builder.Property(t => t.Database).HasMaxLength(50);
-            builder.Property(t => t.Password).HasMaxLength(50);
-            builder.Property(t => t.Schema).HasMaxLength(50);
+            builder.Property(t => t.Name).HasMaxLength(50).IsRequired();
+            builder.Property(t => t.Server).HasMaxLength(50).IsRequired();
+            builder.Property(t => t.User).HasMaxLength(50).IsRequired();
+            builder.Property(t => t.Database).HasMaxLength(50).IsRequired();
+            builder.Property(t => t.Password).HasMaxLength(50).IsRequired();
+            builder.Property(t => t.Schema).HasMaxLength(15).IsRequired();
+            builder.Property(t => t.DatabaseType).HasMaxLength(15).IsRequired();
         }
     }
 }

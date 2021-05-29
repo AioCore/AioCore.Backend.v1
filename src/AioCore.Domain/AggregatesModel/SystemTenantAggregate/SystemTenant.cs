@@ -30,6 +30,8 @@ namespace AioCore.Domain.AggregatesModel.SystemTenantAggregate
 
         public string Schema { get; set; }
 
+        public string DatabaseType { get; set; }
+
         public virtual ICollection<SystemUser> Users { get; set; }
 
         public virtual ICollection<SystemTenantApplication> TenantApplications { get; set; }
