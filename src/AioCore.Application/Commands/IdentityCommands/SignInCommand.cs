@@ -66,6 +66,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                     new Claim("account", user.Account),
                     new Claim("id", user.Id.ToString()),
                     new Claim("tenant", user.TenantId.ToString()),
+                    new Claim("schema", user.Tenant.Schema),
                     new Claim("apps", apps),
                     new Claim("policies", policies),
                     new Claim("groups", ""),
