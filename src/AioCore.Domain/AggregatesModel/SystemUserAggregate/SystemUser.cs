@@ -1,8 +1,9 @@
-using System;
 using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
 using AioCore.Shared.Seedwork;
 using Nest;
 using Package.Extensions;
+using System;
+using System.Collections.Generic;
 
 namespace AioCore.Domain.AggregatesModel.SystemUserAggregate
 {
@@ -29,6 +30,10 @@ namespace AioCore.Domain.AggregatesModel.SystemUserAggregate
         public DateTimeOffset Created { get; set; }
 
         public DateTimeOffset Modified { get; set; }
+
+        public virtual ICollection<SystemUserGroup> Groups { get; set; }
+
+        public virtual ICollection<SystemUserPolicy> Policies { get; set; }
 
         public SystemUser()
         {

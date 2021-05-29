@@ -1,5 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.SystemApplicationAggregate;
-using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+﻿using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Shared.Seedwork;
 using Nest;
 using System;
@@ -23,7 +22,7 @@ namespace AioCore.Domain.AggregatesModel.SystemTenantAggregate
 
         public virtual ICollection<SystemUser> Users { get; set; }
 
-        public virtual ICollection<SystemApplicationTenant> ApplicationTenants { get; set; }
+        public virtual ICollection<SystemTenantApplication> TenantApplications { get; set; }
 
         public SystemTenant()
         {

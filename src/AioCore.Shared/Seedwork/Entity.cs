@@ -13,7 +13,7 @@ namespace AioCore.Shared.Seedwork
         private Guid _id;
 
         [Keyword]
-        public virtual Guid Id
+        public Guid Id
         {
             get => _id;
             protected set => _id = value;

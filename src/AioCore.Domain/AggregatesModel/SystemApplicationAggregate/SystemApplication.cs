@@ -1,4 +1,5 @@
-﻿using AioCore.Shared.Seedwork;
+﻿using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
+using AioCore.Shared.Seedwork;
 using Nest;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,6 @@ namespace AioCore.Domain.AggregatesModel.SystemApplicationAggregate
         [Keyword]
         public Guid LogoId { get; set; }
 
-        public virtual ICollection<SystemApplicationTenant> ApplicationTenants { get; set; }
+        public virtual ICollection<SystemTenantApplication> TenantApplications { get; set; }
     }
 }

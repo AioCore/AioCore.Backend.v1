@@ -108,7 +108,13 @@ namespace AioCore.Infrastructure
 
         public DbSet<SystemTenant> SystemTenants { get; set; }
 
+        public DbSet<SystemTenantApplication> SystemTenantApplications { get; set; }
+
         public DbSet<SystemUser> SystemUsers { get; set; }
+
+        public DbSet<SystemUserGroup> SystemUserGroups { get; set; }
+
+        public DbSet<SystemUserPolicy> SystemUserPolicies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -139,7 +145,7 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new SettingFieldTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingFormTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingLayoutTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SettingTenantTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemTenantTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingViewTypeConfiguration());
         }
 

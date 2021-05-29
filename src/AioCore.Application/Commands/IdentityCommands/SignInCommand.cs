@@ -42,8 +42,12 @@ namespace AioCore.Application.Commands.IdentityCommands
 
             public async Task<SignInResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
             {
-                var user = await _context.SystemUsers.FirstOrDefaultAsync(
-                    x => x.Account == request.Key || x.Email == request.Key, cancellationToken);
+                var user = await _context.SystemUsers
+                    .Include(x => x.Tenant).ThenInclude(x => x.TenantApplications)
+                    .Include(x => x.Groups)
+                    .Include(x => x.Policies)
+                    .FirstOrDefaultAsync(
+                        x => x.Account == request.Key || x.Email == request.Key, cancellationToken);
 
                 if (user == null || !user.PasswordHash.Equals(request.Password.CreateMd5()))
                 {
@@ -53,25 +57,15 @@ namespace AioCore.Application.Commands.IdentityCommands
                     };
                 }
 
-                var policies = await _context.SystemPolicies
-                    .Where(t => t.UserId == user.Id && t.TenantId == user.TenantId)
-                    .Select(t => t.Id)
-                    .ToListAsync(cancellationToken);
-
-                var apps = await _context.SystemApplications
-                    .Where(t => t.ApplicationTenants.Any(x => x.TenantId == user.TenantId))
-                    .SelectMany(t => t.ApplicationTenants.Select(x => x.ApplicationId))
-                    .ToListAsync(cancellationToken);
-
                 var claims = new[]
                 {
                     new Claim("email", user.Email),
                     new Claim("account", user.Account),
                     new Claim("id", user.Id.ToString()),
                     new Claim("tenantId", user.TenantId.ToString()),
-                    new Claim("apps", string.Join(";", apps)),
-                    new Claim("policies", string.Join(";", policies)),
-                    new Claim("groups", ""),
+                    new Claim("apps", string.Join(";", user.Tenant.TenantApplications.Select(x => x.ApplicationId))),
+                    new Claim("policies", string.Join(";", user.Policies.Select(x=>x.PolicyId))),
+                    new Claim("groups", string.Join(";", user.Groups.Select(x=>x.GroupId)))
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.Tokens.Key));

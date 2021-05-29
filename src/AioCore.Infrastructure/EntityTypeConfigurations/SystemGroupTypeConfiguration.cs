@@ -9,7 +9,6 @@ namespace AioCore.Infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<SystemGroup> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

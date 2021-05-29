@@ -1,13 +1,17 @@
 ﻿using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
 using AioCore.Shared.Seedwork;
 using Nest;
+using Package.NestedSet;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AioCore.Domain.AggregatesModel.SettingFeatureAggregate
 {
-    public class SettingFeature : Entity, IAggregateRoot
+    public class SettingFeature : INestedSet<SettingFeature, Guid, Guid?>, IAggregateRoot
     {
+        public Guid Id { get; set; }
+
         [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Name { get; set; }
 
@@ -23,10 +27,24 @@ namespace AioCore.Domain.AggregatesModel.SettingFeatureAggregate
 
         public virtual SettingLayout Layout { get; set; }
 
-        [Keyword]
-        public int IndexLeft { get; set; }
+        public virtual SettingFeature Parent { get; set; }
 
-        [Keyword]
-        public int IndexRight { get; set; }
+        public Guid? ParentId { get; set; }
+
+        public int Level { get; set; }
+
+        public int Left { get; set; }
+
+        public int Right { get; set; }
+
+        public bool Moving { get; set; }
+
+        public virtual SettingFeature Root { get; set; }
+
+        public Guid? RootId { get; set; }
+
+        public virtual List<SettingFeature> Children { get; set; }
+
+        public virtual List<SettingFeature> Descendants { get; set; }
     }
 }
