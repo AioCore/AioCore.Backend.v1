@@ -3,16 +3,18 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Package.DatabaseManagement.Infrastructure;
 using System;
-using System.Reflection;
 
 namespace Package.DatabaseManagement
 {
     public abstract class SchemaDbContext : DbContext, ISchemaDbContext
     {
+        protected readonly IServiceProvider _serviceProvider;
+
         public string Schema { get; set; }
 
-        protected SchemaDbContext(DbContextOptions options) : base(options)
+        protected SchemaDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
+            _serviceProvider = serviceProvider;
             Schema = GetSchema();
         }
 
