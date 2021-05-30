@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

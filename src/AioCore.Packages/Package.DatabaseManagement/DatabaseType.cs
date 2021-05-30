@@ -1,4 +1,4 @@
-﻿namespace AioCore.Infrastructure
+﻿namespace Package.DatabaseManagement
 {
     public enum DatabaseType
     {

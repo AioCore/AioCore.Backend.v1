@@ -37,21 +37,5 @@ namespace AioCore.Infrastructure.Repositories
             var tenant = _context.SystemTenants.Find(id);
             _context.Entry(tenant).State = EntityState.Deleted;
         }
-
-        public string GetConnectionString(SystemTenant tenant)
-        {
-            if (tenant == null) throw new ArgumentNullException(nameof(tenant));
-            
-            if(!Enum.TryParse<DatabaseType>(tenant.DatabaseType, out var databaseType))
-            {
-                databaseType = DatabaseType.MsSql;
-            }
-
-            return databaseType switch
-            {
-                DatabaseType.PostgresSql => $"Host={tenant.Server};User ID={tenant.User};Password={tenant.Password};Database={tenant.Database};Pooling=true;",
-                _ => $"Server={tenant.Server};User ID={tenant.User};Password={tenant.Password};Database={tenant.Database};Pooling=true;",
-            };
-        }
     }
 }
