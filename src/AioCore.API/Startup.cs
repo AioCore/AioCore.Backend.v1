@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
-using System.Security.Claims;
 using Assembly = AioCore.Application.Assembly;
 
 namespace AioCore.API
