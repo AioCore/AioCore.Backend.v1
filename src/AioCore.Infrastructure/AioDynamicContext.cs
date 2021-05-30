@@ -19,11 +19,9 @@ namespace AioCore.Infrastructure
 {
     public class AioDynamicContext : SchemaDbContext, IUnitOfWork
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public AioDynamicContext(DbContextOptions<AioDynamicContext> options, IServiceProvider serviceProvider) : base(options)
+        public AioDynamicContext(DbContextOptions<AioDynamicContext> options, IServiceProvider serviceProvider)
+            : base(options, serviceProvider)
         {
-            _serviceProvider = serviceProvider;
         }
 
         public DbSet<DynamicBinary> DynamicBinaries { get; set; }

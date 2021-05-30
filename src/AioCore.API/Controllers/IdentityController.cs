@@ -1,6 +1,9 @@
 ﻿using AioCore.Application.Commands.IdentityCommands;
+using AioCore.Infrastructure;
+using AioCore.Infrastructure.Authorize;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -10,10 +13,12 @@ namespace AioCore.API.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IServiceProvider _serviceProvider;
 
-        public IdentityController(IMediator mediator)
+        public IdentityController(IMediator mediator, IServiceProvider serviceProvider)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _serviceProvider = serviceProvider;
         }
 
         [HttpPost]
@@ -25,8 +30,11 @@ namespace AioCore.API.Controllers
 
         [HttpPost]
         [Route("sign-up")]
+        [AioAuthorize]
         public async Task<IActionResult> SignUp(SignUpCommand command)
         {
+            var context = _serviceProvider.GetRequiredService<AioDynamicContext>();
+            return Ok(context.DynamicDateValues);
             return Ok(await _mediator.Send(command));
         }
     }
