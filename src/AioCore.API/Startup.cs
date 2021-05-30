@@ -1,7 +1,6 @@
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Application.Services;
-using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
 using AioCore.Infrastructure;
 using AioCore.Infrastructure.Authorize;
 using AioCore.Shared;
@@ -54,7 +53,7 @@ namespace AioCore.API
             services.AddAioLocalization()
                 .AddCustomMvc()
                 .AddCustomDbContext(_configuration)
-                .AddCustomSwagger(_configuration)
+                .AddCustomSwagger()
                 .AddCustomIntegrations(_configuration)
                 .AddEventBus(_configuration)
                 .AddElasticsearch(_configuration)
@@ -158,15 +157,14 @@ namespace AioCore.API
                     });
             });
 
-            services.AddSchemaDbContext<AioDynamicContext>((serviceProvider) =>
-            {
-                return serviceProvider.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo();
-            }, typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+            services.AddSchemaDbContext<AioDynamicContext>(
+                (serviceProvider) => serviceProvider.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo(),
+                typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
             return services;
         }
 
-        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
