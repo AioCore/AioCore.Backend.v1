@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
     <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
   </ItemGroup>
 

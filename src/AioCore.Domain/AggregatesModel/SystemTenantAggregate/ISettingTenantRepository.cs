@@ -13,6 +13,5 @@ namespace AioCore.Domain.AggregatesModel.SystemTenantAggregate
         void Update(SystemTenant tenant);
 
         void Delete(Guid id);
-        string GetConnectionString(SystemTenant tenant);
     }
 }
