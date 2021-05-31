@@ -124,7 +124,7 @@
     <value>Xóa user thành công</value>
   </data>
   <data name="SignIn.Message.Fail" xml:space="preserve">
-    <value>Đăng ký không thành công</value>
+    <value>Đăng nhập không thành công</value>
   </data>
   <data name="SignIn.Message.Success" xml:space="preserve">
     <value>Đăng nhập thành công</value>

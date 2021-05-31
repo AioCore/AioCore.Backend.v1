@@ -9,28 +9,19 @@ using AioCore.Infrastructure.EntityTypeConfigurations;
 using AioCore.Shared.Seedwork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Migrations.Internal;
+using Microsoft.Extensions.DependencyInjection;
+using Package.DatabaseManagement;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AioCore.Infrastructure
 {
-    public class AioDynamicContext : DbContext, IUnitOfWork, IDbContextSchema
+    public class AioDynamicContext : SchemaDbContext, IUnitOfWork
     {
-        public string Schema { get; set; }
-
-        public AioDynamicContext(
-              DbContextOptions<AioDynamicContext> options
-            , IHttpContextAccessor contextAccessor
-        ) : base(options)
+        public AioDynamicContext(DbContextOptions<AioDynamicContext> options, IServiceProvider serviceProvider)
+            : base(options, serviceProvider)
         {
-            Schema = contextAccessor?.HttpContext?.User?.FindFirst("schema")?.Value;
         }
 
         public DbSet<DynamicBinary> DynamicBinaries { get; set; }
@@ -57,28 +48,20 @@ namespace AioCore.Infrastructure
 
         public DbSet<DynamicStringValue> DynamicStringValues { get; set; }
 
+        public override string GetSchema()
+        {
+            return _serviceProvider?.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.User.FindFirst("schema")?.Value;
+        }
+
         public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             await SaveChangesAsync(cancellationToken);
             return true;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder
-                .ReplaceService<IModelCacheKeyFactory, DbSchemaModelCacheKeyFactory>()
-                .ReplaceService<IMigrationsAssembly, DbSchemaMigrationAssembly>();
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            if (!string.IsNullOrEmpty(Schema))
-            {
-                modelBuilder.HasDefaultSchema(Schema);
-            }
 
             modelBuilder.ApplyConfiguration(new DynamicDateAttributeTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicDateValueTypeConfiguration());
@@ -91,62 +74,6 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new DynamicIntegerValueTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicStringAttributeTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicStringValueTypeConfiguration());
-        }
-    }
-
-    public interface IDbContextSchema
-    {
-        string Schema { get; }
-    }
-
-    public class DbSchemaModelCacheKeyFactory : IModelCacheKeyFactory
-    {
-        public object Create(DbContext context)
-        {
-            return new SchemaModelCacheKey(context, context is IDbContextSchema schema ? schema.Schema : null);
-        }
-    }
-
-    public class SchemaModelCacheKey : ModelCacheKey
-    {
-        private readonly string _schema;
-
-        public SchemaModelCacheKey(DbContext context, string schema) : base(context)
-        {
-            _schema = schema;
-        }
-
-        public override int GetHashCode() => string.IsNullOrEmpty(_schema) ? base.GetHashCode() : _schema.GetHashCode();
-    }
-
-    [SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<Pending>")]
-    public class DbSchemaMigrationAssembly : MigrationsAssembly
-    {
-        private readonly DbContext _context;
-        public DbSchemaMigrationAssembly(
-              ICurrentDbContext currentContext
-            , IDbContextOptions options
-            , IMigrationsIdGenerator idGenerator
-            , IDiagnosticsLogger<DbLoggerCategory.Migrations> logger) : base(currentContext, options, idGenerator, logger)
-        {
-            _context = currentContext.Context;
-        }
-
-        public override Migration CreateMigration(TypeInfo migrationClass, string activeProvider)
-        {
-            if (activeProvider == null)
-                throw new ArgumentNullException(nameof(activeProvider));
-
-            var hasCtorWithSchema = migrationClass.GetConstructor(new[] { typeof(IDbContextSchema) }) != null;
-
-            if (hasCtorWithSchema && _context is IDbContextSchema schema)
-            {
-                var instance = (Migration)Activator.CreateInstance(migrationClass.AsType(), schema);
-                instance.ActiveProvider = activeProvider;
-                return instance;
-            }
-
-            return base.CreateMigration(migrationClass, activeProvider);
         }
     }
 }

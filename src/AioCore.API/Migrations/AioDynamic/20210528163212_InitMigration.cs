@@ -1,14 +1,15 @@
 ﻿using System;
 using AioCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Package.DatabaseManagement;
 
 namespace AioCore.API.Migrations.AioDynamic
 {
     public partial class InitMigration : Migration
     {
-        private readonly IDbContextSchema _schema;
+        private readonly ISchemaDbContext _schema;
 
-        public InitMigration(IDbContextSchema schema)
+        public InitMigration(ISchemaDbContext schema)
         {
             _schema = schema;
         }

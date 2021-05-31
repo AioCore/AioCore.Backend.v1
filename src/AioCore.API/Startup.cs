@@ -1,6 +1,6 @@
 using AioCore.Application.AutofacModules;
 using AioCore.Application.IntegrationEvents;
-using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
+using AioCore.Application.Services;
 using AioCore.Infrastructure;
 using AioCore.Infrastructure.Authorize;
 using AioCore.Shared;
@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Package.AutoMapper;
+using Package.DatabaseManagement;
 using Package.Elasticsearch;
 using Package.EventBus.EventBus;
 using Package.EventBus.EventBus.Abstractions;
@@ -30,7 +31,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
-using System.Security.Claims;
 using Assembly = AioCore.Application.Assembly;
 
 namespace AioCore.API
@@ -53,7 +53,7 @@ namespace AioCore.API
             services.AddAioLocalization()
                 .AddCustomMvc()
                 .AddCustomDbContext(_configuration)
-                .AddCustomSwagger(_configuration)
+                .AddCustomSwagger()
                 .AddCustomIntegrations(_configuration)
                 .AddEventBus(_configuration)
                 .AddElasticsearch(_configuration)
@@ -157,20 +157,14 @@ namespace AioCore.API
                     });
             });
 
-            services.AddDbContext<AioDynamicContext>((serviceProvider, options) =>
-            {
-                var repository = serviceProvider.GetRequiredService<ISettingTenantRepository>();
-                var contextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
-                var tenantId = Guid.Parse(contextAccessor.HttpContext.User.FindFirst("tenant").Value);
-                var tenant = repository.GetAsync(tenantId).GetAwaiter().GetResult();
-                var connectionString = repository.GetConnectionString(tenant);
-                options.UseSql(DatabaseType.PostgresSql, configuration.GetConnectionString(connectionString));
-            });
+            services.AddSchemaDbContext<AioDynamicContext>(
+                (serviceProvider) => serviceProvider.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo(),
+                typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
             return services;
         }
 
-        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
@@ -289,23 +283,6 @@ namespace AioCore.API
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper.RegisterMap());
             return services;
-        }
-
-        public static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseType databaseType, string connectionString)
-        {
-            return databaseType switch
-            {
-                DatabaseType.PostgresSql => optionsBuilder.UseNpgsql(connectionString, sqlOptions =>
-                {
-                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
-                }),
-                _ => optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
-                {
-                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
-                }),
-            };
         }
     }
 }

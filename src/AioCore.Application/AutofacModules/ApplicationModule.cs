@@ -8,7 +8,9 @@ using AioCore.Infrastructure.Repositories;
 using Autofac;
 using MediatR;
 using Package.Elasticsearch;
+using Package.Extensions;
 using Package.FileServer;
+using System.Linq;
 
 namespace AioCore.Application.AutofacModules
 {
@@ -16,6 +18,7 @@ namespace AioCore.Application.AutofacModules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            var assemblies = AssemblyHelper.Assemblies.ToArray();
             builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(TransactionBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
             builder.RegisterGeneric(typeof(ValidatorBehavior<,>)).As(typeof(IPipelineBehavior<,>));
@@ -46,6 +49,11 @@ namespace AioCore.Application.AutofacModules
 
             builder.RegisterType<DynamicBinaryRepository>()
                 .As<IDynamicBinaryRepository>()
+                .InstancePerLifetimeScope();
+
+            //All Repositories and Services
+            builder.RegisterAssemblyTypes(assemblies).Where(t => t.Name.EndsWith("Repository") || t.Name.EndsWith("Service"))
+                .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }
     }
