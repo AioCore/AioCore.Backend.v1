@@ -74,18 +74,5 @@ namespace AioCore.API.Controllers
                 return NotFound();
             }
         }
-
-        [HttpPost("push-user/{tenantId:guid}")]
-        public async Task<IActionResult> PushUser([FromQuery] Guid tenantId)
-        {
-            try
-            {
-                return Ok();
-            }
-            catch
-            {
-                return NotFound();
-            }
-        }
     }
 }
