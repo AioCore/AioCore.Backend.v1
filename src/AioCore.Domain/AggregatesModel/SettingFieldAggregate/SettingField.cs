@@ -12,6 +12,10 @@ namespace AioCore.Domain.AggregatesModel.SettingFieldAggregate
         public string Description { get; set; }
 
         [Keyword]
-        public FieldType FieldType { get; set; }
+        public DataType FieldType { get; set; }
+
+        public bool AllowSearch { get; set; }
+
+        public bool AllowSequence { get; set; }
     }
 }
