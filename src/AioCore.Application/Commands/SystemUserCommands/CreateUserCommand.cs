@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
-using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using MediatR;
 using Package.AutoMapper;
 using Package.Elasticsearch;

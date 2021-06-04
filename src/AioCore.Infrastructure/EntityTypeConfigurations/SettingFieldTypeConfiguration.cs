@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.SettingFieldAggregate;
+﻿using AioCore.Domain.SettingAggregatesModel.SettingFieldAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
-using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.Extensions.Localization;

@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.Responses.DynamicBinaryResponses;
-using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
 using MediatR;
 using Package.AutoMapper;
 using Package.FileServer;
@@ -21,19 +21,19 @@ namespace AioCore.Application.Queries.DynamicBinaryQueries
         internal class Handler : IRequestHandler<GetBinaryQuery, GetBinaryResponse>
         {
             private readonly IFileServerService _fileServerService;
-            private readonly IDynamicBinaryRepository _dynamicBinaryRepository;
+            private readonly ISystemBinaryRepository _systemBinaryRepository;
 
             public Handler(
                 IFileServerService fileServerService,
-                IDynamicBinaryRepository dynamicBinaryRepository)
+                ISystemBinaryRepository systemBinaryRepository)
             {
                 _fileServerService = fileServerService ?? throw new ArgumentNullException(nameof(fileServerService));
-                _dynamicBinaryRepository = dynamicBinaryRepository ?? throw new ArgumentNullException(nameof(dynamicBinaryRepository));
+                _systemBinaryRepository = systemBinaryRepository ?? throw new ArgumentNullException(nameof(systemBinaryRepository));
             }
 
             public async Task<GetBinaryResponse> Handle(GetBinaryQuery request, CancellationToken cancellationToken)
             {
-                var binary = await _dynamicBinaryRepository.GetAsync(request.Id);
+                var binary = await _systemBinaryRepository.GetAsync(request.Id);
                 var bytes = await _fileServerService.DownloadFileByteAsync(binary.FilePath);
                 var res = binary.To<GetBinaryResponse>();
                 res.MergeParams(bytes);

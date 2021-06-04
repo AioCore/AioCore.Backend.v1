@@ -1,19 +1,3 @@
-using AioCore.Domain.AggregatesModel.SettingActionAggregate;
-using AioCore.Domain.AggregatesModel.SettingComponentAggregate;
-using AioCore.Domain.AggregatesModel.SettingDomAggregate;
-using AioCore.Domain.AggregatesModel.SettingEntityAggregate;
-using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
-using AioCore.Domain.AggregatesModel.SettingFieldAggregate;
-using AioCore.Domain.AggregatesModel.SettingFormAggregate;
-using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
-using AioCore.Domain.AggregatesModel.SettingViewAggregate;
-using AioCore.Domain.AggregatesModel.SystemApplicationAggregate;
-using AioCore.Domain.AggregatesModel.SystemGroupAggregate;
-using AioCore.Domain.AggregatesModel.SystemPermissionAggregate;
-using AioCore.Domain.AggregatesModel.SystemPermissionSetAggregate;
-using AioCore.Domain.AggregatesModel.SystemPolicyAggregate;
-using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
-using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Infrastructure.EntityTypeConfigurations;
 using AioCore.Shared.Extensions;
 using AioCore.Shared.Seedwork;
@@ -24,6 +8,22 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Domain.SettingAggregatesModel.SettingActionAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingDomAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingFieldAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingFormAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingViewAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemApplicationAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemGroupAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemPermissionAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemPermissionSetAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 
 namespace AioCore.Infrastructure
 {

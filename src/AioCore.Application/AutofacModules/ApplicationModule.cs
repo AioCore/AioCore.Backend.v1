@@ -1,9 +1,4 @@
 ﻿using AioCore.Application.Behaviors;
-using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
-using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
-using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
-using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
-using AioCore.Domain.AggregatesModel.SystemUserAggregate;
 using AioCore.Infrastructure.Repositories;
 using Autofac;
 using MediatR;
@@ -11,6 +6,11 @@ using Package.Elasticsearch;
 using Package.Extensions;
 using Package.FileServer;
 using System.Linq;
+using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 
 namespace AioCore.Application.AutofacModules
 {
@@ -47,12 +47,12 @@ namespace AioCore.Application.AutofacModules
                 .As<ISettingTenantRepository>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<DynamicBinaryRepository>()
-                .As<IDynamicBinaryRepository>()
+            builder.RegisterType<SystemBinaryRepository>()
+                .As<ISystemBinaryRepository>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<DynamicBinaryRepository>()
-                .As<IDynamicBinaryRepository>()
+            builder.RegisterType<SystemBinaryRepository>()
+                .As<ISystemBinaryRepository>()
                 .InstancePerLifetimeScope();
 
             //All Repositories and Services

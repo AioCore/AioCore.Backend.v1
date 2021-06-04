@@ -1,8 +1,8 @@
-﻿using AioCore.Domain.AggregatesModel.SystemUserAggregate;
-using AioCore.Shared.Seedwork;
+﻿using AioCore.Shared.Seedwork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 
 namespace AioCore.Infrastructure.Repositories
 {

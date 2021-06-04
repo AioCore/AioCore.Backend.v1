@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+﻿using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using Package.AutoMapper;
 
 namespace AioCore.Application.Responses.SystemUserResponses

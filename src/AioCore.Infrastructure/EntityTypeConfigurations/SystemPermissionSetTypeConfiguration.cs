@@ -1,4 +1,4 @@
-using AioCore.Domain.AggregatesModel.SystemPermissionSetAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemPermissionSetAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

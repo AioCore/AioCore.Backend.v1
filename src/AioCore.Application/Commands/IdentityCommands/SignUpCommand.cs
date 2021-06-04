@@ -7,7 +7,7 @@ using Package.Localization;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.AggregatesModel.SystemUserAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {

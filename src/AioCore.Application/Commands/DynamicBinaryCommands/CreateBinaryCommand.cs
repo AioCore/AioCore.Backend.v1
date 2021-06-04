@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
+﻿using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Package.Elasticsearch;
@@ -24,16 +24,16 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
             private readonly int[] _imageSizes = { 25, 50, 100, 200, 400, 800, 1600 };
 
             private readonly IFileServerService _fileServerService;
-            private readonly IDynamicBinaryRepository _dynamicBinaryRepository;
+            private readonly ISystemBinaryRepository _systemBinaryRepository;
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
                 IFileServerService fileServerService,
-                IDynamicBinaryRepository dynamicBinaryRepository,
+                ISystemBinaryRepository systemBinaryRepository,
                 IElasticsearchService elasticsearchService)
             {
                 _fileServerService = fileServerService ?? throw new ArgumentNullException(nameof(fileServerService));
-                _dynamicBinaryRepository = dynamicBinaryRepository ?? throw new ArgumentNullException(nameof(dynamicBinaryRepository));
+                _systemBinaryRepository = systemBinaryRepository ?? throw new ArgumentNullException(nameof(systemBinaryRepository));
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
@@ -53,7 +53,7 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
                 if (request.File.ContentType.StartsWith("image"))
                 {
-                    var files = new List<DynamicBinary>();
+                    var files = new List<SystemBinary>();
 
                     var sourceBitmap = SKBitmap.Decode(buffer);
 
@@ -79,7 +79,7 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
                         await _fileServerService.UploadFileAsync(filePathResize, fileResize);
 
-                        files.Add(new DynamicBinary
+                        files.Add(new SystemBinary
                         {
                             ParentId = request.ParentId,
 
@@ -99,9 +99,9 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         });
                     }
 
-                    var entities = _dynamicBinaryRepository.AddRange(files);
+                    var entities = _systemBinaryRepository.AddRange(files);
 
-                    await _dynamicBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                    await _systemBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
                     await _elasticsearchService.IndexManyAsync(entities);
                 }
@@ -111,7 +111,7 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
                     await _fileServerService.UploadFileAsync(filePathExtension, buffer);
 
-                    var binary = new DynamicBinary
+                    var binary = new SystemBinary
                     {
                         ParentId = request.ParentId,
 
@@ -128,9 +128,9 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         ContentType = file.ContentType
                     };
 
-                    var entity = _dynamicBinaryRepository.Add(binary);
+                    var entity = _systemBinaryRepository.Add(binary);
 
-                    await _dynamicBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                    await _systemBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
                     await _elasticsearchService.IndexAsync(entity);
                 }

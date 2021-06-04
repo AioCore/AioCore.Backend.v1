@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 using MediatR;
 using Package.Elasticsearch;
 

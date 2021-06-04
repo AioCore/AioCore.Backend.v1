@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
+﻿using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
 using AutoMapper;
 using Package.AutoMapper;
 
@@ -19,7 +19,7 @@ namespace AioCore.Application.Responses.DynamicBinaryResponses
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<DynamicBinary, GetBinaryResponse>()
+            profile.CreateMap<SystemBinary, GetBinaryResponse>()
                 .ForMember(d => d.Bytes, s => s.Ignore());
         }
     }

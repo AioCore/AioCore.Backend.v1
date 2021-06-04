@@ -1,8 +1,8 @@
-﻿using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
-using AioCore.Shared.Seedwork;
+﻿using AioCore.Shared.Seedwork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
 
 namespace AioCore.Infrastructure.Repositories
 {

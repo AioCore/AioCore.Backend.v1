@@ -1,11 +1,11 @@
-﻿using AioCore.Domain.AggregatesModel.DynamicAggregate;
-using AioCore.Domain.AggregatesModel.DynamicBinaryAggregate;
-using AioCore.Infrastructure.EntityTypeConfigurations;
+﻿using AioCore.Infrastructure.EntityTypeConfigurations;
 using AioCore.Shared.Seedwork;
 using Microsoft.EntityFrameworkCore;
 using Package.DatabaseManagement;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Domain.DynamicAggregatesModel;
+using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
 
 namespace AioCore.Infrastructure
 {
@@ -19,7 +19,7 @@ namespace AioCore.Infrastructure
         public DbSet<DynamicEntity> DynamicEntities { get; set; }
         public DbSet<DynamicAttribute> DynamicAttributes { get; set; }
         
-        public DbSet<DynamicBinary> DynamicBinaries { get; set; }
+        public DbSet<SystemBinary> DynamicBinaries { get; set; }
         public DbSet<DynamicDateValue> DynamicDateValues { get; set; }
         public DbSet<DynamicFloatValue> DynamicFloatValues { get; set; }
         public DbSet<DynamicGuidValue> DynamicGuidValues { get; set; }

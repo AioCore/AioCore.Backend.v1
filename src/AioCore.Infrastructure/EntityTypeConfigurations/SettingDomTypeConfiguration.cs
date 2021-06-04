@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.SettingDomAggregate;
+﻿using AioCore.Domain.SettingAggregatesModel.SettingDomAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

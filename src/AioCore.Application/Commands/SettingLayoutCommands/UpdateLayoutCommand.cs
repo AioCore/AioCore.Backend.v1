@@ -1,9 +1,9 @@
 ﻿using AioCore.Application.Responses.SettingLayoutResponses;
-using AioCore.Domain.AggregatesModel.SettingLayoutAggregate;
 using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
 
 namespace AioCore.Application.Commands.SettingLayoutCommands
 {

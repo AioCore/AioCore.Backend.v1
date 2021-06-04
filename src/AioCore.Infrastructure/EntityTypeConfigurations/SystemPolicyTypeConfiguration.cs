@@ -1,4 +1,4 @@
-using AioCore.Domain.AggregatesModel.SystemPolicyAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

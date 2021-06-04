@@ -1,7 +1,7 @@
-﻿using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
-using AioCore.Shared.Seedwork;
+﻿using AioCore.Shared.Seedwork;
 using Microsoft.EntityFrameworkCore;
 using System;
+using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
 
 namespace AioCore.Infrastructure.Repositories
 {

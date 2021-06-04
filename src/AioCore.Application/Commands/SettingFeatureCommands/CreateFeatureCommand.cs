@@ -1,10 +1,10 @@
 ﻿using AioCore.Application.Responses.SettingFeatureResponses;
-using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
 using MediatR;
 using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
 
 namespace AioCore.Application.Commands.SettingFeatureCommands
 {

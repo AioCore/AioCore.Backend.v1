@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.SettingViewAggregate;
+﻿using AioCore.Domain.SettingAggregatesModel.SettingViewAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

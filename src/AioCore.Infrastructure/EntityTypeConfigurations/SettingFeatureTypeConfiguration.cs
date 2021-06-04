@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.AggregatesModel.SettingFeatureAggregate;
+﻿using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
