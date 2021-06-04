@@ -51,6 +51,10 @@ namespace AioCore.Application.AutofacModules
                 .As<IDynamicBinaryRepository>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<DynamicBinaryRepository>()
+                .As<IDynamicBinaryRepository>()
+                .InstancePerLifetimeScope();
+
             //All Repositories and Services
             builder.RegisterAssemblyTypes(assemblies).Where(t => t.Name.EndsWith("Repository") || t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()

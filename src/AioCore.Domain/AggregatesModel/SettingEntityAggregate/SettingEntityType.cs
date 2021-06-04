@@ -5,7 +5,7 @@ using AioCore.Domain.AggregatesModel.SystemTenantAggregate;
 
 namespace AioCore.Domain.AggregatesModel.SettingEntityAggregate
 {
-    public class SettingEntity : Entity, IAggregateRoot
+    public class SettingEntityType : Entity, IAggregateRoot
     {
         [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Name { get; set; }
