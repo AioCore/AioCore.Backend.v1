@@ -1,12 +1,12 @@
-﻿using AioCore.Domain.AggregatesModel.DynamicStringAggregate;
+﻿using AioCore.Domain.AggregatesModel.DynamicAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class DynamicStringAttributeTypeConfiguration : IEntityTypeConfiguration<DynamicStringAttribute>
+    public class DynamicAttributeTypeConfiguration : IEntityTypeConfiguration<DynamicAttribute>
     {
-        public void Configure(EntityTypeBuilder<DynamicStringAttribute> builder)
+        public void Configure(EntityTypeBuilder<DynamicAttribute> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Ignore(x => x.DomainEvents);

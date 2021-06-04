@@ -53,7 +53,7 @@ namespace AioCore.Infrastructure
 
         public DbSet<SettingDom> SettingDoms { get; set; }
 
-        public DbSet<SettingEntity> SettingEntities { get; set; }
+        public DbSet<SettingEntityType> SettingEntityTypes { get; set; }
 
         public DbSet<SettingFeature> SettingFeatures { get; set; }
 
