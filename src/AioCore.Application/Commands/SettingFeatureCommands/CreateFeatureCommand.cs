@@ -4,7 +4,7 @@ using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
+using AioCore.Application.Repositories;
 
 namespace AioCore.Application.Commands.SettingFeatureCommands
 {

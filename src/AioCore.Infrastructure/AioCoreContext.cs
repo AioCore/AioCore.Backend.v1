@@ -1,6 +1,5 @@
 using AioCore.Infrastructure.EntityTypeConfigurations;
 using AioCore.Shared.Extensions;
-using AioCore.Shared.Seedwork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -24,10 +23,11 @@ using AioCore.Domain.SystemAggregatesModel.SystemPermissionSetAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
 
 namespace AioCore.Infrastructure
 {
-    public sealed class AioCoreContext : DbContext, IUnitOfWork
+    public sealed class AioCoreContext : DbContext
     {
         private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
@@ -45,7 +45,7 @@ namespace AioCore.Infrastructure
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
             System.Diagnostics.Debug.WriteLine($"{nameof(AioCoreContext)}::ctor ->" + GetHashCode());
-        }        
+        }
 
         public DbSet<SettingAction> SettingActions { get; set; }
 
@@ -84,6 +84,8 @@ namespace AioCore.Infrastructure
         public DbSet<SystemUserGroup> SystemUserGroups { get; set; }
 
         public DbSet<SystemUserPolicy> SystemUserPolicies { get; set; }
+
+        public DbSet<SystemBinary> SystemBinaries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

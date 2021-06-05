@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AioCore.Shared.Seedwork;
+using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 
-namespace AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate
+namespace AioCore.Application.Repositories
 {
     public interface ISettingTenantRepository : IRepository<SystemTenant>
     {
         Task<SystemTenant> GetAsync(Guid id);
-
-        SystemTenant Add(SystemTenant tenant);
-
-        void Update(SystemTenant tenant);
 
         void Delete(Guid id);
     }
