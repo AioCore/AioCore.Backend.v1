@@ -1,5 +1,4 @@
-﻿using AioCore.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Application.UnitOfWorks;
 using Microsoft.Extensions.Logging;
 using Package.EventBus.EventBus.Abstractions;
 using Package.EventBus.EventBus.Events;
@@ -14,21 +13,21 @@ namespace AioCore.Application.IntegrationEvents
     public class AioIntegrationEventService : IAioIntegrationEventService
     {
         private readonly IEventBus _eventBus;
-        private readonly AioCoreContext _orderingContext;
+        private readonly IAioCoreUnitOfWork _orderingContext;
         private readonly IIntegrationEventLogService _eventLogService;
         private readonly ILogger<AioIntegrationEventService> _logger;
         private readonly string _appName;
         private readonly string _nameSpace = typeof(AioIntegrationEventService).Namespace;
 
         public AioIntegrationEventService(IEventBus eventBus,
-            AioCoreContext orderingContext,
+            IAioCoreUnitOfWork orderingContext,
             IntegrationEventLogContext eventLogContext,
             Func<DbConnection, IIntegrationEventLogService> integrationEventLogServiceFactory,
             ILogger<AioIntegrationEventService> logger)
         {
             _orderingContext = orderingContext ?? throw new ArgumentNullException(nameof(orderingContext));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
-            _eventLogService = integrationEventLogServiceFactory(_orderingContext.Database.GetDbConnection());
+            _eventLogService = integrationEventLogServiceFactory(_orderingContext.GetDbConnection());
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _appName = _nameSpace?.Substring(_nameSpace.LastIndexOf('.', _nameSpace.LastIndexOf('.') - 1) + 1);
         }

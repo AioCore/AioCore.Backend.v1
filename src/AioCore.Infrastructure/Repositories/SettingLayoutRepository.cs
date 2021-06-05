@@ -1,41 +1,22 @@
-﻿using AioCore.Shared.Seedwork;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Application.Repositories;
+using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
 using System;
 using System.Threading.Tasks;
-using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
 
 namespace AioCore.Infrastructure.Repositories
 {
-    public class SettingLayoutRepository : ISettingLayoutRepository
+    public class SettingLayoutRepository : Repository<SettingLayout>, ISettingLayoutRepository
     {
         private readonly AioCoreContext _context;
 
-        public SettingLayoutRepository(AioCoreContext context)
+        public SettingLayoutRepository(AioCoreContext context) : base(context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
-
-        public IUnitOfWork UnitOfWork => _context;
 
         public async Task<SettingLayout> GetAsync(Guid id)
         {
             return await _context.SettingLayouts.FindAsync(id);
-        }
-
-        public SettingLayout Add(SettingLayout layout)
-        {
-            return _context.SettingLayouts.Add(layout).Entity;
-        }
-
-        public void Update(SettingLayout layout)
-        {
-            _context.Entry(layout).State = EntityState.Modified;
-        }
-
-        public void Delete(Guid id)
-        {
-            var layout = _context.SettingLayouts.Find(id);
-            _context.Entry(layout).State = EntityState.Deleted;
         }
     }
 }

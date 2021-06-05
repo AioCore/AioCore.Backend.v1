@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -21,26 +21,26 @@ namespace AioCore.Application.Commands.SystemUserCommands
 
         internal class Handler : IRequestHandler<UpdateUserCommand, UpdateUserResponse>
         {
-            private readonly ISystemUserRepository _systemUserRepository;
+            private readonly IAioCoreUnitOfWork _context;
             private readonly IElasticsearchService _elasticsearchService;
             private readonly IStringLocalizer<Localization> _localizer;
 
             public Handler(
-                ISystemUserRepository systemUserRepository,
+                IAioCoreUnitOfWork context,
                 IElasticsearchService elasticsearchService,
                 IStringLocalizer<Localization> localizer)
             {
-                _systemUserRepository = systemUserRepository ?? throw new ArgumentNullException(nameof(systemUserRepository));
+                _context = context;
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
                 _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
             }
 
             public async Task<UpdateUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
-                var user = await _systemUserRepository.GetAsync(request.Id);
+                var user = await _context.SystemUsers.FindAsync(request.Id);
                 user.Update(request.Name, request.Email);
-                _systemUserRepository.Update(user);
-                var res = await _systemUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                _context.SystemUsers.Update(user);
+                var res = await _context.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.UpdateAsync(user);
                 var message = res.Equals(1)
                     ? _localizer[Message.SystemUserUpdateMessageSuccess]

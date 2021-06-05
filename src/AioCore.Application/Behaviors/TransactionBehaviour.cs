@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.IntegrationEvents;
-using AioCore.Infrastructure;
+using AioCore.Application.UnitOfWorks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -14,14 +14,14 @@ namespace AioCore.Application.Behaviors
     public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
-        private readonly AioCoreContext _dbContext;
+        private readonly IAioCoreUnitOfWork _dbContext;
         private readonly IAioIntegrationEventService _orderingIntegrationEventService;
 
-        public TransactionBehaviour(AioCoreContext dbContext,
+        public TransactionBehaviour(IAioCoreUnitOfWork dbContext,
             IAioIntegrationEventService orderingIntegrationEventService,
             ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
         {
-            _dbContext = dbContext ?? throw new ArgumentException(nameof(AioCoreContext));
+            _dbContext = dbContext ?? throw new ArgumentException(nameof(_dbContext));
             _orderingIntegrationEventService = orderingIntegrationEventService ?? throw new ArgumentException(nameof(orderingIntegrationEventService));
             _logger = logger ?? throw new ArgumentException(nameof(ILogger));
         }
@@ -33,12 +33,12 @@ namespace AioCore.Application.Behaviors
 
             try
             {
-                if (_dbContext.HasActiveTransaction)
+                if (_dbContext.GetCurrentTransaction() is not null)
                 {
                     return await next();
                 }
 
-                var strategy = _dbContext.Database.CreateExecutionStrategy();
+                var strategy = _dbContext.CreateExecutionStrategy();
 
                 await strategy.ExecuteAsync(async () =>
                 {

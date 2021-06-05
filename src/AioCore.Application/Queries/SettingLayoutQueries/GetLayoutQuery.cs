@@ -3,7 +3,7 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
+using AioCore.Application.Repositories;
 
 namespace AioCore.Application.Queries.SettingLayoutQueries
 {

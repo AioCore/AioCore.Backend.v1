@@ -1,8 +1,10 @@
-using AioCore.Application.AutofacModules;
+using AioCore.API.AutofacModules;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Application.Services;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Infrastructure;
 using AioCore.Infrastructure.Authorize;
+using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
 using Autofac;
@@ -160,6 +162,9 @@ namespace AioCore.API
             services.AddSchemaDbContext<AioDynamicContext>(
                 (serviceProvider) => serviceProvider.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo(),
                 typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+
+            services.AddScoped<IAioCoreUnitOfWork, AioCoreUnitOfWork>();
+            services.AddScoped<IAioDynamicUnitOfWork, AioDynamicUnitOfWork>();
 
             return services;
         }
