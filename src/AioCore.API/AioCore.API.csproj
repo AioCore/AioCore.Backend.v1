@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AioCore.Application\AioCore.Application.csproj" />
     <ProjectReference Include="..\AioCore.Infrastructure\AioCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.ViewRender\Package.ViewRender.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -7,6 +7,7 @@ using Package.Extensions;
 using Package.FileServer;
 using System.Linq;
 using AioCore.Application.Repositories;
+using Package.ViewRender;
 
 namespace AioCore.API.AutofacModules
 {
@@ -46,6 +47,20 @@ namespace AioCore.API.AutofacModules
             //All Repositories and Services
             builder.RegisterAssemblyTypes(assemblies).Where(t => t.Name.EndsWith("Repository") || t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
+            //All ViewEngine Processors
+            builder.RegisterType<HtmlBuilder>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<ViewRenderFactory>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(t => typeof(IViewRenderProcessor).IsAssignableFrom(t))
+                .As<IViewRenderProcessor>()
                 .InstancePerLifetimeScope();
         }
     }

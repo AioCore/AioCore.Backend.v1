@@ -2,8 +2,9 @@
 using Package.DatabaseManagement;
 using System;
 using AioCore.Application.Repositories;
+using AioCore.Application.Services;
 
-namespace AioCore.Application.Services.Implements
+namespace AioCore.Infrastructure.Services
 {
     public class DatabaseInfoService : IDatabaseInfoService
     {

@@ -1,9 +1,13 @@
-﻿using AioCore.Application.UnitOfWorks;
+﻿using AioCore.Application.Repositories;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +21,14 @@ namespace AioCore.Infrastructure.UnitOfWorks
         public UnitOfWork(DbContext context)
         {
             _context = context;
+            var props = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(t => typeof(IRepository).IsAssignableFrom(t.PropertyType) && t.PropertyType.IsGenericType);
+            foreach (var prop in props)
+            {
+                var generictType = prop.PropertyType.GetGenericArguments()[0];
+                var implType = typeof(Repository<>).MakeGenericType(generictType);
+                prop.SetValue(this, Activator.CreateInstance(implType, context));
+            }
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
