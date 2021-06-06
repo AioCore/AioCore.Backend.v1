@@ -116,6 +116,10 @@ namespace AioCore.Infrastructure.ViewRenderProcessors
                 }
                 strTag.Append('>');
             }
+            else
+            {
+                strTag.Append('>');
+            }
             return strTag.ToString();
         }
 
