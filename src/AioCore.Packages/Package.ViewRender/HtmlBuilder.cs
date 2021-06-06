@@ -27,7 +27,7 @@ namespace Package.ViewRender
             {
                 stringBuilder.Append(await BuildElement(elem));
             }
-            return stringBuilder.ToString();
+            return stringBuilder.ToString().Trim();
         }
 
         private async Task<string> BuildElement(XElement xElement)
