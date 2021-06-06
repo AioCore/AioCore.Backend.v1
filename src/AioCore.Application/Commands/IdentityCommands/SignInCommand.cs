@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
-using AioCore.Infrastructure;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +26,12 @@ namespace AioCore.Application.Commands.IdentityCommands
 
         internal class Handler : IRequestHandler<SignInCommand, SignInResponse>
         {
-            private readonly AioCoreContext _context;
+            private readonly IAioCoreUnitOfWork _context;
             private readonly AppSettings _appSettings;
             private readonly IStringLocalizer<Localization> _localizer;
 
             public Handler(
-                AioCoreContext context
+                IAioCoreUnitOfWork context
                 , IOptions<AppSettings> appSettings
                 , IStringLocalizer<Localization> localizer)
             {

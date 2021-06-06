@@ -6,13 +6,9 @@ using Package.Elasticsearch;
 using Package.Extensions;
 using Package.FileServer;
 using System.Linq;
-using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Application.Repositories;
 
-namespace AioCore.Application.AutofacModules
+namespace AioCore.API.AutofacModules
 {
     public class ApplicationModule : Module
     {
@@ -45,14 +41,6 @@ namespace AioCore.Application.AutofacModules
 
             builder.RegisterType<SystemTenantRepository>()
                 .As<ISettingTenantRepository>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<SystemBinaryRepository>()
-                .As<ISystemBinaryRepository>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<SystemBinaryRepository>()
-                .As<ISystemBinaryRepository>()
                 .InstancePerLifetimeScope();
 
             //All Repositories and Services

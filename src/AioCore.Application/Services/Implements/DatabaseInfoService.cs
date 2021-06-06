@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Package.DatabaseManagement;
 using System;
-using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+using AioCore.Application.Repositories;
 
 namespace AioCore.Application.Services.Implements
 {

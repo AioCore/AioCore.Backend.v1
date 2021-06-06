@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.SettingLayoutCommands
 {
@@ -17,23 +18,23 @@ namespace AioCore.Application.Commands.SettingLayoutCommands
 
         internal class Handler : IRequestHandler<CreateLayoutCommand, CreateLayoutResponse>
         {
-            private readonly ISettingLayoutRepository _settingLayoutRepository;
+            private readonly IAioCoreUnitOfWork _context;
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
-                ISettingLayoutRepository settingLayoutRepository,
+                IAioCoreUnitOfWork context,
                 IElasticsearchService elasticsearchService)
             {
-                _settingLayoutRepository = settingLayoutRepository ?? throw new ArgumentNullException(nameof(settingLayoutRepository));
+                _context = context;
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
             public async Task<CreateLayoutResponse> Handle(CreateLayoutCommand request, CancellationToken cancellationToken)
             {
-                var item = _settingLayoutRepository.Add(new SettingLayout(request.Name, request.Description));
-                await _settingLayoutRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                var item = _context.SettingLayouts.Add(new SettingLayout(request.Name, request.Description));
+                await _context.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.IndexAsync(item);
-                return item.To<CreateLayoutResponse>();
+                return item.MapTo<CreateLayoutResponse>();
             }
         }
     }

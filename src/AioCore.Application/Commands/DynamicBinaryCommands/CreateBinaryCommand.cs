@@ -1,4 +1,5 @@
-﻿using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
+﻿using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Package.Elasticsearch;
@@ -24,16 +25,16 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
             private readonly int[] _imageSizes = { 25, 50, 100, 200, 400, 800, 1600 };
 
             private readonly IFileServerService _fileServerService;
-            private readonly ISystemBinaryRepository _systemBinaryRepository;
+            private readonly IAioCoreUnitOfWork _context;
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
                 IFileServerService fileServerService,
-                ISystemBinaryRepository systemBinaryRepository,
+                IAioCoreUnitOfWork context,
                 IElasticsearchService elasticsearchService)
             {
                 _fileServerService = fileServerService ?? throw new ArgumentNullException(nameof(fileServerService));
-                _systemBinaryRepository = systemBinaryRepository ?? throw new ArgumentNullException(nameof(systemBinaryRepository));
+                _context = context;
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
@@ -99,11 +100,11 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         });
                     }
 
-                    var entities = _systemBinaryRepository.AddRange(files);
+                    _context.SystemBinaries.AddRange(files);
 
-                    await _systemBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                    await _context.SaveChangesAsync(cancellationToken);
 
-                    await _elasticsearchService.IndexManyAsync(entities);
+                    await _elasticsearchService.IndexManyAsync(files);
                 }
                 else
                 {
@@ -128,9 +129,9 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         ContentType = file.ContentType
                     };
 
-                    var entity = _systemBinaryRepository.Add(binary);
+                    var entity = _context.SystemBinaries.Add(binary);
 
-                    await _systemBinaryRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                    await _context.SaveChangesAsync(cancellationToken);
 
                     await _elasticsearchService.IndexAsync(entity);
                 }

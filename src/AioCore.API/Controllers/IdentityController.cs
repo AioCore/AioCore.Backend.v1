@@ -1,4 +1,5 @@
 ﻿using AioCore.Application.Commands.IdentityCommands;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Infrastructure;
 using AioCore.Infrastructure.Authorize;
 using MediatR;
@@ -33,7 +34,7 @@ namespace AioCore.API.Controllers
         [AioAuthorize]
         public async Task<IActionResult> SignUp(SignUpCommand command)
         {
-            var context = _serviceProvider.GetRequiredService<AioDynamicContext>();
+            var context = _serviceProvider.GetRequiredService<IAioDynamicUnitOfWork>();
             return Ok(context.DynamicDateValues);
             return Ok(await _mediator.Send(command));
         }

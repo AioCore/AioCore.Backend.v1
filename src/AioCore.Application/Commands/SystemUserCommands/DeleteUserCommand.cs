@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Shared;
 using MediatR;
@@ -17,24 +18,24 @@ namespace AioCore.Application.Commands.SystemUserCommands
 
         internal class Handler : IRequestHandler<DeleteUserCommand, DeleteUserResponse>
         {
-            private readonly ISystemUserRepository _systemUserRepository;
+            private readonly IAioCoreUnitOfWork _context;
             private readonly IStringLocalizer<Localization> _localizer;
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
-                ISystemUserRepository systemUserRepository,
+                IAioCoreUnitOfWork context,
                 IStringLocalizer<Localization> localizer,
                 IElasticsearchService elasticsearchService)
             {
-                _systemUserRepository = systemUserRepository ?? throw new ArgumentNullException(nameof(systemUserRepository));
+                _context = context;
                 _localizer = localizer ?? throw new ArgumentNullException();
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
             public async Task<DeleteUserResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
-                _systemUserRepository.Delete(request.Id);
-                var res = await _systemUserRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+                _context.SystemUsers.Delete(request.Id);
+                var res = await _context.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.DeleteAsync<SystemUser>(request.Id);
                 return new DeleteUserResponse
                 {
