@@ -2,6 +2,7 @@
 using AioCore.Shared.Seedwork;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate
 {
@@ -25,6 +26,12 @@ namespace AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate
         public string ClassName { get; set; }
 
         public string Settings { get; set; }
+
+        public T GetComponentSettings<T>() where T : IComponentSetting
+        {
+            if (Settings is null) return default;
+            return JsonConvert.DeserializeObject<T>(Settings);
+        }
 
         public class FieldSettings
         {

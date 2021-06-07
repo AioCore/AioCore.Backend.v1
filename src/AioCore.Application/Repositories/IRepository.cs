@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace AioCore.Application.Repositories
 {
-    public interface IRepository<TEntity> : IQueryable<TEntity>, IEnumerable<TEntity>, IEnumerable, IQueryable, IAsyncEnumerable<TEntity> where TEntity : class
+    public interface IRepository { }
+    
+    public interface IRepository<TEntity> : IRepository, IQueryable<TEntity>, IEnumerable<TEntity>, IEnumerable, IQueryable, IAsyncEnumerable<TEntity> where TEntity : class
     {
         TEntity Add([NotNull] TEntity entity);
         ValueTask<TEntity> AddAsync([NotNull] TEntity entity, CancellationToken cancellationToken = default);
