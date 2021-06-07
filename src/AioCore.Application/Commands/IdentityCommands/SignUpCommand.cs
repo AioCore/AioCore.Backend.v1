@@ -1,4 +1,6 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -7,8 +9,6 @@ using Package.Localization;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
-using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {
@@ -46,8 +46,8 @@ namespace AioCore.Application.Commands.IdentityCommands
                 {
                     if (!request.Password.Equals(request.ConfirmPassword))
                         return new SignUpResponse { Message = _localizer[Message.SignUpMessagePasswordNotMatch] };
-                    var user = _context.SystemUsers.Add(new SystemUser(request.Name, request.Account,
-                        request.Email, request.Password));
+                    var user = await _context.SystemUsers.AddAsync(new SystemUser(request.Name, request.Account,
+                        request.Email, request.Password), cancellationToken);
                     await _context.SaveChangesAsync(cancellationToken);
                     await _elasticsearchService.IndexAsync(user);
                     return new SignUpResponse { Message = _localizer[Message.SignUpMessageSuccess] };

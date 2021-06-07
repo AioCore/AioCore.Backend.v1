@@ -32,7 +32,7 @@ namespace Package.ViewRender
 
         private async Task<string> BuildElement(XElement xElement)
         {
-            var type = xElement.Attribute("type").Value;
+            var type = xElement.Attribute("type")?.Value;
             var processor = _viewRenderFactory.GetProcessor(type);
             if (processor == null)
             {

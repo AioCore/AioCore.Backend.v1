@@ -35,16 +35,16 @@ namespace AioCore.Infrastructure.ViewRenderProcessors
         public async Task<string> BuildOpeningTag(XElement element)
         {
             var name = element.Attribute("name")?.Value;
-            string id = "";
+            var id = "";
             var @class = element.Attribute("class")?.Value;
             object value = null;
-            string placeHolder = "";
-            bool hidden = false;
-            string title = "";
+            var placeHolder = "";
+            var hidden = false;
+            var title = "";
             DataType? type = null;
 
             Dictionary<string, object> entity = null;
-            if (Guid.TryParse(_httpContextAccessor.HttpContext.Request.Query["id"], out var entityId))
+            if (_httpContextAccessor.HttpContext != null && Guid.TryParse(_httpContextAccessor.HttpContext.Request.Query["id"], out var entityId))
             {
                 entity = await _dynamicEntityService.GetDynamicEntityAsync(entityId);
             }
@@ -55,12 +55,12 @@ namespace AioCore.Infrastructure.ViewRenderProcessors
                 if (component is not null)
                 {
                     var settings = component.GetComponentSettings<FieldSettings>();
-                    id = component?.Id.ToString();
+                    id = component.Id.ToString();
                     title = settings.Caption;
-                    placeHolder = settings?.PlaceHolder;
+                    placeHolder = settings.PlaceHolder;
                     hidden = settings?.Hidden ?? false;
                     value = entity?.GetValueOrDefault(component.Name);
-                    type = settings?.DataType;
+                    type = settings.DataType;
                 }
             }
 
@@ -97,15 +97,19 @@ namespace AioCore.Infrastructure.ViewRenderProcessors
                     case DataType.DateTime:
                         strTag.Append($" type='date'");
                         break;
+
                     case DataType.Text:
                         strTag.Append($" type='text'");
                         break;
+
                     case DataType.Password:
                         strTag.Append($" type='password'");
                         break;
+
                     case DataType.EmailAddress:
                         strTag.Append($" type='email'");
                         break;
+
                     case DataType.Upload:
                         strTag.Append($" type='file'");
                         break;
@@ -125,7 +129,7 @@ namespace AioCore.Infrastructure.ViewRenderProcessors
 
         public async Task<string> BuildClosingTag(XElement element)
         {
-            return await Task.FromResult($"</{element.Attribute("name").Value}>");
+            return await Task.FromResult($"</{element.Attribute("name")?.Value}>");
         }
     }
 }
