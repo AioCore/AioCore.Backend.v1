@@ -1,5 +1,6 @@
 ﻿using AioCore.Domain.SettingAggregatesModel.SettingFieldAggregate;
 using AioCore.Shared.Seedwork;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
