@@ -27,6 +27,7 @@ using Package.EventBus.EventBus.ServiceBus;
 using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
 using Package.Localization;
+using Package.Redis;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,8 @@ namespace AioCore.API
             services.Configure<AppSettings>(_configuration);
 
             services.AddAioAuthorize(_configuration);
+
+            services.AddCacheManager();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

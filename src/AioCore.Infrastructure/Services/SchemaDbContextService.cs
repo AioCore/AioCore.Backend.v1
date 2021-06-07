@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Package.DatabaseManagement;
 
-namespace AioCore.Application.Services.Implements
+namespace AioCore.Infrastructure.Services
 {
     public class SchemaDbContextService : ISchemaDbContext
     {

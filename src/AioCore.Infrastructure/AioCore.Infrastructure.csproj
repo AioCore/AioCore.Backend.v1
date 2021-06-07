@@ -4,6 +4,8 @@
     <ProjectReference Include="..\AioCore.Application\AioCore.Application.csproj" />
     <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.Redis\Package.Redis.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.ViewRender\Package.ViewRender.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
