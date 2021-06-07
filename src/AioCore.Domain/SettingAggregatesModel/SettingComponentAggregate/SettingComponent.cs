@@ -1,9 +1,6 @@
-﻿using AioCore.Domain.SettingAggregatesModel.SettingFieldAggregate;
-using AioCore.Shared.Seedwork;
+﻿using AioCore.Shared.Seedwork;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate
 {
@@ -32,46 +29,6 @@ namespace AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate
         {
             if (Settings is null) return default;
             return JsonConvert.DeserializeObject<T>(Settings);
-        }
-
-        public class FieldSettings
-        {
-            public string Caption { get; set; }
-
-            public string PlaceHolder { get; set; }
-
-            public DataType DataType { get; set; }
-
-            public bool Hidden { get; set; }
-        }
-
-        public class ActionSettings
-        {
-            public string ActionName { get; set; }
-
-            // fontawesome: <i class="fad fa-acorn"></i>
-            public string Icon { get; set; }
-
-            public List<ActionStep> Steps { get; set; }
-
-            public enum ActionStepType
-            {
-                SaveBase = 1,
-                SaveRealtime
-            }
-
-            public enum ActionTriggerType
-            {
-                Client = 1,
-                Server
-            }
-
-            public class ActionStep
-            {
-                public ActionStepType StepType { get; set; }
-
-                public ActionTriggerType TriggerType { get; set; }
-            }
-        }
+        }        
     }
 }
