@@ -8,6 +8,9 @@
         public const string SignUpMessageSuccess = "SignUp.Message.Success";
         public const string SignUpMessageFail = "SignUp.Message.Fail";
         public const string SignUpMessagePasswordNotMatch = "SignUp.Message.PasswordNotMatch";
+        public const string SignUpMessageAccountExisted = "SignUp.Message.AccountExisted";
+        public const string SignUpMessageEmailExisted = "SignUp.Message.EmailExisted";
+        public const string SignUpMessageTenantNotExists = "SignUp.Message.TenantNotExists";
 
         public const string SystemUserUpdateMessageSuccess = "SystemUser.Update.Message.Success";
         public const string SystemUserUpdateMessageFail = "SystemUser.Update.Message.Fail";

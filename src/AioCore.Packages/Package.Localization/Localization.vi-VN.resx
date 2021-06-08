@@ -138,4 +138,13 @@
   <data name="SignUp.Message.Success" xml:space="preserve">
     <value>Đăng ký thành công</value>
   </data>
+  <data name="SignUp.Message.AccountExisted" xml:space="preserve">
+    <value>Tài khoản '{0}' đã tồn tại trong hệ thống</value>
+  </data>
+  <data name="SignUp.Message.EmailExisted" xml:space="preserve">
+    <value>Email '{0}' đã tồn tại trong hệ thống</value>
+  </data>
+  <data name="SignUp.Message.TenantNotExists" xml:space="preserve">
+    <value>Tenant không tồn tại trong hệ thống</value>
+  </data>
 </root>

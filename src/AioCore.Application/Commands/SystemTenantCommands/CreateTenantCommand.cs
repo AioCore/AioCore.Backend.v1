@@ -14,8 +14,8 @@ namespace AioCore.Application.Commands.SystemTenantCommands
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public Guid FaviconId { get; set; }
-        public Guid LogoId { get; set; }
+        public Guid? FaviconId { get; set; }
+        public Guid? LogoId { get; set; }
         public string Database { get; set; }
         public string Password { get; set; }
         public string Schema { get; set; }

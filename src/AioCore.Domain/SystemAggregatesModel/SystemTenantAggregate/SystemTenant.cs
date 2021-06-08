@@ -15,10 +15,10 @@ namespace AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate
         public string Description { get; set; }
 
         [Keyword]
-        public Guid FaviconId { get; set; }
+        public Guid? FaviconId { get; set; }
 
         [Keyword]
-        public Guid LogoId { get; set; }
+        public Guid? LogoId { get; set; }
 
         public string Server { get; set; }
 

@@ -8,6 +8,7 @@ using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
 using Autofac;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +27,7 @@ using Package.EventBus.EventBus.RabbitMQ;
 using Package.EventBus.EventBus.ServiceBus;
 using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
+using Package.Extensions;
 using Package.Localization;
 using Package.Redis;
 using RabbitMQ.Client;
@@ -67,6 +69,8 @@ namespace AioCore.API
             services.AddAioAuthorize(_configuration);
 
             services.AddCacheManager();
+
+            services.AddValidatorsFromAssemblies(AssemblyHelper.Assemblies);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
