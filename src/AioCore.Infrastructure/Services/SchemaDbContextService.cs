@@ -9,7 +9,8 @@ namespace AioCore.Infrastructure.Services
 
         public SchemaDbContextService(IHttpContextAccessor httpContextAccessor)
         {
-            Schema = httpContextAccessor.HttpContext?.User?.FindFirst("schema")?.Value;
+            Schema = httpContextAccessor.HttpContext?.User?.FindFirst("schema_creating")?.Value
+                  ?? httpContextAccessor.HttpContext?.User?.FindFirst("schema")?.Value;
         }
     }
 }
