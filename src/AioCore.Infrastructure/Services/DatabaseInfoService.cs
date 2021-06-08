@@ -19,7 +19,7 @@ namespace AioCore.Infrastructure.Services
 
         public DatabaseInfo GetDatabaseInfo()
         {
-            var tenantId = Guid.Parse(_contextAccessor.HttpContext.User.FindFirst("tenant").Value);
+            var tenantId = Guid.Parse(FindClaim("tenant_creating") ?? FindClaim("tenant"));
             var tenant = _settingTenantRepository.GetAsync(tenantId).GetAwaiter().GetResult();
             if (!Enum.TryParse<DatabaseType>(tenant.DatabaseType, out var databaseType))
             {
@@ -34,6 +34,11 @@ namespace AioCore.Infrastructure.Services
                 Server = tenant.Server,
                 DatabaseType = databaseType
             };
+        }
+
+        private string FindClaim(string key)
+        {
+            return _contextAccessor.HttpContext.User.FindFirst(key)?.Value;
         }
     }
 }
