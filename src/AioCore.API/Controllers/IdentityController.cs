@@ -1,4 +1,6 @@
 ﻿using AioCore.Application.Commands.IdentityCommands;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Infrastructure;
 using AioCore.Infrastructure.Authorize;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +13,10 @@ namespace AioCore.API.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IServiceProvider _serviceProvider;
 
-        public IdentityController(IMediator mediator, IServiceProvider serviceProvider)
+        public IdentityController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _serviceProvider = serviceProvider;
         }
 
         [HttpPost]

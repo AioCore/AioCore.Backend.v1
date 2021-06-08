@@ -3,13 +3,11 @@ using FluentValidation;
 
 namespace AioCore.Application.Validations
 {
-    internal class CreateTenantCommandValidation : AbstractValidator<CreateTenantCommand>
+    public class CreateTenantCommandValidation : AbstractValidator<CreateTenantCommand>
     {
         public CreateTenantCommandValidation()
         {
             RuleFor(t => t.Name).NotEmpty();
-            RuleFor(t => t.FaviconId).NotEmpty();
-            RuleFor(t => t.LogoId).NotEmpty();
             RuleFor(t => t.Database).NotEmpty();
             RuleFor(t => t.Password).NotEmpty();
             RuleFor(t => t.Schema).NotEmpty();

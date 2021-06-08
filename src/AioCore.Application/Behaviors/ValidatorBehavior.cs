@@ -24,20 +24,21 @@ namespace AioCore.Application.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var typeName = request.GetGenericTypeName();
-
-            _logger.LogInformation("----- Validating command {CommandType}", typeName);
-
             var failures = _validators
                 .Select(x => x.Validate(request))
                 .SelectMany(x => x.Errors)
                 .Where(x => x != null)
                 .ToList();
 
-            if (failures.Count <= 0) return await next();
-            _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
+            if (failures.Count > 0)
+            {
+                _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}"
+                    , request.GetGenericTypeName(), request, failures);
 
-            throw new AioCoreException($"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
+                throw new AioCoreException($"Command Validation Errors for type {typeof(TRequest).Name}"
+                    , new ValidationException("Validation exception", failures));
+            }
+            return await next();
         }
     }
 }
