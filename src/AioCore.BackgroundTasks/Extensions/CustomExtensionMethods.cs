@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Microsoft.Azure.ServiceBus;
+﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,15 +27,7 @@ namespace AioCore.BackgroundTasks.Extensions
                     return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
                 });
 
-                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
-                {
-                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-
-                    return new EventBusServiceBus(serviceBusPersisterConnection, logger, eventBusSubcriptionsManager, iLifetimeScope);
-                });
+                services.AddSingleton<IEventBus, EventBusServiceBus>();
             }
             else
             {
@@ -70,22 +61,7 @@ namespace AioCore.BackgroundTasks.Extensions
                     return new DefaultRabbitMqPersistentConnection(factory, logger, retryCount);
                 });
 
-                services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
-                {
-                    var rabbitMqPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMq>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-
-                    var retryCount = 5;
-
-                    if (string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
-                        return new EventBusRabbitMq(rabbitMqPersistentConnection, logger, iLifetimeScope,
-                            eventBusSubcriptionsManager, subscriptionClientName, retryCount);
-                    retryCount = int.Parse(configuration["EventBusRetryCount"]);
-
-                    return new EventBusRabbitMq(rabbitMqPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
-                });
+                services.AddSingleton<IEventBus, EventBusRabbitMq>();
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();

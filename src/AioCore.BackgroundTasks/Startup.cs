@@ -17,10 +17,10 @@ namespace AioCore.BackgroundTasks
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services
-                .Configure<BackgroundTaskSettings>(this.Configuration)
+                .Configure<BackgroundTaskSettings>(Configuration)
                 .AddOptions()
                 .AddHostedService<ElasticsearchSnapshotService>()
-                .AddEventBus(this.Configuration);
+                .AddEventBus(Configuration);
         }
 
         public void Configure()
