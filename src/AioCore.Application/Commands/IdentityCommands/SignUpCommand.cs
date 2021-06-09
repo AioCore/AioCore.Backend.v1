@@ -9,10 +9,7 @@ using Package.Localization;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
-using AioCore.Application.UnitOfWorks;
 using Package.Extensions;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace AioCore.Application.Commands.IdentityCommands
