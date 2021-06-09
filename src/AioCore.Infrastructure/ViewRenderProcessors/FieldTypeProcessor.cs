@@ -56,6 +56,7 @@ namespace AioCore.Infrastructure.ViewRenderProcessors
                 {
                     var settings = component.GetComponentSettings<FieldSettings>();
                     id = component.Id.ToString();
+                    name = component.Name;
                     title = settings.Caption;
                     placeHolder = settings.PlaceHolder;
                     hidden = settings?.Hidden ?? false;
@@ -64,10 +65,14 @@ namespace AioCore.Infrastructure.ViewRenderProcessors
                 }
             }
 
-            var strTag = new StringBuilder($"<{name}");
+            var strTag = new StringBuilder($"<{element.Attribute("name").Value}");
             if (!string.IsNullOrEmpty(id))
             {
                 strTag.Append($" id='{id}'");
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                strTag.Append($" name='{name}'");
             }
             if (!string.IsNullOrEmpty(@class))
             {

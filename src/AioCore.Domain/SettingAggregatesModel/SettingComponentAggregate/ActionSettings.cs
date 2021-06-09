@@ -6,6 +6,12 @@ namespace AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate
     {
         public string ActionName { get; set; }
 
+        public string ActionUrl { get; set; }
+
+        public string Text { get; set; }
+
+        public string Title { get; set; }
+
         // fontawesome: <i class="fad fa-acorn"></i>
         public string Icon { get; set; }
 
