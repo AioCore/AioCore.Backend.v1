@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -31,11 +32,13 @@ namespace Package.DatabaseManagement
                 {
                     sqlOptions.MigrationsAssembly(assemblyName);
                     sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                    sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
                 }),
                 _ => optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(assemblyName);
                     sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                    sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
                 }),
             };
 
