@@ -1,7 +1,4 @@
 ﻿using AioCore.Application.Commands.IdentityCommands;
-using AioCore.Application.UnitOfWorks;
-using AioCore.Infrastructure;
-using AioCore.Infrastructure.Authorize;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
