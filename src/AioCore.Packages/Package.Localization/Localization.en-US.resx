@@ -138,4 +138,13 @@
   <data name="SignUp.Message.Success" xml:space="preserve">
     <value>Sign up success</value>
   </data>
+  <data name="SignUp.Message.AccountExisted" xml:space="preserve">
+    <value>Account '{0}' has existed</value>
+  </data>
+  <data name="SignUp.Message.EmailExisted" xml:space="preserve">
+    <value>Email '{0}' has existed</value>
+  </data>
+  <data name="SignUp.Message.TenantNotExists" xml:space="preserve">
+    <value>Tenant does not exists</value>
+  </data>
 </root>

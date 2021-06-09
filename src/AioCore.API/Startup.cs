@@ -1,4 +1,4 @@
-using AioCore.API.AutofacModules;
+using AioCore.Application.Behaviors;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
@@ -7,10 +7,9 @@ using AioCore.Infrastructure.Authorize;
 using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
-using Autofac;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,15 +25,18 @@ using Package.EventBus.EventBus.RabbitMQ;
 using Package.EventBus.EventBus.ServiceBus;
 using Package.EventBus.IntegrationEventLogEF;
 using Package.EventBus.IntegrationEventLogEF.Services;
+using Package.Extensions;
+using Package.FileServer;
 using Package.Localization;
 using Package.Redis;
+using Package.ViewRender;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
-using Assembly = AioCore.Application.Assembly;
 
 namespace AioCore.API
 {
@@ -49,10 +51,6 @@ namespace AioCore.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(Assembly).GetTypeInfo().Assembly);
-
-            services.AddHttpContextAccessor();
-
             services.AddAioLocalization()
                 .AddCustomMvc()
                 .AddCustomDbContext(_configuration)
@@ -67,11 +65,8 @@ namespace AioCore.API
             services.AddAioAuthorize(_configuration);
 
             services.AddCacheManager();
-        }
 
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new ApplicationModule());
+            services.RegisterAllServices();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -190,9 +185,9 @@ namespace AioCore.API
 
         public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(
-                _ => c => new IntegrationEventLogService(c));
+            services.AddHttpContextAccessor();
+
+            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(_ => c => new IntegrationEventLogService(c));
 
             services.AddTransient<IAioIntegrationEventService, AioIntegrationEventService>();
 
@@ -246,35 +241,11 @@ namespace AioCore.API
         {
             if (configuration.GetValue<bool>("EventBus:AzureServiceBusEnabled"))
             {
-                services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
-                {
-                    var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-
-                    return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                        eventBusSubcriptionsManager, iLifetimeScope);
-                });
+                services.AddSingleton<IEventBus, EventBusServiceBus>();
             }
             else
             {
-                services.AddSingleton<IEventBus, EventBusRabbitMq>(sp =>
-                {
-                    var subscriptionClientName = configuration["EventBus:SubscriptionClientName"];
-                    var rabbitMqPersistentConnection = sp.GetRequiredService<IRabbitMqPersistentConnection>();
-                    var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-                    var logger = sp.GetRequiredService<ILogger<EventBusRabbitMq>>();
-                    var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
-
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(configuration["EventBus:RetryCount"]))
-                    {
-                        retryCount = int.Parse(configuration["EventBus:RetryCount"]);
-                    }
-
-                    return new EventBusRabbitMq(rabbitMqPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
-                });
+                services.AddSingleton<IEventBus, EventBusRabbitMq>();
             }
 
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
@@ -290,6 +261,40 @@ namespace AioCore.API
             });
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper.RegisterMap());
+            return services;
+        }
+
+        public static IServiceCollection RegisterAllServices(this IServiceCollection services)
+        {
+            var asms = AssemblyHelper.Assemblies.ToArray();
+
+            services.AddMediatR(asms);
+            services.AddValidatorsFromAssemblies(asms);
+
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            //services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+            services.AddScoped<HtmlBuilder>();
+            services.AddScoped<ViewRenderFactory>();
+
+            services.AddScoped<IElasticsearchService, ElasticsearchService>();
+            services.AddScoped<IFileServerService, FileServerService>();
+
+            foreach (var type in AssemblyHelper.ExportTypes)
+            {
+                if (typeof(IViewRenderProcessor).IsAssignableFrom(type))
+                {
+                    services.AddScoped(typeof(IViewRenderProcessor), type);
+                }
+                else
+                {
+                    if (!type.Name.EndsWith("Repository") && !type.Name.EndsWith("Service")) continue;
+                    foreach (var serviceType in type.GetInterfaces().Where(t => !t.Name.StartsWith("System")))
+                    {
+                        services.AddScoped(serviceType, type);
+                    }
+                }
+            }
             return services;
         }
     }

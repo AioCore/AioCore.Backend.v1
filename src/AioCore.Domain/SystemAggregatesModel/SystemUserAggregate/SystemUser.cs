@@ -51,18 +51,6 @@ namespace AioCore.Domain.SystemAggregatesModel.SystemUserAggregate
             PasswordHash = password.CreateMd5();
         }
 
-        public SystemUser(
-            string name,
-            string account,
-            string email,
-            string password)
-        {
-            Name = name;
-            Account = account;
-            Email = email;
-            PasswordHash = password.CreateMd5();
-        }
-
         public void Update(
             string name,
             string email)

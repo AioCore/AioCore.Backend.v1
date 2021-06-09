@@ -83,7 +83,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenNotEncrypt);
                 return new SignInResponse
                 {
-                    Success = false,
+                    Success = true,
                     Message = _localizer[Message.SignInMessageSuccess],
                     Token = token
                 };
