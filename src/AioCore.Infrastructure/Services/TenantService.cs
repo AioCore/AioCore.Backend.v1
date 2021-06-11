@@ -37,6 +37,16 @@ namespace AioCore.Infrastructure.Services
             _logger = logger;
         }
 
+        public Guid? GetCurrentTenant()
+        {
+            if (Guid.TryParse(_httpContextAccessor.HttpContext.User.FindFirst("tenant")?.Value, out var tenantId))
+            {
+                return Guid.Empty.Equals(tenantId) ? null : tenantId;
+            }
+
+            return null;
+        }
+
         public async Task<SystemTenant> CreateTenantAsync(SystemTenant systemTenant, CancellationToken cancellationToken)
         {
             try

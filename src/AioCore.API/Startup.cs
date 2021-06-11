@@ -163,6 +163,7 @@ namespace AioCore.API
 
             services.AddScoped<IAioCoreUnitOfWork, AioCoreUnitOfWork>();
             services.AddScoped<IAioDynamicUnitOfWork, AioDynamicUnitOfWork>();
+            services.AddScoped<IAioDynamicUnitOfWorkFactory, AioDynamicUnitOfWorkFactory>();
 
             return services;
         }

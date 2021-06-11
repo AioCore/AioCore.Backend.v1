@@ -99,14 +99,14 @@ namespace AioCore.Infrastructure.UnitOfWorks
             private static readonly ConcurrentDictionary<Type, List<Member>> _members = new ConcurrentDictionary<Type, List<Member>>();
             private static readonly ConcurrentDictionary<string, Type> _memberTypes = new ConcurrentDictionary<string, Type>();
 
-            public static void InitializeRepositories<T>(T uow, DbContext context) where T : UnitOfWork
+            public static void InitializeRepositories(UnitOfWork uow, DbContext context)
             {
                 var uowType = uow.GetType();
                 var accessor = TypeAccessor.Create(uowType);
                 var members = _members.GetOrAdd(uowType, _ => accessor.GetMembers().Where(t => typeof(IRepository).IsAssignableFrom(t.Type) && t.Type.IsGenericType).ToList());
                 foreach (var member in members)
                 {
-                    var implType = _memberTypes.GetOrAdd($"{uowType.Name}_{member.Name}", _ =>
+                    var implType = _memberTypes.GetOrAdd($"{uowType.FullName}_{member.Name}", _ =>
                     {
                         var genericType = member.Type.GetGenericArguments()[0];
                         return typeof(Repository<>).MakeGenericType(genericType);
