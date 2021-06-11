@@ -1,4 +1,5 @@
 ﻿using AioCore.Domain.Common;
+using AioCore.Shared.Common;
 using Nest;
 
 namespace AioCore.Domain.SettingAggregatesModel.SettingFieldAggregate
