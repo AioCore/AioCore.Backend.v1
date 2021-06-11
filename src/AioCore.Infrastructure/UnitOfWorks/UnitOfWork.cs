@@ -1,13 +1,15 @@
 ﻿using AioCore.Application.Repositories;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Infrastructure.Repositories;
+using FastMember;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,14 +23,7 @@ namespace AioCore.Infrastructure.UnitOfWorks
         public UnitOfWork(DbContext context)
         {
             _context = context;
-            var props = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(t => typeof(IRepository).IsAssignableFrom(t.PropertyType) && t.PropertyType.IsGenericType);
-            foreach (var prop in props)
-            {
-                var generictType = prop.PropertyType.GetGenericArguments()[0];
-                var implType = typeof(Repository<>).MakeGenericType(generictType);
-                prop.SetValue(this, Activator.CreateInstance(implType, context));
-            }
+            TypeInitialize.InitializeRepositories(this, context);
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
@@ -97,6 +92,28 @@ namespace AioCore.Infrastructure.UnitOfWorks
         public IExecutionStrategy CreateExecutionStrategy()
         {
             return _context.Database.CreateExecutionStrategy();
+        }
+
+        private static class TypeInitialize
+        {
+            private static readonly ConcurrentDictionary<Type, List<Member>> _members = new ConcurrentDictionary<Type, List<Member>>();
+            private static readonly ConcurrentDictionary<string, Type> _memberTypes = new ConcurrentDictionary<string, Type>();
+
+            public static void InitializeRepositories<T>(T uow, DbContext context) where T : UnitOfWork
+            {
+                var uowType = uow.GetType();
+                var accessor = TypeAccessor.Create(uowType);
+                var members = _members.GetOrAdd(uowType, _ => accessor.GetMembers().Where(t => typeof(IRepository).IsAssignableFrom(t.Type) && t.Type.IsGenericType).ToList());
+                foreach (var member in members)
+                {
+                    var implType = _memberTypes.GetOrAdd($"{uowType.Name}_{member.Name}", _ =>
+                    {
+                        var genericType = member.Type.GetGenericArguments()[0];
+                        return typeof(Repository<>).MakeGenericType(genericType);
+                    });
+                    accessor[uow, member.Name] = Activator.CreateInstance(implType, context);
+                }
+            }
         }
     }
 }

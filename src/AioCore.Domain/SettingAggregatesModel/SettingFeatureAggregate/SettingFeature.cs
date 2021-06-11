@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using AioCore.Domain.Common;
 using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
-using AioCore.Shared.Seedwork;
 using Nest;
 using Package.NestedSet;
 

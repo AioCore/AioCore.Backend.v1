@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace AioCore.Shared.Seedwork
+namespace AioCore.Domain.Common
 {
     public abstract class Enumeration : IComparable
     {

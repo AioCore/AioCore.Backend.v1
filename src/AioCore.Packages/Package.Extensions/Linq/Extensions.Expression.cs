@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AioCore.Shared.Linq
+namespace Package.Extensions.Linq
 {
     internal static class ExpressionExtensions
     {

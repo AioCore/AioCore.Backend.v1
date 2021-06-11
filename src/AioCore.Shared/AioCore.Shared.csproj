@@ -10,23 +10,12 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
-    <PackageReference Include="Polly" Version="7.2.2" />
-    <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.6" />
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AioCore.Packages\Package.AutoMapper\Package.AutoMapper.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.Elasticsearch\Package.Elasticsearch.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.FileServer\Package.FileServer.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.Localization\Package.Localization.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.Mongo\Package.Mongo.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.NestedSet\Package.NestedSet.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.Redis\Package.Redis.csproj" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

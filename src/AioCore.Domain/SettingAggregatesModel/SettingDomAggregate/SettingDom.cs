@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using AioCore.Domain.Common;
 using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
-using AioCore.Shared.Seedwork;
 
 namespace AioCore.Domain.SettingAggregatesModel.SettingDomAggregate
 {

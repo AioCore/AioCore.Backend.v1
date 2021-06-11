@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace AioCore.Shared.Linq
+namespace Package.Extensions.Linq
 {
     internal interface IExpressionCollection : IEnumerable<Expression>
     {

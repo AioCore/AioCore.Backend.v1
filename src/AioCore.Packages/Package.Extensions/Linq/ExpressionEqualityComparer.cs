@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace AioCore.Shared.Linq
+namespace Package.Extensions.Linq
 {
     public class ExpressionEqualityComparer : IEqualityComparer<Expression>
     {

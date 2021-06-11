@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace AioCore.Shared.Specifications
+namespace Package.Extensions.Specifications
 {
     public interface ISpecification<T>
     {

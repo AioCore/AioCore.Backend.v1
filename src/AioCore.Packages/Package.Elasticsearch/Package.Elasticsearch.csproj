@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AioCore.Shared\AioCore.Shared.csproj" />
     <ProjectReference Include="..\Package.Extensions\Package.Extensions.csproj" />
   </ItemGroup>
 </Project>

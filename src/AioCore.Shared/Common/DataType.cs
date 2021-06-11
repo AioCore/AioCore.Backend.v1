@@ -1,4 +1,4 @@
-﻿namespace Package.Elasticsearch
+﻿namespace AioCore.Shared.Common
 {
     public enum DataType
     {

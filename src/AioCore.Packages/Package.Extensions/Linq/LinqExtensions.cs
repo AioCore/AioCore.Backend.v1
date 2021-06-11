@@ -1,5 +1,5 @@
-﻿using AioCore.Shared.Seedwork;
-using AioCore.Shared.Specifications;
+﻿using Package.Extensions.Linq;
+using Package.Extensions.Specifications;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace AioCore.Shared.Linq
+namespace Package.Extensions.Linq
 {
     public static class LinqExtensions
     {
@@ -147,7 +147,7 @@ namespace AioCore.Shared.Linq
         {
             if (first.IsEquals(t => true)) return second;
             if (second.IsEquals(t => true)) return first;
-            return ComposeExpression(first, second, merge);
+            return first.ComposeExpression(second, merge);
         }
 
         public static Expression<T> ComposeExpression<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)

@@ -24,6 +24,7 @@ using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
+using AioCore.Infrastructure.Extensions;
 
 namespace AioCore.Infrastructure
 {
