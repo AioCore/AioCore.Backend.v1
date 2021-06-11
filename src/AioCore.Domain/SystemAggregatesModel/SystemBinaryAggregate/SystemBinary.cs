@@ -1,5 +1,5 @@
 ﻿using System;
-using AioCore.Shared.Seedwork;
+using AioCore.Domain.Common;
 using Nest;
 
 namespace AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate

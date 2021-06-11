@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AioCore.Shared.Seedwork
+namespace AioCore.Domain.Common
 {
     public abstract class Entity
     {

@@ -1,4 +1,4 @@
-﻿namespace AioCore.Shared.Seedwork
+﻿namespace Package.Extensions.Linq
 {
     public enum SortDirection
     {

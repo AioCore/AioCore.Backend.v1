@@ -1,4 +1,4 @@
-﻿using AioCore.Shared.Seedwork;
+﻿using AioCore.Domain.Common;
 using Newtonsoft.Json;
 using System;
 

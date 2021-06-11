@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\AioCore.Packages\Package.AutoMapper\Package.AutoMapper.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.FileServer\Package.FileServer.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.Localization\Package.Localization.csproj" />
     <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
     <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
   </ItemGroup>

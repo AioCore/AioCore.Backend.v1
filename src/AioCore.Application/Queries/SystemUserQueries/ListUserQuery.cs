@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Shared.Common;
 using MediatR;
 using Package.Elasticsearch;
 

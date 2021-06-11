@@ -1,6 +1,6 @@
 ﻿using System;
+using AioCore.Domain.Common;
 using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
-using AioCore.Shared.Seedwork;
 
 namespace AioCore.Domain.SystemAggregatesModel.SystemUserAggregate
 {

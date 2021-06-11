@@ -1,10 +1,10 @@
-﻿using AioCore.Shared.Seedwork;
+﻿using AioCore.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AioCore.Shared.Extensions
+namespace AioCore.Infrastructure.Extensions
 {
     public static class MediatorExtension
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using AioCore.Domain.Common;
 using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingDomAggregate;
-using AioCore.Shared.Seedwork;
 using Nest;
 
 namespace AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate

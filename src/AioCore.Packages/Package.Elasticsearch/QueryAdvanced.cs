@@ -1,4 +1,6 @@
-﻿namespace Package.Elasticsearch
+﻿using AioCore.Shared.Common;
+
+namespace Package.Elasticsearch
 {
     public class QueryAdvanced
     {

@@ -1,6 +1,6 @@
 ﻿using System;
+using AioCore.Domain.Common;
 using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
-using AioCore.Shared.Seedwork;
 using Nest;
 
 namespace AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate

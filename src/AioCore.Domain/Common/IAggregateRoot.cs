@@ -1,4 +1,4 @@
-﻿namespace AioCore.Shared.Seedwork
+﻿namespace AioCore.Domain.Common
 {
     public interface IAggregateRoot { }
 }

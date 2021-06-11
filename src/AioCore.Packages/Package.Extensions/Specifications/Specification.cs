@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace AioCore.Shared.Specifications
+namespace Package.Extensions.Specifications
 {
-    public class Specification<T>: ISpecification<T>
+    public class Specification<T> : ISpecification<T>
     {
         public Expression<Func<T, bool>> Predicate { get; }
 

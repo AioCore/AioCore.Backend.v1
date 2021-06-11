@@ -1,4 +1,5 @@
-﻿using Elasticsearch.Net;
+﻿using AioCore.Shared.Common;
+using Elasticsearch.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nest;

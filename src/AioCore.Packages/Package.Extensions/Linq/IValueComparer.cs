@@ -1,4 +1,4 @@
-namespace AioCore.Shared.Linq
+namespace Package.Extensions.Linq
 {
     internal interface IValueComparer<in T>
     {

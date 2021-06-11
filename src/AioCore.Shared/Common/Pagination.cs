@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Package.Elasticsearch
+namespace AioCore.Shared.Common
 {
     public interface IPagination
     {
@@ -21,7 +21,7 @@ namespace Package.Elasticsearch
 
         public long TotalRecords { get; set; }
 
-        public long TotalPage => ((TotalRecords - 1) / PageSize) + 1;
+        public long TotalPage => (TotalRecords - 1) / PageSize + 1;
 
         public bool HasNextPage => Page < TotalPage;
 

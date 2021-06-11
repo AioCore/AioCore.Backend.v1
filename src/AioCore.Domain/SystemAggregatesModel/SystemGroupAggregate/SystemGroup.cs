@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using AioCore.Shared.Seedwork;
+using AioCore.Domain.Common;
 using Nest;
 using Package.NestedSet;
 

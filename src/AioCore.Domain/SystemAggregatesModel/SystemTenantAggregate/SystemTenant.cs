@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using AioCore.Domain.Common;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
-using AioCore.Shared.Seedwork;
 using Nest;
 
 namespace AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate

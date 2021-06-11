@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using AioCore.Domain.Common;
 using AioCore.Domain.SystemAggregatesModel.SystemPermissionSetAggregate;
-using AioCore.Shared.Seedwork;
 
 namespace AioCore.Domain.SystemAggregatesModel.SystemPermissionAggregate
 {

@@ -1,6 +1,6 @@
 ﻿using System;
+using AioCore.Domain.Common;
 using AioCore.Domain.SystemAggregatesModel.SystemApplicationAggregate;
-using AioCore.Shared.Seedwork;
 
 namespace AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate
 {
