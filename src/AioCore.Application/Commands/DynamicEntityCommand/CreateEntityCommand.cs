@@ -5,6 +5,7 @@ using AioCore.Shared.Common;
 using AioCore.Shared.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Package.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,18 +41,18 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 var currentTenantId = _tenantService.GetCurrentTenant();
                 if (currentTenantId == null)
                 {
-                    throw new AioCoreException("Current tenant does not exits");
+                    throw new AioCoreException("Current tenant does not exists");
                 }
 
                 var entityType = await _aioCoreUnitOfWork.SettingEntityTypes.FindAsync(new object[] { request.EntityTypeId }, cancellationToken: cancellationToken);
                 if (entityType == null)
                 {
-                    throw new AioCoreException("Current type does not exits");
+                    throw new AioCoreException("Current type does not exists");
                 }
 
                 if (entityType.TenantId != currentTenantId)
                 {
-                    throw new AioCoreException("Current type does not exits for this tenant");
+                    throw new AioCoreException("Current type does not exists for this tenant");
                 }
 
                 var entity = await _aioDynamicUnitOfWork.DynamicEntities.AddAsync(new DynamicEntity
@@ -109,26 +110,12 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                     AttributeId = attributeId
                 };
 
-                if (TryChangeType<TType>(value, out var convertedValue))
+                if (value.TryConvertTo<TType>(out var convertedValue))
                 {
                     instance.Value = convertedValue;
                     return instance;
                 }
                 return null;
-            }
-
-            private static bool TryChangeType<T>(object value, out T convertedValue)
-            {
-                try
-                {
-                    convertedValue = (T)Convert.ChangeType(value, typeof(T));
-                    return true;
-                }
-                catch
-                {
-                    convertedValue = default;
-                    return false;
-                }
             }
         }
     }
