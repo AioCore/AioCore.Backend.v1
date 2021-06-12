@@ -22,11 +22,13 @@ namespace AioCore.Infrastructure.Repositories
             _dbSet = context.Set<TEntity>();
         }
 
-        public Type ElementType => (_dbSet as IQueryable).ElementType;
+        Type IQueryable.ElementType => (_dbSet as IQueryable).ElementType;
 
-        public Expression Expression => (_dbSet as IQueryable).Expression;
+        Expression IQueryable.Expression => (_dbSet as IQueryable).Expression;
 
-        public IQueryProvider Provider => (_dbSet as IQueryable).Provider;
+        IQueryProvider IQueryable.Provider => (_dbSet as IQueryable).Provider;
+
+        IEnumerator IEnumerable.GetEnumerator() => (_dbSet as IEnumerable).GetEnumerator();
 
         public TEntity Add([NotNull] TEntity entity)
         {
@@ -141,11 +143,6 @@ namespace AioCore.Infrastructure.Repositories
         public void UpdateRange([NotNull] IEnumerable<TEntity> entities)
         {
             _dbSet.UpdateRange(entities);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return (_dbSet as IEnumerable).GetEnumerator();
         }
     }
 }
