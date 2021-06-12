@@ -29,6 +29,12 @@ namespace AioCore.API.Controllers
             return Ok(await Mediator.Send(request));
         }
 
+        [HttpPost("delete-entity")]
+        public async Task<ActionResult<DeleteEntityRespone>> DeleteEntity(DeleteEntityCommand request)
+        {
+            return Ok(await Mediator.Send(request));
+        }
+
         [HttpGet("entity")]
         public async Task<ActionResult> GetEntity(GetEntityQuery request)
         {
