@@ -1,4 +1,5 @@
 ﻿using AioCore.Application.Commands.DynamicEntityCommand;
+using AioCore.Application.Queries.DynamicEntityQueries;
 using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,19 @@ namespace AioCore.API.Controllers
         }
 
         [HttpPost("create-entity")]
-        public async Task<ActionResult> CreateEntity([FromBody] CreateEntityCommand request)
+        public async Task<ActionResult<CreateEntityRespone>> CreateEntity([FromBody] CreateEntityCommand request)
         {
             return Ok(await Mediator.Send(request));
         }
 
         [HttpPost("update-entity")]
-        public async Task<ActionResult> UpdateEntity([FromBody] UpdateEntityCommand request)
+        public async Task<ActionResult<UpdateEntityRespone>> UpdateEntity([FromBody] UpdateEntityCommand request)
+        {
+            return Ok(await Mediator.Send(request));
+        }
+
+        [HttpGet("entity")]
+        public async Task<ActionResult> GetEntity(GetEntityQuery request)
         {
             return Ok(await Mediator.Send(request));
         }

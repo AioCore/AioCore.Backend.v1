@@ -1,4 +1,5 @@
 ﻿using AioCore.Shared.Common;
+using AioCore.Shared.Exceptions;
 using Elasticsearch.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,8 @@ namespace Package.Elasticsearch
     {
         Task IndexAsync<T>(T document) where T : class;
 
+        Task IndexAsync<T>(T document, string id) where T : class;
+
         Task IndexManyAsync<T>(List<T> documents) where T : class;
 
         Task UpdateAsync<T>(T document) where T : class;
@@ -25,6 +28,8 @@ namespace Package.Elasticsearch
         Task<Pagination<T>> SearchAsync<T>(int page, int pageSize, string keyword, List<QueryAdvanced> filter = null) where T : class;
 
         Task<List<T>> SearchAsync<T>(string keyword, List<QueryAdvanced> filter) where T : class;
+
+        Task<T> GetAsync<T>(string id) where T : class;
     }
 
     public class ElasticsearchService : IElasticsearchService
@@ -41,6 +46,15 @@ namespace Package.Elasticsearch
         {
             var response = await _elasticClient.IndexAsync(document,
                 descriptor => descriptor);
+            if (!response.IsValid)
+                throw new ApplicationException(response.DebugInformation);
+            await _elasticClient.Indices.RefreshAsync(Indices.All);
+        }
+
+        public async Task IndexAsync<T>(T document, string id) where T : class
+        {
+            var response = await _elasticClient.IndexAsync(document,
+                descriptor => descriptor.Id(id));
             if (!response.IsValid)
                 throw new ApplicationException(response.DebugInformation);
             await _elasticClient.Indices.RefreshAsync(Indices.All);
@@ -187,6 +201,16 @@ namespace Package.Elasticsearch
                 value.ToJson().ParseTo<List<TValueType>>().ForEach(y => terms.Add(new TermQuery { Field = field, Value = y }));
                 return terms;
             }
+        }
+
+        public async Task<T> GetAsync<T>(string id) where T : class
+        {
+            var response = await _elasticClient.GetAsync<T>(id);
+            if (response.IsValid)
+            {
+                return response?.Source;
+            }
+            throw new AioCoreException(response.OriginalException?.Message, response.OriginalException);
         }
     }
 }

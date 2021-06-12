@@ -25,15 +25,18 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
             private readonly ITenantService _tenantService;
             private readonly IAioDynamicUnitOfWork _aioDynamicUnitOfWork;
             private readonly IAioCoreUnitOfWork _aioCoreUnitOfWork;
+            private readonly IDynamicEntityService _dynamicEntityService;
 
             public Handler(
                   ITenantService tenantService
                 , IAioDynamicUnitOfWork aioDynamicUnitOfWork
-                , IAioCoreUnitOfWork aioCoreUnitOfWork)
+                , IAioCoreUnitOfWork aioCoreUnitOfWork
+                , IDynamicEntityService dynamicEntityService)
             {
                 _tenantService = tenantService;
                 _aioDynamicUnitOfWork = aioDynamicUnitOfWork;
                 _aioCoreUnitOfWork = aioCoreUnitOfWork;
+                _dynamicEntityService = dynamicEntityService;
             }
 
             public async Task<CreateEntityRespone> Handle(CreateEntityCommand request, CancellationToken cancellationToken)
@@ -93,6 +96,9 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 await _aioDynamicUnitOfWork.DynamicStringValues.AddRangeAsync(dynamicStringValues, cancellationToken);
 
                 await _aioDynamicUnitOfWork.SaveChangesAsync(cancellationToken);
+
+                //index to elasticsearch
+                await _dynamicEntityService.IndexAsync(entity);
 
                 return new CreateEntityRespone
                 {

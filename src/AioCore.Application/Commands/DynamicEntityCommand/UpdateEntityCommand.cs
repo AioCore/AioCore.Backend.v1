@@ -24,13 +24,16 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
         {
             private readonly ITenantService _tenantService;
             private readonly IAioDynamicUnitOfWork _dynamicUnitOfWork;
+            private readonly IDynamicEntityService _dynamicEntityService;
 
             public Handler(
                   ITenantService tenantService
-                , IAioDynamicUnitOfWork dynamicUnitOfWork)
+                , IAioDynamicUnitOfWork dynamicUnitOfWork
+                , IDynamicEntityService dynamicEntityService)
             {
                 _tenantService = tenantService;
                 _dynamicUnitOfWork = dynamicUnitOfWork;
+                _dynamicEntityService = dynamicEntityService;
             }
 
             public async Task<UpdateEntityRespone> Handle(UpdateEntityCommand request, CancellationToken cancellationToken)
@@ -57,9 +60,8 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                         .Where(t => t.EntityTypeId == dynamicEntity.EntityTypeId)
                         .ToListAsync(cancellationToken);
 
-                void Update<T, TType>(ICollection<T> dynamicValues, DataType dataType) where T : DynamicValue<TType>
+                void Update<T, TType>(ICollection<T> dynamicValues, DataType dataType) where T : DynamicValue<TType>, new()
                 {
-                    if (dynamicValues?.Any() != true) return;
                     var attrValues = attributes.Select(t =>
                     {
                         var attrVal = request.AttributeValues?.FirstOrDefault(x => t.DataType == dataType.ToString() && x.Name == t.Name);
@@ -69,13 +71,27 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                     .Where(t => t != null)
                     .ToList();
 
+                    //update existing value
                     foreach (var dynamicValue in dynamicValues)
                     {
-                        var attrVal = attrValues.FirstOrDefault(t => t.Id == dynamicValue.AttributeId);
-                        if (attrVal is null) continue;
-                        if (attrVal.Value.TryConvertTo<TType>(out var val))
+                        var attr = attrValues.FirstOrDefault(t => t.Id == dynamicValue.AttributeId);
+                        if (attr is null) continue;
+                        if (attr.Value.TryConvertTo<TType>(out var val))
                         {
                             dynamicValue.Value = val;
+                        }
+                    }
+                    //add new value
+                    foreach (var attr in attrValues.Where(t => !dynamicValues.Any(x => x.AttributeId == t.Id)))
+                    {
+                        if (attr.Value.TryConvertTo<TType>(out var val))
+                        {
+                            dynamicValues.Add(new T
+                            {
+                                EntityTypeId = dynamicEntity.EntityTypeId,
+                                AttributeId = attr.Id,
+                                Value = val
+                            });
                         }
                     }
                 }
@@ -88,6 +104,8 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 Update<DynamicStringValue, string>(dynamicEntity?.DynamicStringValues, DataType.Text);
 
                 await _dynamicUnitOfWork.SaveChangesAsync(cancellationToken);
+
+                await _dynamicEntityService.IndexAsync(dynamicEntity);
 
                 return new UpdateEntityRespone
                 {
