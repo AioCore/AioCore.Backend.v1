@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Nest;
+﻿using Nest;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,17 +24,20 @@ namespace AioCore.Domain.Common
         public string IndexType => GetType().Name;
 
         [JsonIgnore]
-        private List<INotification> _domainEvents;
+        [NotMapped]
+        private List<DomainEvent> _domainEvents;
 
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+        [JsonIgnore]
+        [NotMapped]
+        public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
 
-        public void AddDomainEvent(INotification eventItem)
+        public void AddDomainEvent(DomainEvent eventItem)
         {
-            _domainEvents ??= new List<INotification>();
+            _domainEvents ??= new List<DomainEvent>();
             _domainEvents.Add(eventItem);
         }
 
-        public void RemoveDomainEvent(INotification eventItem)
+        public void RemoveDomainEvent(DomainEvent eventItem)
         {
             _domainEvents?.Remove(eventItem);
         }

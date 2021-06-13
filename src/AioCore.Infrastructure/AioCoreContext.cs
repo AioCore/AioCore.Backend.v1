@@ -1,6 +1,4 @@
 using AioCore.Infrastructure.EntityTypeConfigurations;
-using AioCore.Shared.Extensions;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -24,29 +22,26 @@ using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
-using AioCore.Infrastructure.Extensions;
+using AioCore.Application.Services;
+using AioCore.Domain.Common;
+using System.Linq;
 
 namespace AioCore.Infrastructure
 {
     public sealed class AioCoreContext : DbContext
     {
-        private readonly IMediator _mediator;
         private IDbContextTransaction _currentTransaction;
+        private readonly IDomainEventService _domainEventService;
 
-        public AioCoreContext(DbContextOptions<AioCoreContext> options) : base(options)
+        public AioCoreContext(DbContextOptions<AioCoreContext> options, IDomainEventService domainEventService)
+            : base(options)
         {
+            _domainEventService = domainEventService;
         }
 
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
 
         public bool HasActiveTransaction => _currentTransaction != null;
-
-        public AioCoreContext(DbContextOptions<AioCoreContext> options, IMediator mediator) : base(options)
-        {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-
-            System.Diagnostics.Debug.WriteLine($"{nameof(AioCoreContext)}::ctor ->" + GetHashCode());
-        }
 
         public DbSet<SettingAction> SettingActions { get; set; }
 
@@ -109,13 +104,11 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new SettingViewTypeConfiguration());
         }
 
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await _mediator.DispatchDomainEventsAsync(this);
-
             var result = await base.SaveChangesAsync(cancellationToken);
-
-            return true;
+            await DispatchDomainEventsAsync();
+            return result;
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
@@ -165,6 +158,24 @@ namespace AioCore.Infrastructure
                     _currentTransaction.Dispose();
                     _currentTransaction = null;
                 }
+            }
+        }
+
+        private async Task DispatchDomainEventsAsync()
+        {
+            var domainEntities = ChangeTracker
+                .Entries<Entity>()
+                .Where(x => x.Entity.DomainEvents?.Any() == true)
+                .ToList();
+
+            foreach (var domainEvent in domainEntities.SelectMany(x => x.Entity.DomainEvents))
+            {
+                await _domainEventService.Publish(domainEvent);
+            }
+
+            foreach (var entiy in domainEntities)
+            {
+                entiy.Entity.ClearDomainEvents();
             }
         }
     }

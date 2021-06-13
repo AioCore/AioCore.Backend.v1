@@ -8,8 +8,4 @@
     <ProjectReference Include="..\AioCore.Packages\Package.Elasticsearch\Package.Elasticsearch.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.NestedSet\Package.NestedSet.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="9.0.0" />
-  </ItemGroup>
 </Project>
