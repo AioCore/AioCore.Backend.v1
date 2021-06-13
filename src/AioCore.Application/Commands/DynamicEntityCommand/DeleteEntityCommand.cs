@@ -4,6 +4,7 @@ using AioCore.Shared.Exceptions;
 using MediatR;
 using Package.Elasticsearch;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

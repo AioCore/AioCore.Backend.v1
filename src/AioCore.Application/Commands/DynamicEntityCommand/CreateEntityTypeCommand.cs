@@ -1,7 +1,9 @@
 ﻿using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.DynamicAggregatesModel;
 using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
+using AioCore.Shared.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,11 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
 
             public async Task<SettingEntityType> Handle(CreateEntityTypeCommand request, CancellationToken cancellationToken)
             {
+                if (await _aioCoreUnitOfWork.SettingEntityTypes.AnyAsync(t => t.Name == request.Name, cancellationToken))
+                {
+                    throw new AioCoreException("The entity type already exists");
+                }
+
                 var entity = await _aioCoreUnitOfWork.SettingEntityTypes.AddAsync(new SettingEntityType
                 {
                     Name = request.Name,
@@ -48,7 +55,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                     DataType = t.DataType.ToString()
                 });
 
-                var aioDynamicUnitOfWork = await _aioDynamicUnitOfWorkFactory.CreateUnitOfWorkAsync(request.TenantId);
+                var aioDynamicUnitOfWork = await _aioDynamicUnitOfWorkFactory.CreateUnitOfWorkAsync(request.TenantId, cancellationToken);
 
                 await aioDynamicUnitOfWork.DynamicAttributes.AddRangeAsync(dynamicAttrs, cancellationToken);
                 await aioDynamicUnitOfWork.SaveChangesAsync(cancellationToken);

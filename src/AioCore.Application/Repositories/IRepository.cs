@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -9,8 +11,8 @@ using System.Threading.Tasks;
 namespace AioCore.Application.Repositories
 {
     public interface IRepository { }
-    
-    public interface IRepository<TEntity> : IRepository, IQueryable<TEntity>, IEnumerable<TEntity>, IEnumerable, IQueryable, IAsyncEnumerable<TEntity> where TEntity : class
+
+    public interface IRepository<TEntity> : IRepository, IQueryable<TEntity>, IEnumerable<TEntity>, IEnumerable, IQueryable, IAsyncEnumerable<TEntity>, IListSource, IInfrastructure<IServiceProvider> where TEntity : class
     {
         TEntity Add([NotNull] TEntity entity);
         ValueTask<TEntity> AddAsync([NotNull] TEntity entity, CancellationToken cancellationToken = default);
@@ -32,5 +34,6 @@ namespace AioCore.Application.Repositories
         void UpdateRange([NotNull] params TEntity[] entities);
         void UpdateRange([NotNull] IEnumerable<TEntity> entities);
         void Delete(Guid id);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

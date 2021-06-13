@@ -17,6 +17,12 @@ namespace AioCore.API.Controllers
             return Ok(await Mediator.Send(request));
         }
 
+        [HttpPost("update-type")]
+        public async Task<ActionResult<SettingEntityType>> UpdateEntityType([FromBody] UpdateEntityTypeCommand request)
+        {
+            return Ok(await Mediator.Send(request));
+        }
+
         [HttpPost("create-entity")]
         public async Task<ActionResult<CreateEntityRespone>> CreateEntity([FromBody] CreateEntityCommand request)
         {
@@ -37,6 +43,12 @@ namespace AioCore.API.Controllers
 
         [HttpGet("entity")]
         public async Task<ActionResult> GetEntity(GetEntityQuery request)
+        {
+            return Ok(await Mediator.Send(request));
+        }
+
+        [HttpGet("filter-entity")]
+        public async Task<ActionResult> FilterEntity(FilterEntityQuery request)
         {
             return Ok(await Mediator.Send(request));
         }
