@@ -1,4 +1,4 @@
-﻿using AioCore.Infrastructure;
+﻿using AioCore.Infrastructure.DbContexts;
 using AioCore.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;

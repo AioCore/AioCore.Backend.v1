@@ -6,7 +6,7 @@ using Polly.Retry;
 using System;
 using System.Threading.Tasks;
 
-namespace AioCore.Infrastructure
+namespace AioCore.Infrastructure.DbContexts
 {
     public class AioCoreContextSeed
     {

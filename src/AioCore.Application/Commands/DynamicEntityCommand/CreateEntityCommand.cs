@@ -63,7 +63,6 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                     Name = request.Name,
                     EntityTypeId = request.EntityTypeId,
                     TenantId = currentTenantId.Value,
-                    Created = DateTime.Now
                 }, cancellationToken);
 
 

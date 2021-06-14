@@ -7,6 +7,7 @@ using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using MediatR;
 using Package.AutoMapper;
 using Package.Elasticsearch;
+using Package.Extensions;
 
 namespace AioCore.Application.Commands.SystemUserCommands
 {
@@ -17,8 +18,6 @@ namespace AioCore.Application.Commands.SystemUserCommands
         public string Email { get; set; }
 
         public string Password { get; set; }
-
-        public Guid TenantId { get; set; }
 
         internal class Handler : IRequestHandler<CreateUserCommand, CreateUserResponse>
         {
@@ -35,7 +34,13 @@ namespace AioCore.Application.Commands.SystemUserCommands
 
             public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
-                var item = _context.SystemUsers.Add(new SystemUser(request.Name, request.Email, request.TenantId, request.Password));
+                var item = _context.SystemUsers.Add(new SystemUser
+                {
+                    Name = request.Name,
+                    Account = request.Email,
+                    Email = request.Email,
+                    PasswordHash = request.Password.CreateMd5(),
+                });
                 await _context.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.IndexAsync(item);
                 return item.MapTo<CreateUserResponse>();

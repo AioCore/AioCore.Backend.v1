@@ -6,7 +6,7 @@ namespace AioCore.Domain.Common
     {
         public bool IsPublished { get; set; }
 
-        public DateTimeOffset DateOccurred { get; protected set; } = DateTime.UtcNow;
+        public DateTimeOffset DateOccurred { get; protected set; } = DateTimeOffset.UtcNow;
 
         protected DomainEvent()
         {

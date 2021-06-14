@@ -15,7 +15,6 @@ namespace AioCore.Application.Validations
             RuleFor(t => t.Email).NotEmpty();
             RuleFor(t => t.Password).NotEmpty();
             RuleFor(t => t.ConfirmPassword).NotEmpty();
-            RuleFor(t => t.TenantId).NotEmpty();
             RuleFor(t => t.ConfirmPassword).Equal(t => t.Password)
                 .WithMessage(t => localizer[Message.SignUpMessagePasswordNotMatch]);
         }

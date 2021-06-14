@@ -2,15 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Package.DatabaseManagement;
 using AioCore.Domain.DynamicAggregatesModel;
-using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
+using System;
+using System.Threading.Tasks;
+using System.Threading;
 
-namespace AioCore.Infrastructure
+namespace AioCore.Infrastructure.DbContexts
 {
     public class AioDynamicContext : SchemaDbContext
     {
-        public AioDynamicContext(DbContextOptions<AioDynamicContext> options, ISchemaDbContext schema)
-            : base(options, schema)
+        private readonly IServiceProvider _serviceProvider;
+
+        public AioDynamicContext(DbContextOptions<AioDynamicContext> options, IServiceProvider serviceProvider)
+            : base(options, serviceProvider)
         {
+            _serviceProvider = serviceProvider;
         }
 
         public DbSet<DynamicEntity> DynamicEntities { get; set; }
@@ -33,6 +38,11 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new DynamicGuidValueTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicIntegerValueTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicStringValueTypeConfiguration());
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return this.SaveEntitiesAsync(_serviceProvider, cancellationToken);
         }
     }
 }

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Data;
-using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Domain.SettingAggregatesModel.SettingActionAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
@@ -22,21 +21,19 @@ using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
-using AioCore.Application.Services;
-using AioCore.Domain.Common;
-using System.Linq;
+using System.Threading;
 
-namespace AioCore.Infrastructure
+namespace AioCore.Infrastructure.DbContexts
 {
     public sealed class AioCoreContext : DbContext
     {
         private IDbContextTransaction _currentTransaction;
-        private readonly IDomainEventService _domainEventService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public AioCoreContext(DbContextOptions<AioCoreContext> options, IDomainEventService domainEventService)
+        public AioCoreContext(DbContextOptions<AioCoreContext> options, IServiceProvider serviceProvider)
             : base(options)
         {
-            _domainEventService = domainEventService;
+            _serviceProvider = serviceProvider;
         }
 
         public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
@@ -91,6 +88,8 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new SystemPermissionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SystemPermissionSetTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SystemPolicyTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemUserTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemTenantTypeConfiguration());
 
             modelBuilder.ApplyConfiguration(new SettingActionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingComponentTypeConfiguration());
@@ -100,15 +99,7 @@ namespace AioCore.Infrastructure
             modelBuilder.ApplyConfiguration(new SettingFieldTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingFormTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingLayoutTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SystemTenantTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingViewTypeConfiguration());
-        }
-
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            var result = await base.SaveChangesAsync(cancellationToken);
-            await DispatchDomainEventsAsync();
-            return result;
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()
@@ -161,22 +152,9 @@ namespace AioCore.Infrastructure
             }
         }
 
-        private async Task DispatchDomainEventsAsync()
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var domainEntities = ChangeTracker
-                .Entries<Entity>()
-                .Where(x => x.Entity.DomainEvents?.Any() == true)
-                .ToList();
-
-            foreach (var domainEvent in domainEntities.SelectMany(x => x.Entity.DomainEvents))
-            {
-                await _domainEventService.Publish(domainEvent);
-            }
-
-            foreach (var entiy in domainEntities)
-            {
-                entiy.Entity.ClearDomainEvents();
-            }
+            return this.SaveEntitiesAsync(_serviceProvider, cancellationToken);
         }
     }
 }
