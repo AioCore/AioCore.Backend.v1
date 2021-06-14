@@ -35,7 +35,7 @@ namespace AioCore.Infrastructure.Services
             _logger = logger;
         }
 
-        public Guid? GetCurrentTenant()
+        public Guid? GetCurrentTenantId()
         {
             if (Guid.TryParse(_httpContextAccessor.HttpContext.User.FindFirst("tenant")?.Value, out var tenantId))
             {

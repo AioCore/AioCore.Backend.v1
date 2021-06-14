@@ -32,7 +32,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
 
             public async Task<DeleteEntityRespone> Handle(DeleteEntityCommand request, CancellationToken cancellationToken)
             {
-                var currentTenantId = _tenantService.GetCurrentTenant();
+                var currentTenantId = _tenantService.GetCurrentTenantId();
                 var dynamicEntity = await _dynamicUnitOfWork
                     .DynamicEntities.FindAsync(new object[] { request.Id }, cancellationToken);
                 if (dynamicEntity is null)
