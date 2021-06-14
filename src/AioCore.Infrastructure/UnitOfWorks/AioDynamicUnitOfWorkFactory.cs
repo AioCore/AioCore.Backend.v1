@@ -7,6 +7,7 @@ using AioCore.Shared.Exceptions;
 using System.Security.Claims;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace AioCore.Infrastructure.UnitOfWorks
 {
@@ -26,9 +27,9 @@ namespace AioCore.Infrastructure.UnitOfWorks
             _aioCoreUnitOfWork = aioCoreUnitOfWork;
         }
 
-        public async Task<IAioDynamicUnitOfWork> CreateUnitOfWorkAsync(Guid tenantId)
+        public async Task<IAioDynamicUnitOfWork> CreateUnitOfWorkAsync(Guid tenantId, CancellationToken cancellationToken = default)
         {
-            var tenant = await _aioCoreUnitOfWork.SystemTenants.FindAsync(tenantId);
+            var tenant = await _aioCoreUnitOfWork.SystemTenants.FindAsync(new object[] { tenantId }, cancellationToken);
             if (tenant == null)
             {
                 throw new AioCoreException("Tenant not found");
@@ -41,7 +42,7 @@ namespace AioCore.Infrastructure.UnitOfWorks
             }));
 
             var dbContext = _serviceProvider.GetRequiredService<AioDynamicContext>();
-            await dbContext.Database.MigrateAsync();
+            await dbContext.Database.MigrateAsync(cancellationToken);
             return new AioDynamicUnitOfWork(dbContext);
         }
     }

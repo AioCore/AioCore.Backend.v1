@@ -14,7 +14,7 @@ namespace AioCore.API.Factories
             var optionsBuilder = new DbContextOptionsBuilder<AioCoreContext>();
             optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("AioCore.API"));
-            return new AioCoreContext(optionsBuilder.Options);
+            return new AioCoreContext(optionsBuilder.Options, null);
         }
     }
 }
