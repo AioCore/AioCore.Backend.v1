@@ -42,7 +42,7 @@ namespace AioCore.Infrastructure.DbContexts
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return this.SaveEntitiesAsync(_serviceProvider, cancellationToken);
+            return this.SaveEntitiesAsync(base.SaveChangesAsync, _serviceProvider, cancellationToken);
         }
     }
 }

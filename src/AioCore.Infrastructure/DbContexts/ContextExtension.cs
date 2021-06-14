@@ -12,7 +12,7 @@ namespace AioCore.Infrastructure.DbContexts
 {
     public static class ContextExtension
     {
-        public static async Task<int> SaveEntitiesAsync(this DbContext context, IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+        public static async Task<int> SaveEntitiesAsync(this DbContext context, Func<CancellationToken, Task<int>> baseSaveChanges, IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
         {
             var dateTime = serviceProvider.GetRequiredService<IDateTime>();
             var currentUser = serviceProvider.GetRequiredService<ICurrentUser>();
@@ -31,7 +31,7 @@ namespace AioCore.Infrastructure.DbContexts
                         break;
                 }
             }
-            var result = await context.SaveChangesAsync(cancellationToken);
+            var result = await baseSaveChanges(cancellationToken);
             await DispatchDomainEventsAsync(context, serviceProvider);
             return result;
         }
