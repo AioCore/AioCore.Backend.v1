@@ -17,6 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Package.AutoMapper;
 using Package.DatabaseManagement;
 using Package.Elasticsearch;
@@ -122,7 +124,11 @@ namespace AioCore.API
                 {
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                 })
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                });
 
             services.AddCors(options =>
             {

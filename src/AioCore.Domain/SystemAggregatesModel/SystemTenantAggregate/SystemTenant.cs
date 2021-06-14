@@ -20,17 +20,9 @@ namespace AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate
         [Keyword]
         public Guid? LogoId { get; set; }
 
-        public string Server { get; set; }
-
-        public string User { get; set; }
-
-        public string Database { get; set; }
-
-        public string Password { get; set; }
-
-        public string Schema { get; set; }
-
-        public string DatabaseType { get; set; }
+        public string DatabaseInfo { get; set; }
+        
+        public string ElasticsearchInfo { get; set; }
 
         public virtual ICollection<SystemUser> Users { get; set; }
 

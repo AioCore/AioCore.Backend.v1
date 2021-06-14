@@ -1,10 +1,13 @@
 ﻿using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+using AutoMapper;
 using Package.AutoMapper;
+using Package.DatabaseManagement;
+using Package.Elasticsearch;
 using System;
 
 namespace AioCore.Application.Responses.SystemTenantResponses
 {
-    public record CreateTenantResponse : IMapFrom<SystemTenant>
+    public record CreateTenantResponse : IMap
     {
         public Guid Id { get; set; }
 
@@ -16,16 +19,15 @@ namespace AioCore.Application.Responses.SystemTenantResponses
 
         public Guid LogoId { get; set; }
 
-        public string Server { get; set; }
+        public DatabaseInfo Database { get; set; }
 
-        public string User { get; set; }
+        public ElasticsearchInfo Elasticsearch { get; set; }
 
-        public string Database { get; set; }
-
-        public string Password { get; set; }
-
-        public string Schema { get; set; }
-
-        public string DatabaseType { get; set; }
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<SystemTenant, CreateTenantResponse>()
+                .ForMember(t => t.Database, t => t.MapFrom(x => DatabaseInfo.Parse(x.DatabaseInfo)))
+                .ForMember(t => t.Elasticsearch, t => t.MapFrom(x => ElasticsearchInfo.Parse(x.ElasticsearchInfo)));
+        }
     }
 }

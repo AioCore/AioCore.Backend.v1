@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Package.DatabaseManagement;
 using Package.Extensions;
 using Package.Localization;
 using System;
@@ -33,7 +34,7 @@ namespace AioCore.Application.Commands.IdentityCommands
             private readonly IStringLocalizer<Localization> _localizer;
 
             public Handler(
-                IAioCoreUnitOfWork context
+                  IAioCoreUnitOfWork context
                 , IOptions<AppSettings> appSettings
                 , IStringLocalizer<Localization> localizer)
             {
@@ -77,6 +78,8 @@ namespace AioCore.Application.Commands.IdentityCommands
 
                 var apps = string.Join(";", tenant.TenantApplications.Select(t => t.ApplicationId));
 
+                var dbInfo = DatabaseInfo.Parse(tenant.DatabaseInfo);
+
                 var claims = new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -84,7 +87,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                     new Claim("email", user.Email),
                     new Claim("account", user.Account),
                     new Claim("tenant", tenant.Id.ToString()),
-                    new Claim("schema", tenant.Schema),
+                    new Claim("schema", dbInfo?.Schema),
                     new Claim("apps", apps),
                     new Claim("policies", policies),
                     new Claim("groups", ""),

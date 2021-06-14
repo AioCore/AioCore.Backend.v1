@@ -21,19 +21,7 @@ namespace AioCore.Infrastructure.Services
         {
             var tenantId = Guid.Parse(FindClaim("tenant_creating") ?? FindClaim("tenant"));
             var tenant = _settingTenantRepository.GetAsync(tenantId).GetAwaiter().GetResult();
-            if (!Enum.TryParse<DatabaseType>(tenant.DatabaseType, out var databaseType))
-            {
-                databaseType = DatabaseType.MsSql;
-            }
-            return new DatabaseInfo
-            {
-                User = tenant.User,
-                Database = tenant.Database,
-                Password = tenant.Password,
-                Schema = tenant.Schema,
-                Server = tenant.Server,
-                DatabaseType = databaseType
-            };
+            return DatabaseInfo.Parse(tenant?.DatabaseInfo);
         }
 
         private string FindClaim(string key)

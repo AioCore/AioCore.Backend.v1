@@ -10,5 +10,6 @@ namespace AioCore.Application.Services
         Guid? GetCurrentTenant();
 
         Task<SystemTenant> CreateTenantAsync(SystemTenant systemTenant, CancellationToken cancellationToken);
+        Task<SystemTenant> UpdateTenantAsync(SystemTenant systemTenant, CancellationToken cancellationToken);
     }
 }
