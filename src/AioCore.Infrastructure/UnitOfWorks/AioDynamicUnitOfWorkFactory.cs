@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using AioCore.Infrastructure.DbContexts;
+using Package.DatabaseManagement;
 
 namespace AioCore.Infrastructure.UnitOfWorks
 {
@@ -35,11 +36,11 @@ namespace AioCore.Infrastructure.UnitOfWorks
             {
                 throw new AioCoreException("Tenant not found");
             }
-
+            var dbInfo = DatabaseInfo.Parse(tenant.DatabaseInfo);
             _httpContextAccessor.HttpContext.User.AddIdentity(new ClaimsIdentity(new List<Claim>
             {
                 new Claim("tenant_creating", tenant.Id.ToString()),
-                new Claim("schema_creating", tenant.Schema)
+                new Claim("schema_creating", dbInfo?.Schema)
             }));
 
             var dbContext = _serviceProvider.GetRequiredService<AioDynamicContext>();

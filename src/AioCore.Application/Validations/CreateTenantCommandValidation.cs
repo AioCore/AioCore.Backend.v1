@@ -8,12 +8,9 @@ namespace AioCore.Application.Validations
         public CreateTenantCommandValidation()
         {
             RuleFor(t => t.Name).NotEmpty();
-            RuleFor(t => t.Database).NotEmpty();
-            RuleFor(t => t.Password).NotEmpty();
-            RuleFor(t => t.Schema).NotEmpty();
-            RuleFor(t => t.Server).NotEmpty();
-            RuleFor(t => t.User).NotEmpty();
-            RuleFor(t => t.DatabaseType).NotEmpty();
+            RuleFor(t => t.Database).NotNull();
+            RuleFor(t => t.Elasticsearch).NotNull();
+            RuleFor(t => t.DatabaseType).NotNull();
         }
     }
 }

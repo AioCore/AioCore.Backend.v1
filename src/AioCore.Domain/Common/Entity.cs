@@ -16,14 +16,14 @@ namespace AioCore.Domain.Common
         public Guid Id
         {
             get => _id;
-            protected set => _id = value;
+            set => _id = value;
         }
 
         public DateTimeOffset CreatedDate { get; set; }
-        
+
         [StringLength(50)]
         public string CreatedBy { get; set; }
-        
+
         public DateTimeOffset? UpdatedDate { get; set; }
 
         [StringLength(50)]

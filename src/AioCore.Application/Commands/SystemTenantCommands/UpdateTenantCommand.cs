@@ -1,18 +1,19 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AioCore.Application.Responses.SystemTenantResponses;
+﻿using AioCore.Application.Responses.SystemTenantResponses;
 using AioCore.Application.Services;
 using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 using MediatR;
 using Package.AutoMapper;
 using Package.DatabaseManagement;
 using Package.Elasticsearch;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AioCore.Application.Commands.SystemTenantCommands
 {
-    public class CreateTenantCommand : IRequest<CreateTenantResponse>
+    public class UpdateTenantCommand : IRequest<CreateTenantResponse>
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Guid? FaviconId { get; set; }
@@ -20,9 +21,7 @@ namespace AioCore.Application.Commands.SystemTenantCommands
         public DatabaseInfo Database { get; set; }
         public ElasticsearchInfo Elasticsearch { get; set; }
 
-        public DatabaseType DatabaseType { get; set; }
-
-        internal class Handler : IRequestHandler<CreateTenantCommand, CreateTenantResponse>
+        internal class Handler : IRequestHandler<UpdateTenantCommand, CreateTenantResponse>
         {
             private readonly ITenantService _tenantService;
 
@@ -30,11 +29,11 @@ namespace AioCore.Application.Commands.SystemTenantCommands
             {
                 _tenantService = tenantService;
             }
-
-            public async Task<CreateTenantResponse> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+            public async Task<CreateTenantResponse> Handle(UpdateTenantCommand request, CancellationToken cancellationToken)
             {
-                var tenant = await _tenantService.CreateTenantAsync(new SystemTenant
+                var tenant = await _tenantService.UpdateTenantAsync(new SystemTenant
                 {
+                    Id = request.Id,
                     Name = request.Name,
                     Description = request.Description,
                     FaviconId = request.FaviconId,

@@ -1,7 +1,5 @@
 ﻿using AioCore.Application.Commands.SystemTenantCommands;
 using AioCore.Application.Queries.SystemTenantQueries;
-using AioCore.Shared.Mvc;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -9,15 +7,8 @@ using System.Threading.Tasks;
 namespace AioCore.API.Controllers
 {
     [Route("{culture}/settings/api/v1/tenant")]
-    public class SystemTenantController : AioController
+    public class SystemTenantController : AioControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public SystemTenantController(IMediator mediator)
-        {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        }
-
         [HttpGet("item")]
         public async Task<IActionResult> ItemAsync([FromQuery] Guid tenantId)
         {
@@ -27,7 +18,7 @@ namespace AioCore.API.Controllers
             {
                 var query = new GetTenantQuery();
                 query.MergeParams(tenantId);
-                var res = await _mediator.Send(query);
+                var res = await Mediator.Send(query);
                 return Ok(res);
             }
             catch
@@ -43,7 +34,7 @@ namespace AioCore.API.Controllers
             {
                 var query = new ListTenantQuery();
                 query.MergeParams(pageSize, pageIndex, keyword);
-                var res = await _mediator.Send(query);
+                var res = await Mediator.Send(query);
                 return Ok(res);
             }
             catch
@@ -55,8 +46,14 @@ namespace AioCore.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTenantCommand command)
         {
-            var id = await _mediator.Send(command);
+            var id = await Mediator.Send(command);
             return Ok(id);
+        }
+
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateTenantCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
 
         [HttpGet("users")]
@@ -66,7 +63,7 @@ namespace AioCore.API.Controllers
             {
                 var query = new ListTenantUsersQuery();
                 query.MergeParams(tenantId);
-                var users = await _mediator.Send(query);
+                var users = await Mediator.Send(query);
                 return Ok(users);
             }
             catch
