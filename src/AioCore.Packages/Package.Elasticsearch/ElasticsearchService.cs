@@ -35,11 +35,14 @@ namespace Package.Elasticsearch
     public class ElasticsearchService : IElasticsearchService
     {
         private readonly IElasticClient _elasticClient;
+        private readonly ILogger<ElasticsearchService> _logger;
 
-        public ElasticsearchService(IServiceProvider serviceProvider)
+        public ElasticsearchService(
+              ILogger<ElasticsearchService> logger
+            , IElasticClientFactory elasticClientFactory)
         {
-            _elasticClient = serviceProvider.GetRequiredService<IElasticClient>();
-            serviceProvider.GetRequiredService<ILogger<ElasticsearchService>>();
+            _elasticClient = elasticClientFactory.CreateElasticClient();
+            _logger = logger;
         }
 
         public async Task IndexAsync<T>(T document) where T : class

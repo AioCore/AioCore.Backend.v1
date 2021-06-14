@@ -41,7 +41,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
 
             public async Task<CreateEntityRespone> Handle(CreateEntityCommand request, CancellationToken cancellationToken)
             {
-                var currentTenantId = _tenantService.GetCurrentTenant();
+                var currentTenantId = _tenantService.GetCurrentTenantId();
                 if (currentTenantId == null)
                 {
                     throw new AioCoreException("Current tenant does not exists");

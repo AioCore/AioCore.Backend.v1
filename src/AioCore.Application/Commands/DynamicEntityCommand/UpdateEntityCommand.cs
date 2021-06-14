@@ -38,7 +38,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
 
             public async Task<UpdateEntityRespone> Handle(UpdateEntityCommand request, CancellationToken cancellationToken)
             {
-                var currentTenantId = _tenantService.GetCurrentTenant();
+                var currentTenantId = _tenantService.GetCurrentTenantId();
                 var dynamicEntity = await _dynamicUnitOfWork
                     .DynamicEntities
                         .Include(t => t.DynamicDateValues)

@@ -5,6 +5,7 @@ using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Infrastructure.Authorize;
 using AioCore.Infrastructure.DbContexts;
+using AioCore.Infrastructure.Services;
 using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
@@ -60,7 +61,6 @@ namespace AioCore.API
                 .AddCustomSwagger()
                 .AddCustomIntegrations(_configuration)
                 .AddEventBus(_configuration)
-                .AddElasticsearch(_configuration)
                 .AddMapper();
 
             services.Configure<AppSettings>(_configuration);
@@ -282,11 +282,11 @@ namespace AioCore.API
             services.AddValidatorsFromAssemblies(asms);
 
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            //services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             services.AddScoped<HtmlBuilder>();
             services.AddScoped<ViewRenderFactory>();
 
+            services.AddScoped<IElasticClientFactory, ElasticClientFactory>();
             services.AddScoped<IElasticsearchService, ElasticsearchService>();
             services.AddScoped<IFileServerService, FileServerService>();
 
