@@ -79,9 +79,10 @@ namespace AioCore.Application.Commands.IdentityCommands
 
                 var claims = new[]
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim("id", user.Id.ToString()),
                     new Claim("email", user.Email),
                     new Claim("account", user.Account),
-                    new Claim("id", user.Id.ToString()),
                     new Claim("tenant", tenant.Id.ToString()),
                     new Claim("schema", tenant.Schema),
                     new Claim("apps", apps),
