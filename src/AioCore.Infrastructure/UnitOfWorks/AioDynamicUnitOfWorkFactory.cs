@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
+using AioCore.Infrastructure.DbContexts;
 
 namespace AioCore.Infrastructure.UnitOfWorks
 {

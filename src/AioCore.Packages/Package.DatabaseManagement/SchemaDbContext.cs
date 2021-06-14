@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.DependencyInjection;
 using Package.DatabaseManagement.Infrastructure;
+using System;
 
 namespace Package.DatabaseManagement
 {
@@ -9,9 +11,9 @@ namespace Package.DatabaseManagement
     {
         public string Schema { get; set; }
 
-        protected SchemaDbContext(DbContextOptions options, ISchemaDbContext schema) : base(options)
+        protected SchemaDbContext(DbContextOptions options, IServiceProvider serviceProvider) : base(options)
         {
-            Schema = schema?.Schema;
+            Schema = serviceProvider?.GetService<ISchemaDbContext>()?.Schema;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

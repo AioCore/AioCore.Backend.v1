@@ -22,41 +22,10 @@ namespace AioCore.Domain.SystemAggregatesModel.SystemUserAggregate
 
         public string PasswordHash { get; set; }
 
-        [Keyword]
-        public Guid TenantId { get; set; }
-
-        public virtual SystemTenant Tenant { get; set; }
-
-        public DateTimeOffset Created { get; set; }
-
-        public DateTimeOffset Modified { get; set; }
-
         public virtual ICollection<SystemUserGroup> Groups { get; set; }
 
         public virtual ICollection<SystemUserPolicy> Policies { get; set; }
 
-        public SystemUser()
-        {
-        }
-
-        public SystemUser(
-            string name,
-            string email,
-            Guid tenantId,
-            string password)
-        {
-            Name = name;
-            Email = email;
-            TenantId = tenantId;
-            PasswordHash = password.CreateMd5();
-        }
-
-        public void Update(
-            string name,
-            string email)
-        {
-            Name = name;
-            Email = email;
-        }
+        public virtual ICollection<SystemTenant> Tenants { get; set; }
     }
 }

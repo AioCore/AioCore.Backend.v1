@@ -1,4 +1,4 @@
-using AioCore.Infrastructure;
+using AioCore.Infrastructure.DbContexts;
 using AioCore.Shared;
 using AioCore.Shared.Extensions;
 using Microsoft.AspNetCore.Hosting;

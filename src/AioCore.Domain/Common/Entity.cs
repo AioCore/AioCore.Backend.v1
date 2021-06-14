@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AioCore.Domain.Common
@@ -17,6 +18,16 @@ namespace AioCore.Domain.Common
             get => _id;
             protected set => _id = value;
         }
+
+        public DateTimeOffset CreatedDate { get; set; }
+        
+        [StringLength(50)]
+        public string CreatedBy { get; set; }
+        
+        public DateTimeOffset? UpdatedDate { get; set; }
+
+        [StringLength(50)]
+        public string UpdatedBy { get; set; }
 
         [Keyword]
         [JsonIgnore]

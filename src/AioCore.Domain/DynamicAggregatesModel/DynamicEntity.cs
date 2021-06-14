@@ -16,8 +16,6 @@ namespace AioCore.Domain.DynamicAggregatesModel
 
         public Guid TenantId { get; set; }
 
-        public DateTimeOffset Created { get; set; }
-
         public virtual ICollection<DynamicDateValue> DynamicDateValues { get; set; }
 
         public virtual ICollection<DynamicFloatValue> DynamicFloatValues { get; set; }

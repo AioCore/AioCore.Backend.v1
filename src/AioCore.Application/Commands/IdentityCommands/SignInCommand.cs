@@ -24,6 +24,8 @@ namespace AioCore.Application.Commands.IdentityCommands
 
         public string Password { get; set; }
 
+        public Guid TenantId { get; set; }
+
         internal class Handler : IRequestHandler<SignInCommand, SignInResponse>
         {
             private readonly IAioCoreUnitOfWork _context;
@@ -43,7 +45,6 @@ namespace AioCore.Application.Commands.IdentityCommands
             public async Task<SignInResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
             {
                 var user = await _context.SystemUsers
-                    .Include(x => x.Tenant).ThenInclude(x => x.TenantApplications)
                     .Include(x => x.Policies).ThenInclude(x => x.Policy)
                     .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.Account == request.Key || x.Email == request.Key, cancellationToken);
@@ -57,17 +58,32 @@ namespace AioCore.Application.Commands.IdentityCommands
                     };
                 }
 
+                var tenant = await _context.SystemTenants
+                    .Where(t => t.Id == request.TenantId && t.Users.Any(x => x.Id == user.Id))
+                    .Include(t => t.TenantApplications)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                if (tenant == null)
+                {
+                    return new SignInResponse
+                    {
+                        Success = false,
+                        Message = _localizer[Message.SignInMessageFail]
+                    };
+                }
+
                 var policies = string.Join(";", user.Policies.Select(t => $"{t.Policy.Controller}|{t.Policy.Action}"));
 
-                var apps = string.Join(";", user.Tenant.TenantApplications.Select(t => t.ApplicationId));
+                var apps = string.Join(";", tenant.TenantApplications.Select(t => t.ApplicationId));
 
                 var claims = new[]
                 {
                     new Claim("email", user.Email),
                     new Claim("account", user.Account),
                     new Claim("id", user.Id.ToString()),
-                    new Claim("tenant", user.TenantId.ToString()),
-                    new Claim("schema", user.Tenant.Schema),
+                    new Claim("tenant", tenant.Id.ToString()),
+                    new Claim("schema", tenant.Schema),
                     new Claim("apps", apps),
                     new Claim("policies", policies),
                     new Claim("groups", ""),

@@ -6,6 +6,12 @@ namespace AioCore.API.Controllers
 {
     public class IdentityController : AioControllerBase
     {
+        [HttpPost("presign-in")]
+        public async Task<IActionResult> PreSignIn(PreSiginCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn(SignInCommand command)
         {

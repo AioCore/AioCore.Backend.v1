@@ -3,15 +3,17 @@ using System;
 using AioCore.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AioCore.API.Migrations
 {
     [DbContext(typeof(AioCoreContext))]
-    partial class AioCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210614051344_RefactorUserTenant")]
+    partial class RefactorUserTenant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -806,41 +808,6 @@ namespace AioCore.API.Migrations
                     b.ToTable("SystemUserPolicies");
                 });
 
-            modelBuilder.Entity("AioCore.Domain.SystemAggregatesModel.SystemUserAggregate.SystemUserTenant", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<DateTimeOffset?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SystemUserTenant");
-                });
-
             modelBuilder.Entity("SettingFeatureSettingFeature", b =>
                 {
                     b.Property<Guid>("ChildrenId")
@@ -869,6 +836,21 @@ namespace AioCore.API.Migrations
                     b.HasIndex("DescendantsId");
 
                     b.ToTable("SystemGroupSystemGroup");
+                });
+
+            modelBuilder.Entity("SystemTenantSystemUser", b =>
+                {
+                    b.Property<Guid>("TenantsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("TenantsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("SystemTenantSystemUser");
                 });
 
             modelBuilder.Entity("AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate.SettingComponent", b =>
@@ -999,25 +981,6 @@ namespace AioCore.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AioCore.Domain.SystemAggregatesModel.SystemUserAggregate.SystemUserTenant", b =>
-                {
-                    b.HasOne("AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate.SystemTenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AioCore.Domain.SystemAggregatesModel.SystemUserAggregate.SystemUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SettingFeatureSettingFeature", b =>
                 {
                     b.HasOne("AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate.SettingFeature", null)
@@ -1044,6 +1007,21 @@ namespace AioCore.API.Migrations
                     b.HasOne("AioCore.Domain.SystemAggregatesModel.SystemGroupAggregate.SystemGroup", null)
                         .WithMany()
                         .HasForeignKey("DescendantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SystemTenantSystemUser", b =>
+                {
+                    b.HasOne("AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate.SystemTenant", null)
+                        .WithMany()
+                        .HasForeignKey("TenantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AioCore.Domain.SystemAggregatesModel.SystemUserAggregate.SystemUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

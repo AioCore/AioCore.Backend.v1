@@ -1,9 +1,10 @@
+using AioCore.Application;
 using AioCore.Application.Behaviors;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Infrastructure;
 using AioCore.Infrastructure.Authorize;
+using AioCore.Infrastructure.DbContexts;
 using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
@@ -269,6 +270,8 @@ namespace AioCore.API
         {
             var asms = AssemblyHelper.Assemblies.ToArray();
 
+            services.AddTransient<IDateTime, CustomDateTime>();
+            services.AddSingleton<ICurrentUser, CurrentUser>();
             services.AddMediatR(asms);
             services.AddValidatorsFromAssemblies(asms);
 

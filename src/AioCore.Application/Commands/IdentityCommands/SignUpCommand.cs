@@ -26,8 +26,6 @@ namespace AioCore.Application.Commands.IdentityCommands
 
         public string ConfirmPassword { get; set; }
 
-        public Guid TenantId { get; set; }
-
         internal class Handler : IRequestHandler<SignUpCommand, SignUpResponse>
         {
             private readonly IAioCoreUnitOfWork _aioCoreUnitOfWork;
@@ -48,20 +46,14 @@ namespace AioCore.Application.Commands.IdentityCommands
             {
                 try
                 {
-                    //check if tenant doesn't exists 
-                    if (!(await _aioCoreUnitOfWork.SystemTenants.AnyAsync(t => t.Id == request.TenantId, cancellationToken)))
-                    {
-                        return new SignUpResponse { Message = _localizer[Message.SignUpMessageTenantNotExists] };
-                    }
-
                     //check if account has existed
-                    if (await _aioCoreUnitOfWork.SystemUsers.AnyAsync(t => t.Account == request.Account && t.TenantId == request.TenantId, cancellationToken))
+                    if (await _aioCoreUnitOfWork.SystemUsers.AnyAsync(t => t.Account == request.Account, cancellationToken))
                     {
                         return new SignUpResponse { Message = string.Format(_localizer[Message.SignUpMessageAccountExisted], request.Account) };
                     }
 
                     //check if account has existed
-                    if (await _aioCoreUnitOfWork.SystemUsers.AnyAsync(t => t.Email == request.Email && t.TenantId == request.TenantId, cancellationToken))
+                    if (await _aioCoreUnitOfWork.SystemUsers.AnyAsync(t => t.Email == request.Email, cancellationToken))
                     {
                         return new SignUpResponse { Message = string.Format(_localizer[Message.SignUpMessageEmailExisted], request.Email) };
                     }
@@ -72,7 +64,6 @@ namespace AioCore.Application.Commands.IdentityCommands
                         Account = request.Account,
                         Email = request.Email,
                         PasswordHash = request.Password.CreateMd5(),
-                        TenantId = request.TenantId
                     });
                     await _aioCoreUnitOfWork.SaveChangesAsync(cancellationToken);
                     await _elasticsearchService.IndexAsync(user);
