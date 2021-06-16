@@ -5,6 +5,7 @@ using AioCore.Domain.SettingAggregatesModel.SettingDomAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingFieldAggregate;
+using AioCore.Domain.SettingAggregatesModel.SettingFilterAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingFormAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
 using AioCore.Domain.SettingAggregatesModel.SettingViewAggregate;
@@ -41,5 +42,6 @@ namespace AioCore.Application.UnitOfWorks
         IRepository<SystemUserGroup> SystemUserGroups { get; }
         IRepository<SystemUserPolicy> SystemUserPolicies { get; }
         IRepository<SystemBinary> SystemBinaries { get; }
+        IRepository<SettingFilter> SettingFilters { get; }
     }
 }

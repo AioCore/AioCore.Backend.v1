@@ -1,5 +1,5 @@
-﻿using AioCore.Application.Services;
-using AioCore.Application.UnitOfWorks;
+﻿using AioCore.Application.Repositories;
+using AioCore.Application.Services;
 using Microsoft.Extensions.Configuration;
 using Nest;
 using Package.Elasticsearch;
@@ -11,16 +11,16 @@ namespace AioCore.Infrastructure.Services
     public class ElasticClientFactory : IElasticClientFactory
     {
         private readonly ITenantService _tenantService;
-        private readonly IAioCoreUnitOfWork _coreUnitOfWork;
+        private readonly ISettingTenantRepository _tenantRepository;
         private readonly IConfiguration _configuration;
 
         public ElasticClientFactory(
               ITenantService tenantService
-            , IAioCoreUnitOfWork coreUnitOfWork
+            , ISettingTenantRepository tenantRepository
             , IConfiguration configuration)
         {
             _tenantService = tenantService;
-            _coreUnitOfWork = coreUnitOfWork;
+            _tenantRepository = tenantRepository;
             _configuration = configuration;
         }
 
@@ -29,17 +29,18 @@ namespace AioCore.Infrastructure.Services
         public IElasticClient CreateElasticClient()
         {
             var currentTenantId = _tenantService.GetCurrentTenantId();
-
-            return _esClients.GetOrAdd(currentTenantId?.ToString() ?? "default", (_) =>
+            var tenant = currentTenantId is null ? null : _tenantRepository.GetAsync(currentTenantId.Value).GetAwaiter().GetResult();
+            var esInfo = ElasticsearchInfo.Parse(tenant?.ElasticsearchInfo) ?? new ElasticsearchInfo
             {
-                var tenant = currentTenantId is null ? null : _coreUnitOfWork.SystemTenants.Find(currentTenantId);
-                var esInfo = ElasticsearchInfo.Parse(tenant?.ElasticsearchInfo) ?? new ElasticsearchInfo
-                {
-                    UserName = _configuration["Elasticsearch:UserName"],
-                    Password = _configuration["Elasticsearch:Password"],
-                    Url = _configuration["Elasticsearch:Url"],
-                    Index = _configuration["Elasticsearch:Index"]
-                };
+                UserName = _configuration["Elasticsearch:UserName"],
+                Password = _configuration["Elasticsearch:Password"],
+                Url = _configuration["Elasticsearch:Url"],
+                Index = _configuration["Elasticsearch:Index"]
+            };
+            var key = $"{esInfo.Url}_{esInfo.Index}_{esInfo.UserName}_{esInfo.Password}";
+
+            return _esClients.GetOrAdd(key, (_) =>
+            {
                 var settings = new ConnectionSettings(new Uri(esInfo.Url))
                     .DefaultIndex(esInfo.Index);
 
