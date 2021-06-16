@@ -64,7 +64,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 {
                     var attrValues = attributes.Select(t =>
                     {
-                        var attrVal = request.AttributeValues?.FirstOrDefault(x => t.DataType == dataType.ToString() && x.Name == t.Name);
+                        var attrVal = request.AttributeValues?.FirstOrDefault(x => t.DataType == dataType && x.Name == t.Name);
                         if (attrVal is null) return null;
                         return new { t.Id, attrVal.Value };
                     })

@@ -1,5 +1,6 @@
 ﻿using System;
 using AioCore.Domain.Common;
+using AioCore.Shared.Common;
 
 namespace AioCore.Domain.DynamicAggregatesModel
 {
@@ -7,7 +8,7 @@ namespace AioCore.Domain.DynamicAggregatesModel
     {
         public string Name { get; set; }
 
-        public string DataType { get; set; }
+        public DataType DataType { get; set; }
 
         public Guid EntityTypeId { get; set; }
     }

@@ -1,6 +1,8 @@
 ﻿using AioCore.Domain.DynamicAggregatesModel;
+using AioCore.Shared.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
@@ -10,6 +12,8 @@ namespace AioCore.Infrastructure.EntityTypeConfigurations
         {
             builder.HasKey(x => x.Id);
             builder.Ignore(x => x.DomainEvents);
+            builder.Property(x => x.DataType)
+                .HasConversion(v => v.ToString(), v => Enum.Parse<DataType>(v));
         }
     }
 }

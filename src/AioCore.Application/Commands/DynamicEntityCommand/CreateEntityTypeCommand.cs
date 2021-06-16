@@ -52,7 +52,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 {
                     Name = t.Name,
                     EntityTypeId = entity.Id,
-                    DataType = t.DataType.ToString()
+                    DataType = t.DataType
                 });
 
                 var aioDynamicUnitOfWork = await _aioDynamicUnitOfWorkFactory.CreateUnitOfWorkAsync(request.TenantId, cancellationToken);

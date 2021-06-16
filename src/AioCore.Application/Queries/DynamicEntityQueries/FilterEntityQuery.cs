@@ -64,7 +64,7 @@ namespace AioCore.Application.Queries.DynamicEntityQueries
                     var setting = filterSettings.Parameters?.FirstOrDefault(x => x.AttributeId == t.Key);
                     if (setting is null) return null;
 
-                    return new QueryAdvanced(attr.Name, setting.Function, Enum.Parse<DataType>(attr.DataType), t.Value, setting.Operator);
+                    return new QueryAdvanced(attr.Name, setting.Function, attr.DataType, t.Value, setting.Operator);
                 })
                 .Where(t => t is not null)
                 .ToList();

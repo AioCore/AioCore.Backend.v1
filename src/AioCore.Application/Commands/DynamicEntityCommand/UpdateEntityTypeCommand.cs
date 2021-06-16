@@ -61,7 +61,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 {
                     Name = t.Name,
                     EntityTypeId = entityType.Id,
-                    DataType = t.DataType.ToString()
+                    DataType = t.DataType
                 }));
 
                 await dynamicUnitOfWork.SaveChangesAsync(cancellationToken);

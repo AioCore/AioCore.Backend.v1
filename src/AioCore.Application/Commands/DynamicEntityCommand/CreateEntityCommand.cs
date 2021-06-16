@@ -71,7 +71,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
 
                 List<T> CreateDynamicValues<T, TType>(DataType dataType) where T : DynamicValue<TType>, new()
                 {
-                    return attributes.Where(t => t.DataType == dataType.ToString())
+                    return attributes.Where(t => t.DataType == dataType)
                         .Select(t =>
                         {
                             var value = request.AttributeValues.FirstOrDefault(x => x.Name == t.Name);
