@@ -47,8 +47,8 @@ namespace AioCore.API.Controllers
             return Ok(await Mediator.Send(request));
         }
 
-        [HttpGet("filter-entity")]
-        public async Task<ActionResult> FilterEntity(FilterEntityQuery request)
+        [HttpPost("filter-entity")]
+        public async Task<ActionResult> FilterEntity([FromBody] FilterEntityQuery request)
         {
             return Ok(await Mediator.Send(request));
         }

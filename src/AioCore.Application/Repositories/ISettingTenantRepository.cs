@@ -7,7 +7,5 @@ namespace AioCore.Application.Repositories
     public interface ISettingTenantRepository : IRepository<SystemTenant>
     {
         Task<SystemTenant> GetAsync(Guid id);
-
-        void Delete(Guid id);
     }
 }

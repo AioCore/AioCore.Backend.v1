@@ -22,6 +22,7 @@ using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
 using System.Threading;
+using AioCore.Domain.SettingAggregatesModel.SettingFilterAggregate;
 
 namespace AioCore.Infrastructure.DbContexts
 {
@@ -80,6 +81,8 @@ namespace AioCore.Infrastructure.DbContexts
 
         public DbSet<SystemBinary> SystemBinaries { get; set; }
 
+        public DbSet<SettingFilter> SettingFilters { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -100,6 +103,7 @@ namespace AioCore.Infrastructure.DbContexts
             modelBuilder.ApplyConfiguration(new SettingFormTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingLayoutTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingViewTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingFilterTypeConfiguration());
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()

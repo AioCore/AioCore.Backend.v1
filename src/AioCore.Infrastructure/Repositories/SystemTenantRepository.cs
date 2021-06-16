@@ -12,7 +12,7 @@ namespace AioCore.Infrastructure.Repositories
 
         public SystemTenantRepository(AioCoreContext context) : base(context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public async Task<SystemTenant> GetAsync(Guid id)
