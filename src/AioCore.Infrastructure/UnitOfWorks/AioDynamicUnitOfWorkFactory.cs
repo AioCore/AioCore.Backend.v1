@@ -45,7 +45,7 @@ namespace AioCore.Infrastructure.UnitOfWorks
 
             var dbContext = _serviceProvider.GetRequiredService<AioDynamicContext>();
             await dbContext.Database.MigrateAsync(cancellationToken);
-            return new AioDynamicUnitOfWork(dbContext);
+            return _serviceProvider.GetRequiredService<IAioDynamicUnitOfWork>();
         }
     }
 }

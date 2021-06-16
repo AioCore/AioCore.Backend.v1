@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Repositories;
+using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using MediatR;
 
 namespace AioCore.Application.Queries.SystemUserQueries
@@ -17,16 +18,16 @@ namespace AioCore.Application.Queries.SystemUserQueries
 
         internal class Handler : IRequestHandler<GetUserQuery, GetUserResponse>
         {
-            private readonly ISystemUserRepository _systemUserRepository;
+            private readonly IRepository<SystemUser> _systemUserRepository;
 
-            public Handler(ISystemUserRepository systemUserRepository)
+            public Handler(IRepository<SystemUser> systemUserRepository)
             {
                 _systemUserRepository = systemUserRepository ?? throw new ArgumentNullException(nameof(systemUserRepository));
             }
 
             public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
             {
-                var user = await _systemUserRepository.GetAsync(request.Id);
+                var user = await _systemUserRepository.FindAsync(new object[] { request.Id }, cancellationToken);
                 return new GetUserResponse(user.Id, user.Name, user.Email);
             }
         }

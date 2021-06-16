@@ -23,7 +23,6 @@ namespace AioCore.Infrastructure.UnitOfWorks
         public UnitOfWork(DbContext context)
         {
             _context = context;
-            TypeInitialize.InitializeRepositories(this, context);
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()

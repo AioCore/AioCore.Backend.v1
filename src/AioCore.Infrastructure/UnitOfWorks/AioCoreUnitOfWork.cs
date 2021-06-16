@@ -45,9 +45,9 @@ namespace AioCore.Infrastructure.UnitOfWorks
         public IRepository<SystemUserPolicy> SystemUserPolicies { get; set; }
         public IRepository<SystemBinary> SystemBinaries { get; set; }
         public IRepository<SettingFilter> SettingFilters { get; set; }
-       
+
         public AioCoreUnitOfWork(AioCoreContext context) : base(context)
-        {  
+        {
 
         }
     }

@@ -1,10 +1,12 @@
 using AioCore.Application;
 using AioCore.Application.Behaviors;
 using AioCore.Application.IntegrationEvents;
+using AioCore.Application.Repositories;
 using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Infrastructure.Authorize;
 using AioCore.Infrastructure.DbContexts;
+using AioCore.Infrastructure.Repositories;
 using AioCore.Infrastructure.Services;
 using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Shared;
@@ -168,9 +170,9 @@ namespace AioCore.API
                 (serviceProvider) => serviceProvider.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo(),
                 typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
 
-            services.AddScoped<IAioCoreUnitOfWork, AioCoreUnitOfWork>();
-            services.AddScoped<IAioDynamicUnitOfWork, AioDynamicUnitOfWork>();
-            services.AddScoped<IAioDynamicUnitOfWorkFactory, AioDynamicUnitOfWorkFactory>();
+            services.AddUnitOfWork<IAioCoreUnitOfWork, AioCoreUnitOfWork, AioCoreContext>()
+                    .AddUnitOfWork<IAioDynamicUnitOfWork, AioDynamicUnitOfWork, AioDynamicContext>()
+                    .AddScoped<IAioDynamicUnitOfWorkFactory, AioDynamicUnitOfWorkFactory>();
 
             return services;
         }
@@ -305,6 +307,36 @@ namespace AioCore.API
                     }
                 }
             }
+            return services;
+        }
+
+        public static IServiceCollection AddUnitOfWork<TService, TImplementation, TDbContext>(this IServiceCollection services)
+            where TService : class
+            where TImplementation : class, TService
+            where TDbContext : DbContext
+        {
+            var properties = typeof(TImplementation).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(t => typeof(IRepository).IsAssignableFrom(t.PropertyType) && t.PropertyType.IsGenericType)
+                .ToList();
+
+            services.AddScoped<TImplementation>();
+            services.AddScoped<TService, TImplementation>(s =>
+            {
+                var instance = s.GetService<TImplementation>();
+                foreach (var prop in properties)
+                {
+                    prop.SetValue(instance, s.GetService(prop.PropertyType));
+                }
+                return instance;
+            });
+
+            foreach (var prop in properties)
+            {
+                var genericType = prop.PropertyType.GetGenericArguments()[0];
+                var implType = typeof(Repository<>).MakeGenericType(genericType);
+                services.AddScoped(prop.PropertyType, s => Activator.CreateInstance(implType, s.GetService<TDbContext>()));
+            }
+
             return services;
         }
     }
