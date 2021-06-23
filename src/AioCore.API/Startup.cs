@@ -18,6 +18,7 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -303,7 +304,7 @@ namespace AioCore.API
                     if (!type.Name.EndsWith("Repository") && !type.Name.EndsWith("Service")) continue;
                     foreach (var serviceType in type.GetInterfaces().Where(t => !t.Name.StartsWith("System")))
                     {
-                        services.AddScoped(serviceType, type);
+                        services.TryAddScoped(serviceType, type);
                     }
                 }
             }
