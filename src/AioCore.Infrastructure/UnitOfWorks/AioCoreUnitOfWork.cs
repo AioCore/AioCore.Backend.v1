@@ -8,6 +8,7 @@ namespace AioCore.Infrastructure.UnitOfWorks
     public class AioCoreUnitOfWork : UnitOfWork, IAioCoreUnitOfWork
     {
         public IRepository<SettingAction> SettingActions { get; set; }
+        public IRepository<SettingActionStep> SettingActionSteps { get; set; }
         public IRepository<SettingComponent> SettingComponents { get; set; }
         public IRepository<SettingDom> SettingDoms { get; set; }
         public IRepository<SettingEntityType> SettingEntityTypes { get; set; }

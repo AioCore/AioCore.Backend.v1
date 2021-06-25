@@ -25,46 +25,27 @@ namespace AioCore.Infrastructure.DbContexts
         public bool HasActiveTransaction => _currentTransaction != null;
 
         public DbSet<SettingAction> SettingActions { get; set; }
-
         public DbSet<SettingComponent> SettingComponents { get; set; }
-
         public DbSet<SettingDom> SettingDoms { get; set; }
-
         public DbSet<SettingEntityType> SettingEntityTypes { get; set; }
-
         public DbSet<SettingFeature> SettingFeatures { get; set; }
-
         public DbSet<SettingField> SettingFields { get; set; }
-
         public DbSet<SettingForm> SettingForms { get; set; }
-
         public DbSet<SettingLayout> SettingLayouts { get; set; }
-
         public DbSet<SettingView> SettingViews { get; set; }
-
         public DbSet<SystemApplication> SystemApplications { get; set; }
-
         public DbSet<SystemGroup> SystemGroups { get; set; }
-
         public DbSet<SystemPermissionSet> SystemPermissionSets { get; set; }
-
         public DbSet<SystemPermission> SystemPermissions { get; set; }
-
         public DbSet<SystemPolicy> SystemPolicies { get; set; }
-
         public DbSet<SystemTenant> SystemTenants { get; set; }
-
         public DbSet<SystemTenantApplication> SystemTenantApplications { get; set; }
-
         public DbSet<SystemUser> SystemUsers { get; set; }
-
         public DbSet<SystemUserGroup> SystemUserGroups { get; set; }
-
         public DbSet<SystemUserPolicy> SystemUserPolicies { get; set; }
-
         public DbSet<SystemBinary> SystemBinaries { get; set; }
-
         public DbSet<SettingFilter> SettingFilters { get; set; }
+        public DbSet<SettingActionStep> SettingActionSteps { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -87,6 +68,7 @@ namespace AioCore.Infrastructure.DbContexts
             modelBuilder.ApplyConfiguration(new SettingLayoutTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingViewTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SettingFilterTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SettingActionStepTypeConfiguration());
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync()

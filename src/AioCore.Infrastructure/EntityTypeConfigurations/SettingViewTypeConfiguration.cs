@@ -1,15 +1,12 @@
 ﻿using AioCore.Domain.CoreEntities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SettingViewTypeConfiguration : IEntityTypeConfiguration<SettingView>
+    public class SettingViewTypeConfiguration : EntityTypeConfiguration<SettingView>
     {
-        public void Configure(EntityTypeBuilder<SettingView> builder)
+        public override void Config(EntityTypeBuilder<SettingView> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

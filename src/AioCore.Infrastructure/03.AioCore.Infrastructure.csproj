@@ -1,15 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\AioCore.Application\AioCore.Application.csproj" />
-    <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
+    <ProjectReference Include="..\AioCore.Application\02.AioCore.Application.csproj" />
+    <ProjectReference Include="..\AioCore.Domain\04.AioCore.Domain.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.Redis\Package.Redis.csproj" />
-    <ProjectReference Include="..\AioCore.Packages\Package.ViewRender\Package.ViewRender.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AioCore.Infrastructure</AssemblyName>
+    <RootNamespace>AioCore.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

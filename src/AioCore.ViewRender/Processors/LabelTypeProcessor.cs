@@ -1,13 +1,13 @@
 ﻿using AioCore.Application.UnitOfWorks;
+using AioCore.Application.ViewRender;
 using AioCore.Domain.Models;
-using Package.ViewRender;
 using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 
-namespace AioCore.Infrastructure.ViewRenderProcessors
+namespace AioCore.ViewRender.Processors
 {
     public class LabelTypeProcessor : IViewRenderProcessor
     {

@@ -9,20 +9,18 @@ namespace Package.DatabaseManagement
     {
         public static IServiceCollection AddSchemaDbContext<TContext>(this IServiceCollection services
             , Func<IServiceProvider, DatabaseInfo> dbInfoFactory
-            , string assemblyName
             , ServiceLifetime contextLifetime = ServiceLifetime.Scoped
             , ServiceLifetime optionsLifetime = ServiceLifetime.Scoped) where TContext : SchemaDbContext
         {
             services.AddDbContext<TContext>((serviceProvider, options) =>
             {
-                var dbInfo = dbInfoFactory(serviceProvider);
-                options.UseSql(dbInfo, assemblyName);
+                options.UseSql(dbInfoFactory(serviceProvider));
             }, contextLifetime, optionsLifetime);
 
             return services;
         }
 
-        private static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseInfo dbInfo, string assemblyName)
+        private static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseInfo dbInfo)
         {
             var connectionString = GetConnectionString();
             var migrationsAssembly = "DynamicMigrations." + dbInfo.DatabaseType.ToString();
@@ -32,13 +30,11 @@ namespace Package.DatabaseManagement
                 DatabaseType.PostgresSql => optionsBuilder.UseNpgsql(connectionString, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(migrationsAssembly);
-                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                     sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
                 }),
                 _ => optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(migrationsAssembly);
-                    sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                     sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
                 }),
             };

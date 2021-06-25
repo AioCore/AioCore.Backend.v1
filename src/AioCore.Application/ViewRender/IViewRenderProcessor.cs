@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Package.ViewRender
+namespace AioCore.Application.ViewRender
 {
     public interface IViewRenderProcessor
     {

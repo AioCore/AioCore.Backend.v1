@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AioCore.Shared</AssemblyName>
+    <RootNamespace>AioCore.Shared</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

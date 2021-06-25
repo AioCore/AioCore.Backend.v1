@@ -12,6 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AioCore.Packages\Package.Elasticsearch\Package.Elasticsearch.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
-    <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
+    <ProjectReference Include="..\AioCore.Shared\05.AioCore.Shared.csproj" />
   </ItemGroup>
 </Project>

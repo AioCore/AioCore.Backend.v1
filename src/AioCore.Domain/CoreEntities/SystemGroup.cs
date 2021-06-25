@@ -7,10 +7,8 @@ using Package.NestedSet;
 
 namespace AioCore.Domain.CoreEntities
 {
-    public class SystemGroup : INestedSet<SystemGroup, Guid, Guid?>, IAggregateRoot
+    public class SystemGroup : Entity, INestedSet<SystemGroup, Guid, Guid?>, IAggregateRoot
     {
-        public Guid Id { get; set; }
-
         [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Name { get; set; }
 

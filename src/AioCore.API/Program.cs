@@ -18,7 +18,6 @@ namespace AioCore.API
         private static readonly string AppName = Namespace;
         private static IConfiguration configuration;
 
-
         public static void Main(string[] args)
         {
             try
@@ -76,7 +75,7 @@ namespace AioCore.API
         {
             return new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Information()
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()

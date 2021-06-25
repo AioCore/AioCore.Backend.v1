@@ -1,16 +1,13 @@
 ﻿using AioCore.Domain.Common;
-using Nest;
+using System.Collections.Generic;
 
 namespace AioCore.Domain.CoreEntities
 {
     public class SettingAction : Entity, IAggregateRoot
     {
-        [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Name { get; set; }
-
-        [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Description { get; set; }
-
         public string Icon { get; set; }
+        public virtual ICollection<SettingActionStep> SettingActionSteps { get; set; }
     }
 }

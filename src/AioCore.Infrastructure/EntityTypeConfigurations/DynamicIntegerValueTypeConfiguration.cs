@@ -1,15 +1,12 @@
 ﻿using AioCore.Domain.DynamicEntities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class DynamicIntegerValueTypeConfiguration : IEntityTypeConfiguration<DynamicIntegerValue>
+    public class DynamicIntegerValueTypeConfiguration : EntityTypeConfiguration<DynamicIntegerValue>
     {
-        public void Configure(EntityTypeBuilder<DynamicIntegerValue> builder)
+        public override void Config(EntityTypeBuilder<DynamicIntegerValue> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

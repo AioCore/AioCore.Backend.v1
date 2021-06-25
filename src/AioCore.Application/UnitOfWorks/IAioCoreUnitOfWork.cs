@@ -6,6 +6,7 @@ namespace AioCore.Application.UnitOfWorks
     public interface IAioCoreUnitOfWork : IUnitOfWork
     {
         IRepository<SettingAction> SettingActions { get; }
+        IRepository<SettingActionStep> SettingActionSteps { get; }
         IRepository<SettingComponent> SettingComponents { get; }
         IRepository<SettingDom> SettingDoms { get; }
         IRepository<SettingEntityType> SettingEntityTypes { get; }
@@ -25,6 +26,6 @@ namespace AioCore.Application.UnitOfWorks
         IRepository<SystemUserGroup> SystemUserGroups { get; }
         IRepository<SystemUserPolicy> SystemUserPolicies { get; }
         IRepository<SystemBinary> SystemBinaries { get; }
-        IRepository<SettingFilter> SettingFilters { get; }
+        IRepository<SettingFilter> SettingFilters { get; }        
     }
 }

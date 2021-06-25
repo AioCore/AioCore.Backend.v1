@@ -1,15 +1,12 @@
 ﻿using AioCore.Domain.CoreEntities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SystemUserPolicyTypeConfiguration : IEntityTypeConfiguration<SystemUserPolicy>
+    public class SystemUserPolicyTypeConfiguration : EntityTypeConfiguration<SystemUserPolicy>
     {
-        public void Configure(EntityTypeBuilder<SystemUserPolicy> builder)
+        public override void Config(EntityTypeBuilder<SystemUserPolicy> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

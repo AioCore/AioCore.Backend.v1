@@ -1,15 +1,12 @@
 using AioCore.Domain.CoreEntities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SystemUserTypeConfiguration : IEntityTypeConfiguration<SystemUser>
+    public class SystemUserTypeConfiguration : EntityTypeConfiguration<SystemUser>
     {
-        public void Configure(EntityTypeBuilder<SystemUser> builder)
+        public override void Config(EntityTypeBuilder<SystemUser> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
             builder.HasMany(x => x.Tenants)
                 .WithMany(x => x.Users)
                 .UsingEntity<SystemUserTenant>(

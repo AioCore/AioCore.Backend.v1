@@ -1,8 +1,8 @@
 ﻿using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
+using AioCore.Application.ViewRender;
 using AioCore.Domain.Models;
 using Microsoft.AspNetCore.Http;
-using Package.ViewRender;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 
-namespace AioCore.Infrastructure.ViewRenderProcessors
+namespace AioCore.ViewRender.Processors
 {
     public class FieldTypeProcessor : IViewRenderProcessor
     {

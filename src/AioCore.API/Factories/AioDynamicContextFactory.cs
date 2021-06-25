@@ -12,15 +12,16 @@ namespace AioCore.API.Factories
         {
             var configuration = AioCoreConfigs.Configuration(args);
             var provider = configuration.GetValue("Provider", "PostgresSql");
-            var assembly = "DynamicMigrations." + provider;
+            var assemblyName = "DynamicMigrations." + provider;
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
             var optionsBuilder = new DbContextOptionsBuilder<AioDynamicContext>();
             if (provider == "MsSql")
             {
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(assembly));
+                optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName));
             }
             else
             {
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(assembly));
+                optionsBuilder.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName));
             }
             return new AioDynamicContext(optionsBuilder.Options, null)
             {

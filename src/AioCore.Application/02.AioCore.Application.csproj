@@ -6,8 +6,8 @@
     <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.FileServer\Package.FileServer.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.Localization\Package.Localization.csproj" />
-    <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
-    <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
+    <ProjectReference Include="..\AioCore.Shared\05.AioCore.Shared.csproj" />
+    <ProjectReference Include="..\AioCore.Domain\04.AioCore.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +16,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AioCore.Application</AssemblyName>
+    <RootNamespace>AioCore.Application</RootNamespace>
   </PropertyGroup>
 
 </Project>
