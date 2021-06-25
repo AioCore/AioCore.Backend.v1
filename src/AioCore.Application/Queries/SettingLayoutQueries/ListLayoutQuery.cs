@@ -3,8 +3,8 @@ using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
 using AioCore.Shared.Common;
+using AioCore.Domain.CoreEntities;
 
 namespace AioCore.Application.Queries.SettingLayoutQueries
 {

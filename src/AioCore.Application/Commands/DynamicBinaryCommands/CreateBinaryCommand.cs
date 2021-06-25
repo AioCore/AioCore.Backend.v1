@@ -1,5 +1,6 @@
 ﻿using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
+using AioCore.Domain.CoreEntities;
+using AioCore.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Package.Elasticsearch;

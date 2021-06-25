@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
+using AioCore.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Package.ViewRender;
 using System;

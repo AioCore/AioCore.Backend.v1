@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.DynamicAggregatesModel;
-using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
+using AioCore.Domain.CoreEntities;
+using AioCore.Domain.DynamicEntities;
 using AioCore.Shared.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

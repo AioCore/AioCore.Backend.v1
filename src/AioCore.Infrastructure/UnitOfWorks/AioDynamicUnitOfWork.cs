@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.Repositories;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.DynamicAggregatesModel;
+using AioCore.Domain.DynamicEntities;
 using AioCore.Infrastructure.DbContexts;
 
 namespace AioCore.Infrastructure.UnitOfWorks

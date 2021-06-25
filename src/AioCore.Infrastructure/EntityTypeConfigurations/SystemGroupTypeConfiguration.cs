@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.SystemAggregatesModel.SystemGroupAggregate;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

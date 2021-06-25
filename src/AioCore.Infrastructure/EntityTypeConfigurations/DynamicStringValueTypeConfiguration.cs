@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.DynamicAggregatesModel;
+﻿using AioCore.Domain.DynamicEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

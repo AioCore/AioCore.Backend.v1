@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+﻿using AioCore.Domain.CoreEntities;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

@@ -10,7 +10,7 @@ namespace AioCore.API.Factories
     {
         public AioCoreContext CreateDbContext(string[] args)
         {
-            var configuration = AioCoreConfigs.Configuration();
+            var configuration = AioCoreConfigs.Configuration(args); 
             var optionsBuilder = new DbContextOptionsBuilder<AioCoreContext>();
             optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("AioCore.API"));

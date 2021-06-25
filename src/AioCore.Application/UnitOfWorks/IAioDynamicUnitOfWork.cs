@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.Repositories;
-using AioCore.Domain.DynamicAggregatesModel;
+using AioCore.Domain.DynamicEntities;
 
 namespace AioCore.Application.UnitOfWorks
 {

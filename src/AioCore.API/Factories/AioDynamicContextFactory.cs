@@ -3,7 +3,6 @@ using AioCore.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.Reflection;
 
 namespace AioCore.API.Factories
 {
@@ -11,13 +10,21 @@ namespace AioCore.API.Factories
     {
         public AioDynamicContext CreateDbContext(string[] args)
         {
-            var configuration = AioCoreConfigs.Configuration();
+            var configuration = AioCoreConfigs.Configuration(args);
+            var provider = configuration.GetValue("Provider", "PostgresSql");
+            var assembly = "DynamicMigrations." + provider;
             var optionsBuilder = new DbContextOptionsBuilder<AioDynamicContext>();
-            optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+            if (provider == "MsSql")
+            {
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(assembly));
+            }
+            else
+            {
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(assembly));
+            }
             return new AioDynamicContext(optionsBuilder.Options, null)
             {
-                Schema = "public"
+                Schema = provider == "MsSql" ? "dbo" : "public"
             };
         }
     }

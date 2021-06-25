@@ -5,13 +5,14 @@ namespace AioCore.Shared
 {
     public static class AioCoreConfigs
     {
-        public static IConfiguration Configuration()
+        public static IConfiguration Configuration(string[] args)
         {
-            var builder = new ConfigurationBuilder()
+            return new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false, true)
-                .AddEnvironmentVariables();
-            return builder.Build();
+                .AddEnvironmentVariables()
+                .AddCommandLine(args)
+                .Build();
         }
     }
 }

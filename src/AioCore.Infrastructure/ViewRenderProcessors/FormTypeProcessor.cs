@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
+using AioCore.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Package.ViewRender;
 using System;

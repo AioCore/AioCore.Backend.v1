@@ -25,18 +25,19 @@ namespace Package.DatabaseManagement
         private static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseInfo dbInfo, string assemblyName)
         {
             var connectionString = GetConnectionString();
+            var migrationsAssembly = "DynamicMigrations." + dbInfo.DatabaseType.ToString();
 
             return dbInfo.DatabaseType switch
             {
                 DatabaseType.PostgresSql => optionsBuilder.UseNpgsql(connectionString, sqlOptions =>
                 {
-                    sqlOptions.MigrationsAssembly(assemblyName);
+                    sqlOptions.MigrationsAssembly(migrationsAssembly);
                     sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                     sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
                 }),
                 _ => optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
                 {
-                    sqlOptions.MigrationsAssembly(assemblyName);
+                    sqlOptions.MigrationsAssembly(migrationsAssembly);
                     sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                     sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
                 }),

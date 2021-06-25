@@ -169,7 +169,7 @@ namespace AioCore.API
 
             services.AddSchemaDbContext<AioDynamicContext>(
                 (serviceProvider) => serviceProvider.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo(),
-                typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                "DynamicMigrations");
 
             services.AddUnitOfWork<IAioCoreUnitOfWork, AioCoreUnitOfWork, AioCoreContext>()
                     .AddUnitOfWork<IAioDynamicUnitOfWork, AioDynamicUnitOfWork, AioDynamicContext>()

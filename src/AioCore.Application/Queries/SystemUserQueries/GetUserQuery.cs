@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Repositories;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Domain.CoreEntities;
 using MediatR;
 
 namespace AioCore.Application.Queries.SystemUserQueries

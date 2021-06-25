@@ -1,5 +1,4 @@
 using AioCore.Infrastructure.DbContexts;
-using AioCore.Shared;
 using AioCore.Shared.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Package.EventBus.IntegrationEventLogEF;
 using Serilog;
+using Serilog.Context;
 using System;
-using System.IO;
 
 namespace AioCore.API
 {
@@ -17,17 +16,16 @@ namespace AioCore.API
     {
         private static readonly string Namespace = typeof(Program).Namespace;
         private static readonly string AppName = Namespace;
+        private static IConfiguration configuration;
 
-        public static int Main(string[] args)
+
+        public static void Main(string[] args)
         {
-            var configuration = AioCoreConfigs.Configuration();
-
-            Log.Logger = CreateSerilogLogger(configuration);
-
             try
             {
+                var host = CreateHostBuilder(args).Build();
                 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-                var host = CreateHostBuilder(configuration, args).Build();
+                Log.Logger = CreateSerilogLogger(configuration);
 
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 host.MigrateDbContext<AioCoreContext>((context, services) =>
@@ -41,13 +39,10 @@ namespace AioCore.API
 
                 Log.Information("Starting web host ({ApplicationContext})...", AppName);
                 host.Run();
-
-                return 0;
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
-                return 1;
             }
             finally
             {
@@ -55,26 +50,38 @@ namespace AioCore.API
             }
         }
 
-        private static IHostBuilder CreateHostBuilder(IConfiguration configuration, string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog()
+                .ConfigureAppConfiguration((hostingContext, configBuilder) =>
+                {
+                    var env = hostingContext.HostingEnvironment;
+                    Console.WriteLine($"Hosting Environment: {env.EnvironmentName}");
+                    configBuilder.SetBasePath(env.ContentRootPath)
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                        .AddEnvironmentVariables()
+                        .AddCommandLine(args);
+
+                    configuration = configBuilder.Build();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.CaptureStartupErrors(false)
-                        .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
-                        .UseStartup<Startup>()
-                        .UseContentRoot(Directory.GetCurrentDirectory())
-                        .UseSerilog();
+                    webBuilder
+                        .CaptureStartupErrors(false)
+                        .UseStartup<Startup>();
                 });
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
             return new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
                 .MinimumLevel.Verbose()
                 .Enrich.WithProperty("ApplicationContext", AppName)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .ReadFrom.Configuration(configuration)
-                .CreateLogger();
+                .CreateLogger()
+                .ForContext(LogContext.Clone());
         }
     }
 }

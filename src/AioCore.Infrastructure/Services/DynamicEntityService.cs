@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.DynamicAggregatesModel;
+using AioCore.Domain.DynamicEntities;
 using Microsoft.EntityFrameworkCore;
 using Package.Elasticsearch;
 using Package.Redis;

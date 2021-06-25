@@ -1,6 +1,5 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Shared;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -11,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Package.Extensions;
 using Microsoft.EntityFrameworkCore;
+using AioCore.Domain.CoreEntities;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {
