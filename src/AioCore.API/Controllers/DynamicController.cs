@@ -13,10 +13,10 @@ namespace AioCore.API.Controllers
         {
             data.ComponentId = componentId;
             var respone = await Mediator.Send(data);
-            if (respone?.Data is FileResponse file)
-            {
-                return File(file.FileData, file.ContentType, file.FileName);
-            }
+            //if (respone?.Data is FileResponse file)
+            //{
+            //    return File(file.FileData, file.ContentType, file.FileName);
+            //}
             return Ok(respone);
         }
     }

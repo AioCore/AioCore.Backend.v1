@@ -47,41 +47,23 @@ namespace AioCore.Application.DynamicCommand
                 foreach (var step in action.ActionSteps.Where(t => t.Container == ActionContainer.Server))
                 {
                     var processor = _actionFactory.GetProcessor(step.StepType);
-                    if (step.IsFireAndForget)
+                    var data = step.InitParamType == InitParamType.FormValue ? request.DynamicData : actionResponses[step.OutputStepOrder.Value].Data;
+                    var processorTask = processor.ExecuteAsync(new ActionParamModel
                     {
-                        _ = processor.ExecuteAsync(new ActionParamModel
-                        {
-                            StepId = step.Id,
-                            TargetTypeId = step.TargetTypeId,
-                            InitParamType = step.InitParamType,
-                            Data = step.InitParamType == InitParamType.FormValue? request.DynamicData : actionResponses[step.OutputStepOrder.Value].Data
-                        }, cancellationToken);
-                        actionResponses.Add(new DynamicActionResponse
-                        {
-                            ComponentId = request.ComponentId,
-                            ActionId = action.Id,
-                            ActionStepId = step.Id,
-                            Data = null
-                        });
-                    }
-                    else
+                        StepId = step.Id,
+                        TargetTypeId = step.TargetTypeId,
+                        InitParamType = step.InitParamType,
+                        TargetAttribute = step.TargetAttributeId,
+                        Data = data
+                    }, cancellationToken);
+                    var result = step.IsFireAndForget ? null : await processorTask;
+                    actionResponses.Add(new DynamicActionResponse
                     {
-                        var result = await processor.ExecuteAsync(new ActionParamModel
-                        {
-                            StepId = step.Id,
-                            TargetTypeId = step.TargetTypeId,
-                            InitParamType = step.InitParamType,
-                            Data = step.InitParamType == InitParamType.FormValue ? request.DynamicData : actionResponses[step.OutputStepOrder.Value].Data
-                        }, cancellationToken);
-
-                        actionResponses.Add(new DynamicActionResponse
-                        {
-                            ComponentId = request.ComponentId,
-                            ActionId = action.Id,
-                            ActionStepId = step.Id,
-                            Data = result
-                        });
-                    }
+                        ComponentId = request.ComponentId,
+                        ActionId = action.Id,
+                        ActionStepId = step.Id,
+                        Data = result
+                    });
                 }
 
                 return actionResponses;

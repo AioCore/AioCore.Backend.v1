@@ -13,16 +13,10 @@ namespace AioCore.ActionProcessors.Processors
     {
         public StepType StepType => StepType.Update;
 
-        public XXXXXDynamicProcessor(ISxxxx)
-        {
-
-        }
-
         public async Task<Dictionary<string, object>> ExecuteAsync(ActionParamModel actionParam, CancellationToken cancellationToken)
         {
             if(actionParam.InitParamType == InitParamType.FormValue)
             {
-                await ISxxxx.SaveBy(actionParam.TargetAttribute, actionParam.Data);
             }
 
 
@@ -31,7 +25,8 @@ namespace AioCore.ActionProcessors.Processors
            
             
             var data = actionParam.Data;
-
+            
+            return null;
         }
     }
 }
