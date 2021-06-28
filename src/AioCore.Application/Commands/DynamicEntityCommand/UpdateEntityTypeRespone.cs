@@ -2,6 +2,5 @@
 {
     public class UpdateEntityTypeRespone
     {
-        public bool Success { get; set; }
     }
 }

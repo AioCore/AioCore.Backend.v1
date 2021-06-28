@@ -7,9 +7,9 @@ namespace AioCore.Infrastructure.EntityTypeConfigurations
     {
         public override void Config(EntityTypeBuilder<SettingAction> builder)
         {
-            builder.HasMany(x => x.SettingActionSteps)
-                .WithOne(x => x.SettingAction)
-                .HasForeignKey(x => x.SettingActionId);
+            builder.HasMany(x => x.ActionSteps)
+                .WithOne(x => x.Action)
+                .HasForeignKey(x => x.ActionId);
         }
     }
 }

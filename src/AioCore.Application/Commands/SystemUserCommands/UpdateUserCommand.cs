@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Shared;
-using MediatR;
 using Microsoft.Extensions.Localization;
 using Package.Elasticsearch;
 using Package.Localization;
@@ -31,11 +31,11 @@ namespace AioCore.Application.Commands.SystemUserCommands
                 IStringLocalizer<Localization> localizer)
             {
                 _context = context;
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
-                _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+                _elasticsearchService = elasticsearchService;
+                _localizer = localizer;
             }
 
-            public async Task<UpdateUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+            public async Task<Response<UpdateUserResponse>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
                 var user = await _context.SystemUsers.FindAsync(new object[] { request.Id }, cancellationToken);
                 user.Name = request.Name;
@@ -43,10 +43,24 @@ namespace AioCore.Application.Commands.SystemUserCommands
                 _context.SystemUsers.Update(user);
                 var res = await _context.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.UpdateAsync(user);
-                var message = res.Equals(1)
-                    ? _localizer[Message.SystemUserUpdateMessageSuccess]
-                    : _localizer[Message.SystemUserUpdateMessageFail];
-                return new UpdateUserResponse { Message = message };
+
+                if (res.Equals(1))
+                {
+                    return new UpdateUserResponse
+                    {
+                        Message = _localizer[Message.SystemUserUpdateMessageSuccess]
+                    };
+                }
+
+                return new Response<UpdateUserResponse>
+                {
+                    Success = false,
+                    Status = HttpStatusCode.BadRequest,
+                    Data = new UpdateUserResponse
+                    {
+                        Message = _localizer[Message.SystemUserUpdateMessageFail]
+                    }
+                };
             }
         }
     }

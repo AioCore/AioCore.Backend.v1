@@ -8,6 +8,6 @@ namespace AioCore.Domain.CoreEntities
         public string Name { get; set; }
         public string Description { get; set; }
         public string Icon { get; set; }
-        public virtual ICollection<SettingActionStep> SettingActionSteps { get; set; }
+        public virtual ICollection<SettingActionStep> ActionSteps { get; set; }
     }
 }

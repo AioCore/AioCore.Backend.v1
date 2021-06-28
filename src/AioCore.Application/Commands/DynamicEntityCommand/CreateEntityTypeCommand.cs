@@ -1,8 +1,8 @@
 ﻿using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.CoreEntities;
 using AioCore.Domain.DynamicEntities;
+using AioCore.Shared;
 using AioCore.Shared.Exceptions;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 _aioDynamicUnitOfWorkFactory = aioDynamicUnitOfWorkFactory;
             }
 
-            public async Task<SettingEntityType> Handle(CreateEntityTypeCommand request, CancellationToken cancellationToken)
+            public async Task<Response<SettingEntityType>> Handle(CreateEntityTypeCommand request, CancellationToken cancellationToken)
             {
                 if (await _aioCoreUnitOfWork.SettingEntityTypes.AnyAsync(t => t.Name == request.Name, cancellationToken))
                 {

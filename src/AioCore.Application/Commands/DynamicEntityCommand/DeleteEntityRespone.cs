@@ -2,6 +2,5 @@
 {
     public class DeleteEntityRespone
     {
-        public bool Success { get; set; }
     }
 }

@@ -8,8 +8,4 @@
     <ProjectReference Include="..\AioCore.Application\02.AioCore.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Processors\" />
-  </ItemGroup>
-
 </Project>

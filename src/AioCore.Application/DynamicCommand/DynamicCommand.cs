@@ -1,40 +1,90 @@
-﻿using AioCore.Application.UnitOfWorks;
+﻿using AioCore.Application.ActionProcessors;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.Models;
 using AioCore.Shared;
-using MediatR;
+using AioCore.Shared.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AioCore.Application.DynamicCommand
 {
-    public  class DynamicCommand : IRequest<Response<object>>
+    public class DynamicCommand : IRequest<List<DynamicActionResponse>>
     {
         public Guid ComponentId { get; set; }
+        public Dictionary<string, object> DynamicData { get; set; }
 
-        internal class Handler : IRequestHandler<DynamicCommand, Response<object>>
+        internal class Handler : IRequestHandler<DynamicCommand, List<DynamicActionResponse>>
         {
             private readonly IAioCoreUnitOfWork _coreUnitOfWork;
+            private readonly ActionFactory _actionFactory;
 
-            public Handler(IAioCoreUnitOfWork coreUnitOfWork)
+            public Handler(IAioCoreUnitOfWork coreUnitOfWork, ActionFactory actionFactory)
             {
                 _coreUnitOfWork = coreUnitOfWork;
+                _actionFactory = actionFactory;
             }
 
-            public async Task<Response<object>> Handle(DynamicCommand request, CancellationToken cancellationToken)
+            public async Task<Response<List<DynamicActionResponse>>> Handle(DynamicCommand request, CancellationToken cancellationToken)
             {
-                var component = await _coreUnitOfWork.SettingComponents.FindAsync(new object[] { request.ComponentId }, cancellationToken: cancellationToken);
-
-                var query = from t1 in _coreUnitOfWork.SettingComponents.Where(t=>t.ComponentType == ComponentType.Action)
+                var query = from t1 in _coreUnitOfWork.SettingComponents
                             join t2 in _coreUnitOfWork.SettingActions on t1.ParentId equals t2.Id
+                            where t1.ComponentType == ComponentType.Action &&
+                                t1.ParentType == ParentType.Form &&
+                                t1.ParentId == request.ComponentId
                             select t2;
-                var actions = await query
-                    .Include(t => t.SettingActionSteps)
-                    .ToListAsync(cancellationToken);
+                var action = await query
+                    .Include(t => t.ActionSteps)
+                    .FirstOrDefaultAsync(cancellationToken);
 
-                return await Task.FromResult(new Response<object>());
+                if (action is null) return null;
+
+                var actionResponses = new List<DynamicActionResponse>();
+
+                foreach (var step in action.ActionSteps.Where(t => t.Container == ActionContainer.Server))
+                {
+                    var processor = _actionFactory.GetProcessor(step.StepType);
+                    if (step.IsFireAndForget)
+                    {
+                        _ = processor.ExecuteAsync(new ActionParamModel
+                        {
+                            StepId = step.Id,
+                            TargetTypeId = step.TargetTypeId,
+                            InitParamType = step.InitParamType,
+                            Data = step.InitParamType == InitParamType.FormValue? request.DynamicData : actionResponses[step.OutputStepOrder.Value].Data
+                        }, cancellationToken);
+                        actionResponses.Add(new DynamicActionResponse
+                        {
+                            ComponentId = request.ComponentId,
+                            ActionId = action.Id,
+                            ActionStepId = step.Id,
+                            Data = null
+                        });
+                    }
+                    else
+                    {
+                        var result = await processor.ExecuteAsync(new ActionParamModel
+                        {
+                            StepId = step.Id,
+                            TargetTypeId = step.TargetTypeId,
+                            InitParamType = step.InitParamType,
+                            Data = step.InitParamType == InitParamType.FormValue ? request.DynamicData : actionResponses[step.OutputStepOrder.Value].Data
+                        }, cancellationToken);
+
+                        actionResponses.Add(new DynamicActionResponse
+                        {
+                            ComponentId = request.ComponentId,
+                            ActionId = action.Id,
+                            ActionStepId = step.Id,
+                            Data = result
+                        });
+                    }
+                }
+
+                return actionResponses;
             }
         }
     }

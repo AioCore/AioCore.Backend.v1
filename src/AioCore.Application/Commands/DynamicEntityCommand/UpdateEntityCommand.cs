@@ -1,9 +1,9 @@
 ﻿using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.DynamicEntities;
+using AioCore.Shared;
 using AioCore.Shared.Common;
 using AioCore.Shared.Exceptions;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Package.Extensions;
 using System;
@@ -36,7 +36,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 _dynamicEntityService = dynamicEntityService;
             }
 
-            public async Task<UpdateEntityRespone> Handle(UpdateEntityCommand request, CancellationToken cancellationToken)
+            public async Task<Response<UpdateEntityRespone>> Handle(UpdateEntityCommand request, CancellationToken cancellationToken)
             {
                 var currentTenantId = _tenantService.GetCurrentTenantId();
                 var dynamicEntity = await _dynamicUnitOfWork
@@ -107,10 +107,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
 
                 await _dynamicEntityService.IndexAsync(dynamicEntity);
 
-                return new UpdateEntityRespone
-                {
-                    Success = true
-                };
+                return new UpdateEntityRespone();
             }
         }
 

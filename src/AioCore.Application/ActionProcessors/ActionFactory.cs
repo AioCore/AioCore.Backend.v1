@@ -9,17 +9,17 @@ namespace AioCore.Application.ActionProcessors
     public class ActionFactory
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly Dictionary<ActionDefinition, Type> _serviceTypes;
+        private readonly Dictionary<StepType, Type> _serviceTypes;
 
         public ActionFactory(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider.CreateScope().ServiceProvider;
             _serviceTypes = _serviceProvider
                 .GetRequiredService<IEnumerable<IActionProcessor>>()
-                .ToDictionary(t => t.Action, t => t.GetType());
+                .ToDictionary(t => t.StepType, t => t.GetType());
         }
 
-        public IActionProcessor GetProcessor(ActionDefinition action)
+        public IActionProcessor GetProcessor(StepType action)
         {
             var serviceType = _serviceTypes.GetValueOrDefault(action);
             if (serviceType == null) return null;

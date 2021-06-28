@@ -1,10 +1,12 @@
 ﻿namespace AioCore.Shared.Common
 {
-    public enum ActionDefinition
+    public enum StepType
     {
         Create = 1,
         Read,
         Update,
-        Delete
+        Delete,
+        Count,
+        Sum
     }
 }

@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.Responses.SettingFeatureResponses;
-using MediatR;
+using AioCore.Shared;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ namespace AioCore.Application.Commands.SettingFeatureCommands
 
         internal class Handler : IRequestHandler<CreateFeatureCommand, CreateFeatureResponse>
         {
-            public async Task<CreateFeatureResponse> Handle(CreateFeatureCommand request, CancellationToken cancellationToken)
+            public Task<Response<CreateFeatureResponse>> Handle(CreateFeatureCommand request, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

@@ -1,7 +1,7 @@
 ﻿using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.CoreEntities;
 using AioCore.Domain.Models;
-using MediatR;
+using AioCore.Shared;
 using Microsoft.AspNetCore.Http;
 using Package.Elasticsearch;
 using Package.Extensions;
@@ -39,7 +39,7 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
-            public async Task<string> Handle(CreateBinaryCommand request, CancellationToken cancellationToken)
+            public async Task<Response<string>> Handle(CreateBinaryCommand request, CancellationToken cancellationToken)
             {
                 var file = request.File;
 

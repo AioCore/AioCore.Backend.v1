@@ -1,9 +1,9 @@
 ﻿using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.DynamicEntities;
+using AioCore.Shared;
 using AioCore.Shared.Common;
 using AioCore.Shared.Exceptions;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Package.Extensions;
 using System;
@@ -39,7 +39,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 _dynamicEntityService = dynamicEntityService;
             }
 
-            public async Task<CreateEntityRespone> Handle(CreateEntityCommand request, CancellationToken cancellationToken)
+            public async Task<Response<CreateEntityRespone>> Handle(CreateEntityCommand request, CancellationToken cancellationToken)
             {
                 var currentTenantId = _tenantService.GetCurrentTenantId();
                 if (currentTenantId == null)
@@ -99,10 +99,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 //index to elasticsearch
                 await _dynamicEntityService.IndexAsync(entity);
 
-                return new CreateEntityRespone
-                {
-                    Success = true
-                };
+                return new CreateEntityRespone();
             }
 
             private static T CreateValue<T, TType>(Guid entityId, Guid typeId, Guid attributeId, object value)
