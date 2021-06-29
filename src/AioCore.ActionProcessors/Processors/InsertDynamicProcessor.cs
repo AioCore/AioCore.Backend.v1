@@ -1,4 +1,5 @@
 ﻿using AioCore.Application.ActionProcessors;
+using AioCore.Application.Models;
 using AioCore.Shared.Common;
 using System;
 using System.Collections.Generic;
@@ -9,24 +10,13 @@ using System.Threading.Tasks;
 
 namespace AioCore.ActionProcessors.Processors
 {
-    public class XXXXXDynamicProcessor : IActionProcessor
+    public class InsertDynamicProcessor : IActionProcessor
     {
-        public StepType StepType => StepType.Update;
+        public StepType StepType => StepType.Create;
 
-        public async Task<Dictionary<string, object>> ExecuteAsync(ActionParamModel actionParam, CancellationToken cancellationToken)
+        public Task<Dictionary<string, object>> ExecuteAsync(DynamicActionModel actionModel, CancellationToken cancellationToken)
         {
-            if(actionParam.InitParamType == InitParamType.FormValue)
-            {
-            }
-
-
-            var typeId = actionParam.TargetTypeId;
-            var attribute = actionParam.TargetAttribute;
-           
-            
-            var data = actionParam.Data;
-            
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

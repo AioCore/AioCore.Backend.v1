@@ -1,8 +1,9 @@
-﻿using System;
+﻿using AioCore.Domain.CoreEntities;
+using System;
 
-namespace AioCore.Application.DynamicCommand
+namespace AioCore.Application.Models
 {
-    public class DynamicActionResponse
+    public class DynamicActionResult
     {
         public Guid ComponentId { get; set; }
         public Guid ActionId { get; set; }

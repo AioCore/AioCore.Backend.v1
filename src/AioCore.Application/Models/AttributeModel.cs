@@ -1,7 +1,7 @@
 ﻿using AioCore.Shared.Common;
 using System;
 
-namespace AioCore.Application.Commands.DynamicEntityCommand
+namespace AioCore.Application.Models
 {
     public class AttributeModel
     {

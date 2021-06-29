@@ -7,7 +7,7 @@ namespace AioCore.Domain.CoreEntities
     public class SettingActionStep : Entity, IAggregateRoot
     {
         public StepType StepType { get; set; }
-        public bool IsFireAndForget { get; set; }
+        public bool IsBackground { get; set; }
         public ActionContainer Container { get; set; }
         public string Description { get; set; }
         public int Ordinal { get; set; }
