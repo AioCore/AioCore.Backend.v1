@@ -6,7 +6,7 @@ namespace AioCore.ActionProcessors
 {
     public static class DependencyExtensions
     {
-        public static void AddActionProcessors(this IServiceCollection services)
+        public static void AddDynamicAction(this IServiceCollection services)
         {
             services.AddSingleton<ActionFactory>();
             var types = typeof(DependencyExtensions).Assembly.GetTypes()

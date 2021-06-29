@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,26 +10,17 @@ namespace AioCore.Mediator
 {
     public class Publisher
     {
-        private readonly ServiceFactory _serviceFactory;
+        private readonly PublishStrategy _defaultStrategy = PublishStrategy.SyncContinueOnException;
+        private readonly IServiceProvider _serviceProvider;
 
-        public Publisher(ServiceFactory serviceFactory)
+        public Publisher(IServiceProvider serviceProvider)
         {
-            _serviceFactory = serviceFactory;
-
-            PublishStrategies[PublishStrategy.Async] = new Mediator(_serviceFactory, AsyncContinueOnException);
-            PublishStrategies[PublishStrategy.ParallelNoWait] = new Mediator(_serviceFactory, ParallelNoWait);
-            PublishStrategies[PublishStrategy.ParallelWhenAll] = new Mediator(_serviceFactory, ParallelWhenAll);
-            PublishStrategies[PublishStrategy.ParallelWhenAny] = new Mediator(_serviceFactory, ParallelWhenAny);
-            PublishStrategies[PublishStrategy.SyncContinueOnException] = new Mediator(_serviceFactory, SyncContinueOnException);
-            PublishStrategies[PublishStrategy.SyncStopOnException] = new Mediator(_serviceFactory, SyncStopOnException);
+            _serviceProvider = serviceProvider;
         }
-
-        public IDictionary<PublishStrategy, IMediator> PublishStrategies = new Dictionary<PublishStrategy, IMediator>();
-        public PublishStrategy DefaultStrategy { get; set; } = PublishStrategy.SyncContinueOnException;
 
         public Task Publish<TNotification>(TNotification notification)
         {
-            return Publish(notification, DefaultStrategy, default);
+            return Publish(notification, _defaultStrategy, default);
         }
 
         public Task Publish<TNotification>(TNotification notification, PublishStrategy strategy)
@@ -38,16 +30,22 @@ namespace AioCore.Mediator
 
         public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken)
         {
-            return Publish(notification, DefaultStrategy, cancellationToken);
+            return Publish(notification, _defaultStrategy, cancellationToken);
         }
 
         public Task Publish<TNotification>(TNotification notification, PublishStrategy strategy, CancellationToken cancellationToken)
         {
-            if (!PublishStrategies.TryGetValue(strategy, out var mediator))
+            object serviceFactory(Type type) => _serviceProvider.CreateScope().ServiceProvider.GetRequiredService(type);
+            Mediator mediator = strategy switch
             {
-                throw new ArgumentException($"Unknown strategy: {strategy}");
-            }
-
+                PublishStrategy.Async => new Mediator(serviceFactory, AsyncContinueOnException),
+                PublishStrategy.ParallelNoWait => new Mediator(serviceFactory, ParallelNoWait),
+                PublishStrategy.ParallelWhenAll => new Mediator(serviceFactory, ParallelWhenAll),
+                PublishStrategy.ParallelWhenAny => new Mediator(serviceFactory, ParallelWhenAny),
+                PublishStrategy.SyncContinueOnException => new Mediator(serviceFactory, SyncContinueOnException),
+                PublishStrategy.SyncStopOnException => new Mediator(serviceFactory, SyncStopOnException),
+                _ => throw new ArgumentException($"Unknown strategy: {strategy}"),
+            };
             return mediator.Publish(notification, cancellationToken);
         }
 
@@ -57,7 +55,7 @@ namespace AioCore.Mediator
 
             foreach (var handler in handlers)
             {
-                tasks.Add(Task.Run(() => handler(notification, cancellationToken)));
+                tasks.Add(Task.Run(() => handler(notification, cancellationToken), cancellationToken));
             }
 
             return Task.WhenAll(tasks);
@@ -69,7 +67,7 @@ namespace AioCore.Mediator
 
             foreach (var handler in handlers)
             {
-                tasks.Add(Task.Run(() => handler(notification, cancellationToken)));
+                tasks.Add(Task.Run(() => handler(notification, cancellationToken), cancellationToken));
             }
 
             return Task.WhenAny(tasks);
@@ -79,7 +77,7 @@ namespace AioCore.Mediator
         {
             foreach (var handler in handlers)
             {
-                Task.Run(() => handler(notification, cancellationToken));
+                Task.Run(() => handler(notification, cancellationToken), cancellationToken);
             }
 
             return Task.CompletedTask;

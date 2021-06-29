@@ -25,7 +25,7 @@ namespace AioCore.Application.DynamicCommand
             private readonly Publisher _publisher;
 
             public Handler(
-                IAioCoreUnitOfWork coreUnitOfWork
+                  IAioCoreUnitOfWork coreUnitOfWork
                 , ActionFactory actionFactory
                 , Publisher publisher)
             {
@@ -67,6 +67,7 @@ namespace AioCore.Application.DynamicCommand
                     };
                     if (step.IsBackground)
                     {
+                        //use mediator to send a notification and handle it in a background service
                         await _publisher.Publish(new DynamicPublisher { ActionModel = actionModel }, PublishStrategy.ParallelNoWait);
                     }
                     else

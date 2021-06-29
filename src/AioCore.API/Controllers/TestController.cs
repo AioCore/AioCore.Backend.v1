@@ -51,7 +51,7 @@ namespace AioCore.API.Controllers
         }
 
         [HttpGet("testNotification")]
-        public async Task<IActionResult> TestNotify([FromQuery]A noti)
+        public async Task<IActionResult> TestNotify([FromQuery] A noti, CancellationToken cancellationToken)
         {
             await _publisher.Publish(noti, PublishStrategy.ParallelNoWait);
             return Ok();
@@ -64,12 +64,32 @@ namespace AioCore.API.Controllers
 
         internal class Handler : INotificationHandler<A>
         {
+            private readonly IAioCoreUnitOfWork _coreUnitOfWork;
+
+            public Handler(IAioCoreUnitOfWork coreUnitOfWork)
+            {
+                _coreUnitOfWork = coreUnitOfWork;
+            }
+
             public async Task Handle(A notification, CancellationToken cancellationToken)
             {
                 while (true)
                 {
-                    Console.WriteLine($"{notification.Text}. {DateTime.Now:dd/MM/yyyy}");
-                    await Task.Delay(1000, cancellationToken);
+                    try
+                    {
+                        Console.WriteLine("=========================================================================================================================Start" + notification.Text);
+                        var query = from t1 in _coreUnitOfWork.SettingComponents.Where(t => t.ComponentType == ComponentType.Action)
+                                    join t2 in _coreUnitOfWork.SettingActions on t1.ParentId equals t2.Id
+                                    select t2;
+                        var a = await query.ToListAsync(cancellationToken);
+                        Console.WriteLine("=========================================================================================================================End" + notification.Text);
+                        await Task.Delay(3000, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+                  
                 }
             }
         }

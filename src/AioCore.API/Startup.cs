@@ -1,6 +1,5 @@
 using AioCore.ActionProcessors;
 using AioCore.Application;
-using AioCore.Application.Behaviors;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Application.Repositories;
 using AioCore.Application.Services;
@@ -15,7 +14,6 @@ using AioCore.Shared;
 using AioCore.Shared.Filters;
 using AioCore.ViewRender;
 using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
@@ -277,21 +275,18 @@ namespace AioCore.API
         {
             var asms = AssemblyHelper.Assemblies.ToArray();
 
+            services.AddMediator(asms);
+            
             services.AddTransient<IDateTime, CustomDateTime>();
             services.AddSingleton<ICurrentUser, CurrentUser>();
-            services.AddMediatR(asms);
-            services.AddSingleton<Publisher>();
             services.AddValidatorsFromAssemblies(asms);
-
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
 
             services.AddScoped<IElasticClientFactory, ElasticClientFactory>();
             services.AddScoped<IElasticsearchService, ElasticsearchService>();
             services.AddScoped<IFileServerService, FileServerService>();
 
             services.AddViewRender();
-            services.AddActionProcessors();
+            services.AddDynamicAction();
 
             foreach (var type in AssemblyHelper.ExportTypes)
             {
