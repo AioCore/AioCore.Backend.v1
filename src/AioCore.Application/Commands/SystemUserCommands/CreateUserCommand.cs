@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Domain.CoreEntities;
 using MediatR;
 using Package.AutoMapper;
 using Package.Elasticsearch;

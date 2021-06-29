@@ -10,7 +10,7 @@ namespace AioCore.API.Factories
     {
         public IntegrationEventLogContext CreateDbContext(string[] args)
         {
-            var configuration = AioCoreConfigs.Configuration();
+            var configuration = AioCoreConfigs.Configuration(args);
             var optionsBuilder = new DbContextOptionsBuilder<IntegrationEventLogContext>();
             optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("AioCore.API"));

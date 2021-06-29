@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AioCore.Domain</AssemblyName>
+    <RootNamespace>AioCore.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AioCore.Packages\Package.Elasticsearch\Package.Elasticsearch.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.NestedSet\Package.NestedSet.csproj" />
+  </ItemGroup>
+</Project>

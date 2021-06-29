@@ -1,15 +1,12 @@
-﻿using AioCore.Domain.SettingAggregatesModel.SettingFormAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SettingFormTypeConfiguration : IEntityTypeConfiguration<SettingForm>
+    public class SettingFormTypeConfiguration : EntityTypeConfiguration<SettingForm>
     {
-        public void Configure(EntityTypeBuilder<SettingForm> builder)
+        public override void Config(EntityTypeBuilder<SettingForm> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

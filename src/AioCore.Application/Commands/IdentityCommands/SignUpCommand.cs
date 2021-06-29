@@ -1,8 +1,6 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
 using AioCore.Shared;
-using MediatR;
 using Microsoft.Extensions.Localization;
 using Package.Elasticsearch;
 using Package.Localization;
@@ -11,6 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Package.Extensions;
 using Microsoft.EntityFrameworkCore;
+using AioCore.Domain.CoreEntities;
+using System.Net;
+using AioCore.Mediator;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {
@@ -42,20 +43,36 @@ namespace AioCore.Application.Commands.IdentityCommands
                 _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
-            public async Task<SignUpResponse> Handle(SignUpCommand request, CancellationToken cancellationToken)
+            public async Task<Response<SignUpResponse>> Handle(SignUpCommand request, CancellationToken cancellationToken)
             {
                 try
                 {
                     //check if account has existed
                     if (await _aioCoreUnitOfWork.SystemUsers.AnyAsync(t => t.Account == request.Account, cancellationToken))
                     {
-                        return new SignUpResponse { Message = string.Format(_localizer[Message.SignUpMessageAccountExisted], request.Account) };
+                        return new Response<SignUpResponse>
+                        {
+                            Success = false,
+                            Status = HttpStatusCode.BadRequest,
+                            Data = new SignUpResponse
+                            {
+                                Message = string.Format(_localizer[Message.SignUpMessageAccountExisted], request.Account)
+                            }
+                        };
                     }
 
                     //check if account has existed
                     if (await _aioCoreUnitOfWork.SystemUsers.AnyAsync(t => t.Email == request.Email, cancellationToken))
                     {
-                        return new SignUpResponse { Message = string.Format(_localizer[Message.SignUpMessageEmailExisted], request.Email) };
+                        return new Response<SignUpResponse>
+                        {
+                            Success = false,
+                            Status = HttpStatusCode.BadRequest,
+                            Data = new SignUpResponse
+                            {
+                                Message = string.Format(_localizer[Message.SignUpMessageEmailExisted], request.Email)
+                            }
+                        };
                     }
 
                     var user = _aioCoreUnitOfWork.SystemUsers.Add(new SystemUser
@@ -67,7 +84,10 @@ namespace AioCore.Application.Commands.IdentityCommands
                     });
                     await _aioCoreUnitOfWork.SaveChangesAsync(cancellationToken);
                     await _elasticsearchService.IndexAsync(user);
-                    return new SignUpResponse { Message = _localizer[Message.SignUpMessageSuccess] };
+                    return new SignUpResponse
+                    {
+                        Message = _localizer[Message.SignUpMessageSuccess]
+                    };
                 }
                 catch (Exception e)
                 {

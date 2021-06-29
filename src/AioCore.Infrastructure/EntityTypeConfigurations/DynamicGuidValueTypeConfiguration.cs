@@ -1,15 +1,12 @@
-﻿using AioCore.Domain.DynamicAggregatesModel;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.DynamicEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class DynamicGuidValueTypeConfiguration : IEntityTypeConfiguration<DynamicGuidValue>
+    public class DynamicGuidValueTypeConfiguration : EntityTypeConfiguration<DynamicGuidValue>
     {
-        public void Configure(EntityTypeBuilder<DynamicGuidValue> builder)
+        public override void Config(EntityTypeBuilder<DynamicGuidValue> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

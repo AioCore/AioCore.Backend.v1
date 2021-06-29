@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.Commands.DynamicEntityCommand;
 using AioCore.Application.Queries.DynamicEntityQueries;
-using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
+using AioCore.Domain.CoreEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

@@ -1,10 +1,10 @@
 ﻿using AioCore.Infrastructure.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Package.DatabaseManagement;
-using AioCore.Domain.DynamicAggregatesModel;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using AioCore.Domain.DynamicEntities;
 
 namespace AioCore.Infrastructure.DbContexts
 {

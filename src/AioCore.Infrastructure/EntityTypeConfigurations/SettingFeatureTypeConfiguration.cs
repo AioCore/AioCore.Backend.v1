@@ -1,14 +1,12 @@
-﻿using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SettingFeatureTypeConfiguration : IEntityTypeConfiguration<SettingFeature>
+    public class SettingFeatureTypeConfiguration : EntityTypeConfiguration<SettingFeature>
     {
-        public void Configure(EntityTypeBuilder<SettingFeature> builder)
+        public override void Config(EntityTypeBuilder<SettingFeature> builder)
         {
-            builder.HasKey(x => x.Id);
             builder.Ignore(x => x.Parent);
             builder.Ignore(x => x.Root);
         }

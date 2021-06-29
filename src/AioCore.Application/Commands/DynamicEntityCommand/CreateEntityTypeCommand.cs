@@ -1,8 +1,9 @@
-﻿using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.DynamicAggregatesModel;
-using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
+﻿using AioCore.Application.Models;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.CoreEntities;
+using AioCore.Domain.DynamicEntities;
+using AioCore.Mediator;
 using AioCore.Shared.Exceptions;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 _aioDynamicUnitOfWorkFactory = aioDynamicUnitOfWorkFactory;
             }
 
-            public async Task<SettingEntityType> Handle(CreateEntityTypeCommand request, CancellationToken cancellationToken)
+            public async Task<Response<SettingEntityType>> Handle(CreateEntityTypeCommand request, CancellationToken cancellationToken)
             {
                 if (await _aioCoreUnitOfWork.SettingEntityTypes.AnyAsync(t => t.Name == request.Name, cancellationToken))
                 {

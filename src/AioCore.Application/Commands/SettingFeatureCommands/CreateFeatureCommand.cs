@@ -1,10 +1,8 @@
 ﻿using AioCore.Application.Responses.SettingFeatureResponses;
-using MediatR;
-using Package.Elasticsearch;
+using AioCore.Mediator;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.Repositories;
 
 namespace AioCore.Application.Commands.SettingFeatureCommands
 {
@@ -18,16 +16,7 @@ namespace AioCore.Application.Commands.SettingFeatureCommands
 
         internal class Handler : IRequestHandler<CreateFeatureCommand, CreateFeatureResponse>
         {
-            private readonly IElasticsearchService _elasticsearchService;
-            private readonly ISettingFeatureRepository _settingFeatureRepository;
-
-            public Handler(IElasticsearchService elasticsearchService, ISettingFeatureRepository settingFeatureRepository)
-            {
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
-                _settingFeatureRepository = settingFeatureRepository ?? throw new ArgumentNullException(nameof(settingFeatureRepository));
-            }
-
-            public async Task<CreateFeatureResponse> Handle(CreateFeatureCommand request, CancellationToken cancellationToken)
+            public Task<Response<CreateFeatureResponse>> Handle(CreateFeatureCommand request, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

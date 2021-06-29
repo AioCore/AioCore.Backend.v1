@@ -1,15 +1,12 @@
-﻿using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SystemUserGroupTypeConfiguration : IEntityTypeConfiguration<SystemUserGroup>
+    public class SystemUserGroupTypeConfiguration : EntityTypeConfiguration<SystemUserGroup>
     {
-        public void Configure(EntityTypeBuilder<SystemUserGroup> builder)
+        public override void Config(EntityTypeBuilder<SystemUserGroup> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

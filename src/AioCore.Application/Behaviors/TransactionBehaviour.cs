@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AioCore.Application.Behaviors
 {
-    public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class TransactionBehaviour<TRequest, TResponse> //: IPipelineBehavior<TRequest, TResponse>
     {
         private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> _logger;
         private readonly IAioCoreUnitOfWork _dbContext;

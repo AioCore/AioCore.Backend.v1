@@ -1,15 +1,12 @@
-using AioCore.Domain.SystemAggregatesModel.SystemPermissionAggregate;
-using Microsoft.EntityFrameworkCore;
+using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SystemPermissionTypeConfiguration : IEntityTypeConfiguration<SystemPermission>
+    public class SystemPermissionTypeConfiguration : EntityTypeConfiguration<SystemPermission>
     {
-        public void Configure(EntityTypeBuilder<SystemPermission> builder)
+        public override void Config(EntityTypeBuilder<SystemPermission> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

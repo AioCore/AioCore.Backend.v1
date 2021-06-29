@@ -19,9 +19,12 @@ namespace AioCore.Infrastructure.Services
 
         public DatabaseInfo GetDatabaseInfo()
         {
-            var tenantId = Guid.Parse(FindClaim("tenant_creating") ?? FindClaim("tenant"));
-            var tenant = _settingTenantRepository.GetAsync(tenantId).GetAwaiter().GetResult();
-            return DatabaseInfo.Parse(tenant?.DatabaseInfo);
+            if(Guid.TryParse(FindClaim("tenant_creating") ?? FindClaim("tenant"), out var tenantId))
+            {
+                var tenant = _settingTenantRepository.GetAsync(tenantId).GetAwaiter().GetResult();
+                return DatabaseInfo.Parse(tenant?.DatabaseInfo);
+            }
+            return DatabaseInfo.Parse("{}");
         }
 
         private string FindClaim(string key)

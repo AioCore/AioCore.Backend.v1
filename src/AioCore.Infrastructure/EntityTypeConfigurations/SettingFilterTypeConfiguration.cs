@@ -1,15 +1,12 @@
-﻿using AioCore.Domain.SettingAggregatesModel.SettingFilterAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SettingFilterTypeConfiguration : IEntityTypeConfiguration<SettingFilter>
+    public class SettingFilterTypeConfiguration : EntityTypeConfiguration<SettingFilter>
     {
-        public void Configure(EntityTypeBuilder<SettingFilter> builder)
+        public override void Config(EntityTypeBuilder<SettingFilter> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

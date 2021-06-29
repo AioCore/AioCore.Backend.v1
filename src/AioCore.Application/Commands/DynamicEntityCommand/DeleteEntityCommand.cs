@@ -1,10 +1,9 @@
 ﻿using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
+using AioCore.Mediator;
 using AioCore.Shared.Exceptions;
-using MediatR;
 using Package.Elasticsearch;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +29,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 _elasticsearchService = elasticsearchService;
             }
 
-            public async Task<DeleteEntityRespone> Handle(DeleteEntityCommand request, CancellationToken cancellationToken)
+            public async Task<Response<DeleteEntityRespone>> Handle(DeleteEntityCommand request, CancellationToken cancellationToken)
             {
                 var currentTenantId = _tenantService.GetCurrentTenantId();
                 var dynamicEntity = await _dynamicUnitOfWork
@@ -49,10 +48,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 await _dynamicUnitOfWork.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.DeleteAsync<dynamic>(request.Id);
 
-                return new DeleteEntityRespone
-                {
-                    Success = true
-                };
+                return new DeleteEntityRespone();
             }
         }
     }

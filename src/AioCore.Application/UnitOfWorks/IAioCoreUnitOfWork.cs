@@ -1,28 +1,12 @@
 ﻿using AioCore.Application.Repositories;
-using AioCore.Domain.SettingAggregatesModel.SettingActionAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingDomAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingEntityAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingFeatureAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingFieldAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingFilterAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingFormAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
-using AioCore.Domain.SettingAggregatesModel.SettingViewAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemApplicationAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemGroupAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemPermissionAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemPermissionSetAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemPolicyAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Domain.CoreEntities;
 
 namespace AioCore.Application.UnitOfWorks
 {
     public interface IAioCoreUnitOfWork : IUnitOfWork
     {
         IRepository<SettingAction> SettingActions { get; }
+        IRepository<SettingActionStep> SettingActionSteps { get; }
         IRepository<SettingComponent> SettingComponents { get; }
         IRepository<SettingDom> SettingDoms { get; }
         IRepository<SettingEntityType> SettingEntityTypes { get; }
@@ -42,6 +26,6 @@ namespace AioCore.Application.UnitOfWorks
         IRepository<SystemUserGroup> SystemUserGroups { get; }
         IRepository<SystemUserPolicy> SystemUserPolicies { get; }
         IRepository<SystemBinary> SystemBinaries { get; }
-        IRepository<SettingFilter> SettingFilters { get; }
+        IRepository<SettingFilter> SettingFilters { get; }        
     }
 }

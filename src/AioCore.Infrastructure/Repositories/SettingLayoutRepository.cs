@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.Repositories;
-using AioCore.Domain.SettingAggregatesModel.SettingLayoutAggregate;
+using AioCore.Domain.CoreEntities;
 using AioCore.Infrastructure.DbContexts;
 using System;
 using System.Threading.Tasks;

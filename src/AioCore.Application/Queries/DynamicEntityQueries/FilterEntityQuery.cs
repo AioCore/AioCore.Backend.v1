@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SettingAggregatesModel.SettingComponentAggregate;
+using AioCore.Domain.Models;
 using AioCore.Shared.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

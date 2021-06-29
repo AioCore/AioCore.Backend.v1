@@ -1,15 +1,12 @@
-﻿using AioCore.Domain.DynamicAggregatesModel;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.DynamicEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class DynamicEntityTypeConfiguration : IEntityTypeConfiguration<DynamicEntity>
+    public class DynamicEntityTypeConfiguration : EntityTypeConfiguration<DynamicEntity>
     {
-        public void Configure(EntityTypeBuilder<DynamicEntity> builder)
+        public override void Config(EntityTypeBuilder<DynamicEntity> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

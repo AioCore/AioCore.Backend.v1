@@ -2,11 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AioCore.Domain.Common
 {
+    [ElasticsearchType(IdProperty = "Id")]
     public abstract class Entity
     {
         private int? _requestedHashCode;
@@ -21,12 +21,10 @@ namespace AioCore.Domain.Common
 
         public DateTimeOffset CreatedDate { get; set; }
 
-        [StringLength(50)]
         public string CreatedBy { get; set; }
 
         public DateTimeOffset? UpdatedDate { get; set; }
 
-        [StringLength(50)]
         public string UpdatedBy { get; set; }
 
         [Keyword]

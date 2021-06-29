@@ -1,15 +1,12 @@
-﻿using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SystemTenantApplicationTypeConfiguration : IEntityTypeConfiguration<SystemTenantApplication>
+    public class SystemTenantApplicationTypeConfiguration : EntityTypeConfiguration<SystemTenantApplication>
     {
-        public void Configure(EntityTypeBuilder<SystemTenantApplication> builder)
+        public override void Config(EntityTypeBuilder<SystemTenantApplication> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }

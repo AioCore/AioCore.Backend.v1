@@ -1,15 +1,15 @@
-﻿using AioCore.Domain.SettingAggregatesModel.SettingActionAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SettingActionTypeConfiguration : IEntityTypeConfiguration<SettingAction>
+    public class SettingActionTypeConfiguration : EntityTypeConfiguration<SettingAction>
     {
-        public void Configure(EntityTypeBuilder<SettingAction> builder)
+        public override void Config(EntityTypeBuilder<SettingAction> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
+            builder.HasMany(x => x.ActionSteps)
+                .WithOne(x => x.Action)
+                .HasForeignKey(x => x.ActionId);
         }
     }
 }

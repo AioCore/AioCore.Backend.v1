@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+﻿using AioCore.Domain.CoreEntities;
 using AutoMapper;
 using Package.AutoMapper;
 using Package.DatabaseManagement;

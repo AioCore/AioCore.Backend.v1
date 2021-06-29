@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.CoreEntities;
 
 namespace AioCore.Application.Repositories
 {

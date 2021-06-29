@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemTenantResponses;
 using AioCore.Application.Services;
-using AioCore.Domain.SystemAggregatesModel.SystemTenantAggregate;
+using AioCore.Domain.CoreEntities;
 using MediatR;
 using Package.AutoMapper;
 using Package.DatabaseManagement;

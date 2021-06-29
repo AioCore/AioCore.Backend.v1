@@ -1,12 +1,13 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
 using AioCore.Application.UnitOfWorks;
+using AioCore.Mediator;
 using AioCore.Shared;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Package.Extensions;
 using Package.Localization;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                 _localizer = localizer;
             }
 
-            public async Task<PreSigninRespone> Handle(PreSiginCommand request, CancellationToken cancellationToken)
+            public async Task<Response<PreSigninRespone>> Handle(PreSiginCommand request, CancellationToken cancellationToken)
             {
                 var user = await _coreUnitOfWork.SystemUsers
                        .Where(x => x.Account == request.Key || x.Email == request.Key)
@@ -40,16 +41,19 @@ namespace AioCore.Application.Commands.IdentityCommands
 
                 if (user == null || !user.PasswordHash.Equals(request.Password.CreateMd5()))
                 {
-                    return new PreSigninRespone
+                    return new Response<PreSigninRespone>
                     {
                         Success = false,
-                        Message = _localizer[Message.SignInMessageFail]
+                        Status = HttpStatusCode.BadRequest,
+                        Data = new PreSigninRespone
+                        {
+                            Message = _localizer[Message.SignInMessageFail]
+                        }
                     };
                 }
 
                 return new PreSigninRespone
                 {
-                    Success = true,
                     Key = request.Key,
                     Password = request.Password,
                     Tenants = user.Tenants.Select(t => new TenantInfoRespone

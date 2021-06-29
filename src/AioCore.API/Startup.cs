@@ -1,5 +1,5 @@
+using AioCore.ActionProcessors;
 using AioCore.Application;
-using AioCore.Application.Behaviors;
 using AioCore.Application.IntegrationEvents;
 using AioCore.Application.Repositories;
 using AioCore.Application.Services;
@@ -9,10 +9,11 @@ using AioCore.Infrastructure.DbContexts;
 using AioCore.Infrastructure.Repositories;
 using AioCore.Infrastructure.Services;
 using AioCore.Infrastructure.UnitOfWorks;
+using AioCore.Mediator;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
+using AioCore.ViewRender;
 using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,6 @@ using Package.Extensions;
 using Package.FileServer;
 using Package.Localization;
 using Package.Redis;
-using Package.ViewRender;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -75,10 +75,8 @@ namespace AioCore.API
             services.RegisterAllServices();
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
-            loggerFactory.CreateLogger<Startup>().LogDebug("Logging..."); ;
-
             app.UseStaticFiles();
 
             app.UseAioLocalization();
@@ -167,9 +165,7 @@ namespace AioCore.API
                     });
             });
 
-            services.AddSchemaDbContext<AioDynamicContext>(
-                (serviceProvider) => serviceProvider.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo(),
-                typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+            services.AddSchemaDbContext<AioDynamicContext>(s => s.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo());
 
             services.AddUnitOfWork<IAioCoreUnitOfWork, AioCoreUnitOfWork, AioCoreContext>()
                     .AddUnitOfWork<IAioDynamicUnitOfWork, AioDynamicUnitOfWork, AioDynamicContext>()
@@ -279,33 +275,25 @@ namespace AioCore.API
         {
             var asms = AssemblyHelper.Assemblies.ToArray();
 
+            services.AddMediator(asms);
+            
             services.AddTransient<IDateTime, CustomDateTime>();
             services.AddSingleton<ICurrentUser, CurrentUser>();
-            services.AddMediatR(asms);
             services.AddValidatorsFromAssemblies(asms);
-
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
-            services.AddScoped<HtmlBuilder>();
-            services.AddScoped<ViewRenderFactory>();
 
             services.AddScoped<IElasticClientFactory, ElasticClientFactory>();
             services.AddScoped<IElasticsearchService, ElasticsearchService>();
             services.AddScoped<IFileServerService, FileServerService>();
 
+            services.AddViewRender();
+            services.AddDynamicAction();
+
             foreach (var type in AssemblyHelper.ExportTypes)
             {
-                if (typeof(IViewRenderProcessor).IsAssignableFrom(type))
+                if (!type.Name.EndsWith("Repository") && !type.Name.EndsWith("Service")) continue;
+                foreach (var serviceType in type.GetInterfaces().Where(t => !t.Name.StartsWith("System")))
                 {
-                    services.AddScoped(typeof(IViewRenderProcessor), type);
-                }
-                else
-                {
-                    if (!type.Name.EndsWith("Repository") && !type.Name.EndsWith("Service")) continue;
-                    foreach (var serviceType in type.GetInterfaces().Where(t => !t.Name.StartsWith("System")))
-                    {
-                        services.TryAddScoped(serviceType, type);
-                    }
+                    services.TryAddScoped(serviceType, type);
                 }
             }
             return services;

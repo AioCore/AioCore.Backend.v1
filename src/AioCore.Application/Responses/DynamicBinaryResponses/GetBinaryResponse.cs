@@ -1,4 +1,4 @@
-﻿using AioCore.Domain.SystemAggregatesModel.SystemBinaryAggregate;
+﻿using AioCore.Domain.CoreEntities;
 using AutoMapper;
 using Package.AutoMapper;
 

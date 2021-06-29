@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.SystemAggregatesModel.SystemUserAggregate;
+using AioCore.Domain.CoreEntities;
+using AioCore.Mediator;
 using AioCore.Shared;
-using MediatR;
 using Microsoft.Extensions.Localization;
 using Package.Elasticsearch;
 using Package.Localization;
@@ -28,20 +29,31 @@ namespace AioCore.Application.Commands.SystemUserCommands
                 IElasticsearchService elasticsearchService)
             {
                 _context = context;
-                _localizer = localizer ?? throw new ArgumentNullException();
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
+                _localizer = localizer;
+                _elasticsearchService = elasticsearchService;
             }
 
-            public async Task<DeleteUserResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+            public async Task<Response<DeleteUserResponse>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
                 _context.SystemUsers.Delete(request.Id);
                 var res = await _context.SaveChangesAsync(cancellationToken);
                 await _elasticsearchService.DeleteAsync<SystemUser>(request.Id);
-                return new DeleteUserResponse
+                if (res.Equals(1))
                 {
-                    Message = res.Equals(1)
-                        ? _localizer[Message.SystemUserDeleteMessageSuccess]
-                        : _localizer[Message.SystemUserDeleteMessageFail]
+                    return new DeleteUserResponse
+                    {
+                        Message = _localizer[Message.SystemUserDeleteMessageSuccess]
+                    };
+                }
+
+                return new Response<DeleteUserResponse>
+                {
+                    Success = false,
+                    Status = HttpStatusCode.BadRequest,
+                    Data = new DeleteUserResponse
+                    {
+                        Message = _localizer[Message.SystemUserDeleteMessageFail]
+                    }
                 };
             }
         }

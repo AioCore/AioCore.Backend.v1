@@ -1,15 +1,12 @@
-﻿using AioCore.Domain.SettingAggregatesModel.SettingDomAggregate;
-using Microsoft.EntityFrameworkCore;
+﻿using AioCore.Domain.CoreEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AioCore.Infrastructure.EntityTypeConfigurations
 {
-    public class SettingDomTypeConfiguration : IEntityTypeConfiguration<SettingDom>
+    public class SettingDomTypeConfiguration : EntityTypeConfiguration<SettingDom>
     {
-        public void Configure(EntityTypeBuilder<SettingDom> builder)
+        public override void Config(EntityTypeBuilder<SettingDom> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Ignore(x => x.DomainEvents);
         }
     }
 }
