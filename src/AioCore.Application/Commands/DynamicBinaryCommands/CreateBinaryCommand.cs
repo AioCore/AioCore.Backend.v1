@@ -1,7 +1,7 @@
 ﻿using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.CoreEntities;
 using AioCore.Domain.Models;
-using AioCore.Shared;
+using AioCore.Mediator;
 using Microsoft.AspNetCore.Http;
 using Package.Elasticsearch;
 using Package.Extensions;

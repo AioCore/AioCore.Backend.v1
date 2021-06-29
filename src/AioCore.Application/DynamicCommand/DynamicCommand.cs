@@ -2,7 +2,7 @@
 using AioCore.Application.Models;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.Models;
-using AioCore.Shared;
+using AioCore.Mediator;
 using AioCore.Shared.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,11 +22,16 @@ namespace AioCore.Application.DynamicCommand
         {
             private readonly IAioCoreUnitOfWork _coreUnitOfWork;
             private readonly ActionFactory _actionFactory;
+            private readonly Publisher _publisher;
 
-            public Handler(IAioCoreUnitOfWork coreUnitOfWork, ActionFactory actionFactory)
+            public Handler(
+                IAioCoreUnitOfWork coreUnitOfWork
+                , ActionFactory actionFactory
+                , Publisher publisher)
             {
                 _coreUnitOfWork = coreUnitOfWork;
                 _actionFactory = actionFactory;
+                _publisher = publisher;
             }
 
             public async Task<Response<List<DynamicActionResult>>> Handle(DynamicCommand request, CancellationToken cancellationToken)
@@ -49,17 +54,26 @@ namespace AioCore.Application.DynamicCommand
                 if (action is null) return null;
 
                 var actionResults = new List<DynamicActionResult>();
-                foreach (var step in action.ActionSteps.Where(t => t.Container == ActionContainer.Server))
+                foreach (var step in action.ActionSteps.Where(t => t.Container == ActionContainer.Server).OrderBy(t => t.Ordinal))
                 {
                     var processor = _actionFactory.GetProcessor(step.StepType);
-                    var executeTask = processor.ExecuteAsync(new DynamicActionModel
+                    Dictionary<string, object> result = null;
+                    var actionModel = new DynamicActionModel
                     {
                         Component = component,
                         ActionStep = step,
                         RequestData = request.DynamicData,
                         PreviousActionResults = actionResults.AsReadOnly()
-                    }, cancellationToken);
-                    var result = step.IsBackground ? null : await executeTask;
+                    };
+                    if (step.IsBackground)
+                    {
+                        await _publisher.Publish(new DynamicPublisher { ActionModel = actionModel }, PublishStrategy.ParallelNoWait);
+                    }
+                    else
+                    {
+                        result = await processor.ExecuteAsync(actionModel, cancellationToken);
+                    }
+
                     actionResults.Add(new DynamicActionResult
                     {
                         ComponentId = component.ComponentId,

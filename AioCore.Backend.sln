@@ -47,9 +47,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicMigrations.MsSql", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicMigrations.PostgresSql", "src\DynamicMigrations.PostgresSql\DynamicMigrations.PostgresSql.csproj", "{4C6F62B9-A891-469C-9071-455051F8CB6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.ViewRender", "src\AioCore.ViewRender\AioCore.ViewRender.csproj", "{852B6C68-1ACB-437D-94BD-6E00A37ECB5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AioCore.ViewRender", "src\AioCore.ViewRender\AioCore.ViewRender.csproj", "{852B6C68-1ACB-437D-94BD-6E00A37ECB5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.ActionProcessors", "src\AioCore.ActionProcessors\AioCore.ActionProcessors.csproj", "{DD36522C-CF2E-4813-83B3-A60D85BCAF11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AioCore.ActionProcessors", "src\AioCore.ActionProcessors\AioCore.ActionProcessors.csproj", "{DD36522C-CF2E-4813-83B3-A60D85BCAF11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AioCore.Mediator", "src\AioCore.Packages\AioCore.Mediator\AioCore.Mediator.csproj", "{71E8E3DB-7161-4763-A90E-3744403C6FDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -313,6 +315,18 @@ Global
 		{DD36522C-CF2E-4813-83B3-A60D85BCAF11}.Release|x64.Build.0 = Release|Any CPU
 		{DD36522C-CF2E-4813-83B3-A60D85BCAF11}.Release|x86.ActiveCfg = Release|Any CPU
 		{DD36522C-CF2E-4813-83B3-A60D85BCAF11}.Release|x86.Build.0 = Release|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Debug|x64.Build.0 = Debug|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Debug|x86.Build.0 = Debug|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Release|x64.ActiveCfg = Release|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Release|x64.Build.0 = Release|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Release|x86.ActiveCfg = Release|Any CPU
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -340,6 +354,7 @@ Global
 		{4C6F62B9-A891-469C-9071-455051F8CB6F} = {7D9FF154-E484-49B4-986E-7740CAAB3E7D}
 		{852B6C68-1ACB-437D-94BD-6E00A37ECB5B} = {E7647CEF-310D-4841-AC21-2F1A43B7D15B}
 		{DD36522C-CF2E-4813-83B3-A60D85BCAF11} = {E7647CEF-310D-4841-AC21-2F1A43B7D15B}
+		{71E8E3DB-7161-4763-A90E-3744403C6FDC} = {D1D71B6B-AD2B-4719-8D6B-2FC05A5DB6AB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {224450DA-6EF5-4E31-A951-5B21A23EF16F}

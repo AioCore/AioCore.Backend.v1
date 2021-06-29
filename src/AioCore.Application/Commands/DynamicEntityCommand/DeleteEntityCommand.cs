@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
-using AioCore.Shared;
+using AioCore.Mediator;
 using AioCore.Shared.Exceptions;
 using Package.Elasticsearch;
 using System;

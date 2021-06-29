@@ -11,6 +11,7 @@ using Package.Extensions;
 using Microsoft.EntityFrameworkCore;
 using AioCore.Domain.CoreEntities;
 using System.Net;
+using AioCore.Mediator;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {

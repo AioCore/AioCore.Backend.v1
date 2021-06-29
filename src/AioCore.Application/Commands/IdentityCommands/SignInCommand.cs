@@ -1,5 +1,6 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
 using AioCore.Application.UnitOfWorks;
+using AioCore.Mediator;
 using AioCore.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;

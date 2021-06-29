@@ -10,6 +10,7 @@ using AioCore.Infrastructure.DbContexts;
 using AioCore.Infrastructure.Repositories;
 using AioCore.Infrastructure.Services;
 using AioCore.Infrastructure.UnitOfWorks;
+using AioCore.Mediator;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
 using AioCore.ViewRender;
@@ -279,6 +280,7 @@ namespace AioCore.API
             services.AddTransient<IDateTime, CustomDateTime>();
             services.AddSingleton<ICurrentUser, CurrentUser>();
             services.AddMediatR(asms);
+            services.AddSingleton<Publisher>();
             services.AddValidatorsFromAssemblies(asms);
 
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));

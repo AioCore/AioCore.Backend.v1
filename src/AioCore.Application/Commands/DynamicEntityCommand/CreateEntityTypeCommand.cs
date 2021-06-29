@@ -2,7 +2,7 @@
 using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.CoreEntities;
 using AioCore.Domain.DynamicEntities;
-using AioCore.Shared;
+using AioCore.Mediator;
 using AioCore.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\AioCore.Packages\AioCore.Mediator\AioCore.Mediator.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.AutoMapper\Package.AutoMapper.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
