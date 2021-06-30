@@ -10,7 +10,6 @@ namespace AioCore.Application.Validations
             RuleFor(t => t.Name).NotEmpty();
             RuleFor(t => t.Database).NotNull();
             RuleFor(t => t.Elasticsearch).NotNull();
-            RuleFor(t => t.DatabaseType).NotNull();
         }
     }
 }
