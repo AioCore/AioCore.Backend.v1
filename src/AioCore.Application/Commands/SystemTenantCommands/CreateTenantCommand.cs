@@ -20,8 +20,6 @@ namespace AioCore.Application.Commands.SystemTenantCommands
         public DatabaseInfo Database { get; set; }
         public ElasticsearchInfo Elasticsearch { get; set; }
 
-        public DatabaseType DatabaseType { get; set; }
-
         internal class Handler : IRequestHandler<CreateTenantCommand, CreateTenantResponse>
         {
             private readonly ITenantService _tenantService;
