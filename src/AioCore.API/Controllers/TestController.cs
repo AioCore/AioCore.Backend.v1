@@ -74,13 +74,24 @@ namespace AioCore.API.Controllers
 
             public async Task Handle(A notification, CancellationToken cancellationToken)
             {
-                Console.WriteLine("=========================================================================================================================Start" + notification.Text);
-                var query = from t1 in _coreUnitOfWork.SettingComponents.Where(t => t.ComponentType == ComponentType.Action)
-                            join t2 in _coreUnitOfWork.SettingActions on t1.ParentId equals t2.Id
-                            select t2;
-                var a = await query.ToListAsync(cancellationToken);
-                Console.WriteLine("=========================================================================================================================End" + notification.Text);
-                await Task.Delay(3000, cancellationToken);
+                while (true)
+                {
+                    try
+                    {
+                        Console.WriteLine("=========================================================================================================================Start" + notification.Text);
+                        var query = from t1 in _coreUnitOfWork.SettingComponents.Where(t => t.ComponentType == ComponentType.Action)
+                                    join t2 in _coreUnitOfWork.SettingActions on t1.ParentId equals t2.Id
+                                    select t2;
+                        var a = await query.ToListAsync(cancellationToken);
+                        Console.WriteLine("=========================================================================================================================End" + notification.Text);
+                        await Task.Delay(3000, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw;
+                    }
+
+                }
             }
         }
     }
