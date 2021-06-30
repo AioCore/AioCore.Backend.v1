@@ -10,7 +10,7 @@ namespace AioCore.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Guid componentId, [FromBody] DynamicCommand data)
         {
-            data.ComponentId = componentId;
+            data.ContainerId = componentId;
             var respone = await Mediator.Send(data);
             //if (respone?.Data is FileResponse file)
             //{

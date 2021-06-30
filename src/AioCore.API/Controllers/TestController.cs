@@ -5,6 +5,7 @@ using AioCore.Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Linq;
@@ -62,11 +63,11 @@ namespace AioCore.API.Controllers
     {
         public string Text { get; set; }
 
-        internal class Handler : INotificationHandler<A>
+        internal class Handler1 : INotificationHandler<A>
         {
             private readonly IAioCoreUnitOfWork _coreUnitOfWork;
 
-            public Handler(IAioCoreUnitOfWork coreUnitOfWork)
+            public Handler1(IAioCoreUnitOfWork coreUnitOfWork)
             {
                 _coreUnitOfWork = coreUnitOfWork;
             }
@@ -89,7 +90,7 @@ namespace AioCore.API.Controllers
                     {
                         throw;
                     }
-                  
+
                 }
             }
         }
