@@ -1,5 +1,4 @@
-﻿using AioCore.Domain.CoreEntities;
-using System;
+﻿using System;
 
 namespace AioCore.Application.Models
 {

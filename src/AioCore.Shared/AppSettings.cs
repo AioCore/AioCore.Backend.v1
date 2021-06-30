@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AioCore.Shared
+﻿namespace AioCore.Shared
 {
     public class AppSettings
     {
@@ -66,5 +60,4 @@ namespace AioCore.Shared
         public string Key { get; set; }
         public string Issuer { get; set; }
     }
-
 }

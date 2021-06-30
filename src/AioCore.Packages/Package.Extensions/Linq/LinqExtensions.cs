@@ -1,5 +1,4 @@
-﻿using Package.Extensions.Linq;
-using Package.Extensions.Specifications;
+﻿using Package.Extensions.Specifications;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

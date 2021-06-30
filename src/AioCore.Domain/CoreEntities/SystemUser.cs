@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using AioCore.Domain.Common;
 using Nest;
-using Package.Extensions;
 
 namespace AioCore.Domain.CoreEntities
 {

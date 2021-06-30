@@ -1,5 +1,4 @@
 ﻿using AioCore.Application.DynamicCommand;
-using AioCore.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
