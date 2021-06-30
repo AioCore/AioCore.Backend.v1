@@ -10,14 +10,14 @@ namespace AioCore.Mediator
     {
         public static void AddMediator(this IServiceCollection services, params Assembly[] assemblies)
         {
-            services.AddMediatR(assemblies);
-            services.AddSingleton<Publisher>();
+            services.AddMediatR(options => options.AsScoped(), assemblies);
+            services.AddScoped<Publisher>();
+
             var types = assemblies.SelectMany(asm => asm.GetExportedTypes().Where(t =>
                 t.IsAssignableToGenericType(typeof(IPipelineBehavior<,>)) &&
                 !t.IsAbstract &&
                 !t.IsInterface)
             );
-
             foreach (var type in types)
             {
                 services.AddScoped(typeof(IPipelineBehavior<,>), type);
