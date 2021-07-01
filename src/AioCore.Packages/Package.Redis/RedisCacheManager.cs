@@ -170,7 +170,7 @@ namespace Package.Redis
 
         public T GetOrSet<T>(string key, Func<T> data, int expire = 0, CacheModes cacheMode = CacheModes.Sliding)
         {
-            T result = Get<T>(key);
+            var result = Get<T>(key);
             if (IsEquals(result, default))
             {
                 using (TypeLock<T>.Lock.Lock())
@@ -186,7 +186,7 @@ namespace Package.Redis
 
         public async Task<T> GetOrSetAsync<T>(string key, Func<Task<T>> data, int expire = 0, CacheModes cacheMode = CacheModes.Sliding)
         {
-            T result = await GetAsync<T>(key);
+            var result = await GetAsync<T>(key);
             if (IsEquals(result, default))
             {
                 using (await TypeLock<T>.Lock.LockAsync())
@@ -202,7 +202,7 @@ namespace Package.Redis
 
         public T HashGetOrSet<T>(string key, string field, Func<T> data, DateTime expiry)
         {
-            T result = HashGet<T>(key, field);
+            var result = HashGet<T>(key, field);
             if (IsEquals(result, default))
             {
                 using (TypeLock<T>.Lock.Lock())
@@ -218,7 +218,7 @@ namespace Package.Redis
 
         public async Task<T> HashGetOrSetAsync<T>(string key, string field, Func<Task<T>> data, DateTime expiry)
         {
-            T result = await HashGetAsync<T>(key, field);
+            var result = await HashGetAsync<T>(key, field);
             if (IsEquals(result, default))
             {
                 using (await TypeLock<T>.Lock.LockAsync())

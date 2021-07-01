@@ -19,7 +19,7 @@ namespace Package.Extensions.Linq
 
         protected override Expression VisitParameter(ParameterExpression p)
         {
-            if (_map.TryGetValue(p, out ParameterExpression replacement))
+            if (_map.TryGetValue(p, out var replacement))
             {
                 p = replacement;
             }

@@ -99,7 +99,7 @@ namespace Package.Extensions.Linq
                     continue;
                 }
                 var sortField = Regex.Replace(sortExpression[index], @"[\+\-]", string.Empty);
-                PropertyDescriptor sortProperty = TypeDescriptor.GetProperties(typeof(T)).Find(sortField, true);
+                var sortProperty = TypeDescriptor.GetProperties(typeof(T)).Find(sortField, true);
                 if (sortExpression[index].StartsWith("-"))
                 {
                     source = source.OrderByDescending(a => sortProperty.GetValue(a)).ToList();

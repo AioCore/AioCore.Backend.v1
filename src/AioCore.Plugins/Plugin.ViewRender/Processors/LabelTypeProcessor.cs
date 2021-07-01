@@ -24,8 +24,8 @@ namespace Plugin.ViewRender.Processors
         {
             var name = element.Attribute("name")?.Value;
             var @class = element.Attribute("class")?.Value;
-            string innerText = "";
-            bool hidden = false;
+            var innerText = "";
+            var hidden = false;
 
             if (Guid.TryParse(element.Attribute("id")?.Value, out var componentId))
             {

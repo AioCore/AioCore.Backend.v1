@@ -12,10 +12,20 @@ namespace AioCore.Mediator
     {
         private readonly PublishStrategy _defaultStrategy = PublishStrategy.SyncContinueOnException;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IDictionary<PublishStrategy, IMediator> _publishStrategies;
 
-        public Publisher(IServiceProvider serviceProvider)
+        public Publisher(ServiceFactory serviceFactory, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+            _publishStrategies = new Dictionary<PublishStrategy, IMediator>
+            {
+                [PublishStrategy.Async] = new Mediator(serviceFactory, AsyncContinueOnException),
+                [PublishStrategy.ParallelNoWait] = new Mediator(serviceFactory, ParallelNoWait),
+                [PublishStrategy.ParallelWhenAll] = new Mediator(serviceFactory, ParallelWhenAll),
+                [PublishStrategy.ParallelWhenAny] = new Mediator(serviceFactory, ParallelWhenAny),
+                [PublishStrategy.SyncContinueOnException] = new Mediator(serviceFactory, SyncContinueOnException),
+                [PublishStrategy.SyncStopOnException] = new Mediator(serviceFactory, SyncStopOnException)
+            };
         }
 
         public Task Publish<TNotification>(TNotification notification)
@@ -35,17 +45,10 @@ namespace AioCore.Mediator
 
         public Task Publish<TNotification>(TNotification notification, PublishStrategy strategy, CancellationToken cancellationToken)
         {
-            object serviceFactory(Type type) => _serviceProvider.CreateScope().ServiceProvider.GetRequiredService(type);
-            Mediator mediator = strategy switch
+            if (!_publishStrategies.TryGetValue(strategy, out var mediator))
             {
-                PublishStrategy.Async => new Mediator(serviceFactory, AsyncContinueOnException),
-                PublishStrategy.ParallelNoWait => new Mediator(serviceFactory, ParallelNoWait),
-                PublishStrategy.ParallelWhenAll => new Mediator(serviceFactory, ParallelWhenAll),
-                PublishStrategy.ParallelWhenAny => new Mediator(serviceFactory, ParallelWhenAny),
-                PublishStrategy.SyncContinueOnException => new Mediator(serviceFactory, SyncContinueOnException),
-                PublishStrategy.SyncStopOnException => new Mediator(serviceFactory, SyncStopOnException),
-                _ => throw new ArgumentException($"Unknown strategy: {strategy}"),
-            };
+                throw new ArgumentException($"Unknown strategy: {strategy}");
+            }
             return mediator.Publish(notification, cancellationToken);
         }
 
@@ -73,14 +76,18 @@ namespace AioCore.Mediator
             return Task.WhenAny(tasks);
         }
 
-        private Task ParallelNoWait(IEnumerable<Func<INotification, CancellationToken, Task>> handlers, INotification notification, CancellationToken cancellationToken)
+        private async Task ParallelNoWait(IEnumerable<Func<INotification, CancellationToken, Task>> handlers, INotification notification, CancellationToken cancellationToken)
         {
-            foreach (var handler in handlers)
-            {
-                Task.Run(() => handler(notification, cancellationToken), cancellationToken);
-            }
-
-            return Task.CompletedTask;
+            _ = Task.Run(async () =>
+              {
+                  using (var scope = _serviceProvider.CreateScope())
+                  {
+                      var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                      await mediator.Publish(notification, cancellationToken);
+                  }
+                  await Task.CompletedTask;
+              }, cancellationToken);
+            await Task.CompletedTask;
         }
 
         private async Task AsyncContinueOnException(IEnumerable<Func<INotification, CancellationToken, Task>> handlers, INotification notification, CancellationToken cancellationToken)

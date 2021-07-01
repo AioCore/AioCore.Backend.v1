@@ -1,4 +1,4 @@
-﻿using System;
+﻿using AioCore.Shared.Common;
 using System.Collections.Generic;
 using System.Linq;
 using AioCore.Shared.Common;
@@ -9,22 +9,16 @@ namespace Plugin.ActionProcessor
 {
     public class ActionFactory
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly Dictionary<StepType, Type> _serviceTypes;
+        private readonly Dictionary<StepType, IActionProcessor> _processors;
 
-        public ActionFactory(IServiceProvider serviceProvider)
+        public ActionFactory(IEnumerable<IActionProcessor> processors)
         {
-            _serviceProvider = serviceProvider.CreateScope().ServiceProvider;
-            _serviceTypes = _serviceProvider
-                .GetRequiredService<IEnumerable<IActionProcessor>>()
-                .ToDictionary(t => t.StepType, t => t.GetType());
+            _processors = processors.ToDictionary(t => t.StepType, t => t);
         }
 
         public IActionProcessor GetProcessor(StepType action)
         {
-            var serviceType = _serviceTypes.GetValueOrDefault(action);
-            if (serviceType == null) return null;
-            return _serviceProvider.GetRequiredService(serviceType) as IActionProcessor;
+            return _processors.GetValueOrDefault(action);
         }
     }
 }

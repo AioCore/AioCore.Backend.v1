@@ -15,7 +15,7 @@ namespace AioCore.Application.DynamicCommand
 {
     public class DynamicCommand : IRequest<List<DynamicActionResult>>
     {
-        public Guid ComponentId { get; set; }
+        public Guid ContainerId { get; set; }
         public Dictionary<string, object> DynamicData { get; set; }
 
         internal class Handler : IRequestHandler<DynamicCommand, List<DynamicActionResult>>
@@ -36,16 +36,11 @@ namespace AioCore.Application.DynamicCommand
 
             public async Task<Response<List<DynamicActionResult>>> Handle(DynamicCommand request, CancellationToken cancellationToken)
             {
-                var component = await _coreUnitOfWork.SettingComponents
-                    .FirstOrDefaultAsync(x => x.Id == request.ComponentId, cancellationToken);
-
-                if (component is null) return null;
-
                 var query = from t1 in _coreUnitOfWork.SettingComponents
                             join t2 in _coreUnitOfWork.SettingActions on t1.ParentId equals t2.Id
                             where t1.ComponentType == ComponentType.Action &&
                                 t1.ParentType == ParentType.Form &&
-                                t1.Id == request.ComponentId
+                                t1.ParentId == request.ContainerId
                             select t2;
                 var action = await query
                     .Include(t => t.ActionSteps)
@@ -60,7 +55,7 @@ namespace AioCore.Application.DynamicCommand
                     Dictionary<string, object> result = null;
                     var actionModel = new DynamicActionModel
                     {
-                        Component = component,
+                        Action = action,
                         ActionStep = step,
                         RequestData = request.DynamicData,
                         PreviousActionResults = actionResults.AsReadOnly()
@@ -77,7 +72,7 @@ namespace AioCore.Application.DynamicCommand
 
                     actionResults.Add(new DynamicActionResult
                     {
-                        ComponentId = component.ComponentId,
+                        ContainerId = request.ContainerId,
                         ActionId = action.Id,
                         ActionStepId = step.Id,
                         Data = result
