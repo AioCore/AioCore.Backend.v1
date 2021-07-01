@@ -1,6 +1,4 @@
-﻿using AioCore.Application.Repositories;
-using AioCore.Application.UnitOfWorks;
-using AioCore.Infrastructure.Repositories;
+﻿using AioCore.Infrastructure.Repositories;
 using FastMember;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -12,6 +10,8 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Repositories.Abstracts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Infrastructure.UnitOfWorks
 {

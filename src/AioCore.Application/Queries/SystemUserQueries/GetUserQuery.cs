@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.Repositories;
 using AioCore.Domain.CoreEntities;
+using AioCore.Infrastructure.Repositories.Abstracts;
 using MediatR;
 
 namespace AioCore.Application.Queries.SystemUserQueries

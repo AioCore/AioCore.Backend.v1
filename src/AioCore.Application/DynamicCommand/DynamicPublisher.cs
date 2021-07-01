@@ -1,10 +1,10 @@
-﻿using AioCore.Application.ActionProcessors;
-using AioCore.Application.Models;
+﻿using AioCore.Application.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Plugin.ActionProcessor;
 
 namespace AioCore.Application.DynamicCommand
 {

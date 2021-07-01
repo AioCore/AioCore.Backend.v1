@@ -1,9 +1,5 @@
-using AioCore.ActionProcessors;
 using AioCore.Application;
 using AioCore.Application.IntegrationEvents;
-using AioCore.Application.Repositories;
-using AioCore.Application.Services;
-using AioCore.Application.UnitOfWorks;
 using AioCore.Infrastructure.Authorize;
 using AioCore.Infrastructure.DbContexts;
 using AioCore.Infrastructure.Repositories;
@@ -12,7 +8,6 @@ using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Mediator;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
-using AioCore.ViewRender;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.ServiceBus;
@@ -44,6 +39,12 @@ using System.Data.Common;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using AioCore.Infrastructure.Repositories.Abstracts;
+using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Shared.Abstracts;
+using Plugin.ActionProcessor;
+using Plugin.ViewRender;
 
 namespace AioCore.API
 {
@@ -276,7 +277,7 @@ namespace AioCore.API
             var asms = AssemblyHelper.Assemblies.ToArray();
 
             services.AddMediator(asms);
-            
+
             services.AddTransient<IDateTime, CustomDateTime>();
             services.AddSingleton<ICurrentUser, CurrentUser>();
             services.AddValidatorsFromAssemblies(asms);

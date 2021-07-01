@@ -1,5 +1,4 @@
-﻿using AioCore.Application.UnitOfWorks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using AioCore.Infrastructure.DbContexts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using Package.DatabaseManagement;
 
 namespace AioCore.Infrastructure.UnitOfWorks

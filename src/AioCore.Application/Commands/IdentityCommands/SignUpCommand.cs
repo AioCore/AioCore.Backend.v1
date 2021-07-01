@@ -1,5 +1,4 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
-using AioCore.Application.UnitOfWorks;
 using AioCore.Shared;
 using Microsoft.Extensions.Localization;
 using Package.Elasticsearch;
@@ -11,6 +10,7 @@ using Package.Extensions;
 using Microsoft.EntityFrameworkCore;
 using AioCore.Domain.CoreEntities;
 using System.Net;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using AioCore.Mediator;
 
 namespace AioCore.Application.Commands.IdentityCommands

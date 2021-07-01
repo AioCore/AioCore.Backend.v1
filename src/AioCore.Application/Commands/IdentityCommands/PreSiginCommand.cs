@@ -1,5 +1,4 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
-using AioCore.Application.UnitOfWorks;
 using AioCore.Mediator;
 using AioCore.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {

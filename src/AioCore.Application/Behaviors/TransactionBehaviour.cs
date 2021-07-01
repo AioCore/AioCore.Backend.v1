@@ -1,5 +1,4 @@
 ﻿using AioCore.Application.IntegrationEvents;
-using AioCore.Application.UnitOfWorks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,6 +7,7 @@ using Serilog.Context;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Behaviors
 {

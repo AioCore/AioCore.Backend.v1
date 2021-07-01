@@ -1,11 +1,11 @@
-﻿using AioCore.Application.Models;
-using AioCore.Application.Services;
-using AioCore.Domain.Common;
+﻿using AioCore.Domain.Common;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using AioCore.Domain;
+using AioCore.Infrastructure.Services.Abstracts;
 
 namespace AioCore.Infrastructure.Services
 {

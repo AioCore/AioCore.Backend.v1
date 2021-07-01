@@ -3,7 +3,7 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.Repositories;
+using AioCore.Infrastructure.Repositories.Abstracts;
 
 namespace AioCore.Application.Commands.SettingLayoutCommands
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.Repositories;
 using AioCore.Application.Responses.SystemTenantResponses;
+using AioCore.Infrastructure.Repositories.Abstracts;
 using MediatR;
 
 namespace AioCore.Application.Queries.SystemTenantQueries

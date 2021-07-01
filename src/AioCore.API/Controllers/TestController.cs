@@ -1,10 +1,10 @@
-﻿using AioCore.Application.UnitOfWorks;
-using AioCore.Application.ViewRender;
-using AioCore.Domain.Models;
+﻿using AioCore.Domain.Models;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using AioCore.Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Plugin.ViewRender;
 using System;
 using System.IO;
 using System.Linq;
@@ -89,7 +89,6 @@ namespace AioCore.API.Controllers
                     {
                         throw;
                     }
-                  
                 }
             }
         }

@@ -1,11 +1,11 @@
-﻿using AioCore.Application.Services;
-using AioCore.Application.UnitOfWorks;
-using AioCore.Mediator;
+﻿using AioCore.Mediator;
 using AioCore.Shared.Exceptions;
 using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Commands.DynamicEntityCommand
 {

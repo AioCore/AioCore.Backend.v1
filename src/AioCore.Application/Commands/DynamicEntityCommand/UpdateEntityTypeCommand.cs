@@ -1,5 +1,4 @@
 ﻿using AioCore.Application.Models;
-using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.DynamicEntities;
 using AioCore.Mediator;
 using AioCore.Shared.Exceptions;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Commands.DynamicEntityCommand
 {

@@ -14,12 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AioCore.ActionProcessors\AioCore.ActionProcessors.csproj" />
     <ProjectReference Include="..\AioCore.Application\02.AioCore.Application.csproj" />
     <ProjectReference Include="..\AioCore.Infrastructure\03.AioCore.Infrastructure.csproj" />
-    <ProjectReference Include="..\AioCore.ViewRender\AioCore.ViewRender.csproj" />
-    <ProjectReference Include="..\DynamicMigrations.MsSql\DynamicMigrations.MsSql.csproj" />
-    <ProjectReference Include="..\DynamicMigrations.PostgresSql\DynamicMigrations.PostgresSql.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,5 +1,4 @@
-﻿using AioCore.Application.UnitOfWorks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Package.EventBus.EventBus.Abstractions;
 using Package.EventBus.EventBus.Events;
 using Package.EventBus.IntegrationEventLogEF;
@@ -7,6 +6,7 @@ using Package.EventBus.IntegrationEventLogEF.Services;
 using System;
 using System.Data.Common;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.IntegrationEvents
 {

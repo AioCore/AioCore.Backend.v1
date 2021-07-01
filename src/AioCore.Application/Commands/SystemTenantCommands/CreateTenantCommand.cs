@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemTenantResponses;
-using AioCore.Application.Services;
 using AioCore.Domain.CoreEntities;
+using AioCore.Infrastructure.Services.Abstracts;
 using MediatR;
 using Package.AutoMapper;
 using Package.DatabaseManagement;

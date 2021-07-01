@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Package.DatabaseManagement;
 using System;
-using AioCore.Application.Repositories;
-using AioCore.Application.Services;
+using AioCore.Infrastructure.Repositories.Abstracts;
+using AioCore.Infrastructure.Services.Abstracts;
 
 namespace AioCore.Infrastructure.Services
 {
@@ -19,7 +19,7 @@ namespace AioCore.Infrastructure.Services
 
         public DatabaseInfo GetDatabaseInfo()
         {
-            if(Guid.TryParse(FindClaim("tenant_creating") ?? FindClaim("tenant"), out var tenantId))
+            if (Guid.TryParse(FindClaim("tenant_creating") ?? FindClaim("tenant"), out var tenantId))
             {
                 var tenant = _settingTenantRepository.GetAsync(tenantId).GetAwaiter().GetResult();
                 return DatabaseInfo.Parse(tenant?.DatabaseInfo);

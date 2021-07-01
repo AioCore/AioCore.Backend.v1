@@ -1,11 +1,11 @@
 ﻿using AioCore.Application.Responses.DynamicBinaryResponses;
-using AioCore.Application.UnitOfWorks;
 using MediatR;
 using Package.AutoMapper;
 using Package.FileServer;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Queries.DynamicBinaryQueries
 {

@@ -5,8 +5,8 @@ using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.CoreEntities;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Commands.SettingLayoutCommands
 {

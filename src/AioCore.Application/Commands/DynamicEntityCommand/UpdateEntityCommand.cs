@@ -1,6 +1,4 @@
 ﻿using AioCore.Application.Models;
-using AioCore.Application.Services;
-using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.DynamicEntities;
 using AioCore.Mediator;
 using AioCore.Shared.Common;
@@ -12,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Commands.DynamicEntityCommand
 {
@@ -111,6 +111,5 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
                 return new UpdateEntityRespone();
             }
         }
-
     }
 }

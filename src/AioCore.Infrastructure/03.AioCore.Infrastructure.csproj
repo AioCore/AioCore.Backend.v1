@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\AioCore.Application\02.AioCore.Application.csproj" />
     <ProjectReference Include="..\AioCore.Domain\04.AioCore.Domain.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
     <ProjectReference Include="..\AioCore.Packages\Package.Redis\Package.Redis.csproj" />

@@ -1,5 +1,4 @@
-﻿using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.CoreEntities;
+﻿using AioCore.Domain.CoreEntities;
 using AioCore.Domain.Models;
 using AioCore.Mediator;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Commands.DynamicBinaryCommands
 {

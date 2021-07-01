@@ -1,12 +1,12 @@
-﻿using AioCore.Application;
-using AioCore.Application.Services;
-using AioCore.Domain.Common;
+﻿using AioCore.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Shared.Abstracts;
 
 namespace AioCore.Infrastructure.DbContexts
 {

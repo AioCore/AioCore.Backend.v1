@@ -1,5 +1,4 @@
 ﻿using AioCore.Application.Responses.SystemTenantResponses;
-using AioCore.Application.Services;
 using AioCore.Domain.CoreEntities;
 using MediatR;
 using Package.AutoMapper;
@@ -8,6 +7,7 @@ using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Services.Abstracts;
 
 namespace AioCore.Application.Commands.SystemTenantCommands
 {
@@ -29,6 +29,7 @@ namespace AioCore.Application.Commands.SystemTenantCommands
             {
                 _tenantService = tenantService;
             }
+
             public async Task<CreateTenantResponse> Handle(UpdateTenantCommand request, CancellationToken cancellationToken)
             {
                 var tenant = await _tenantService.UpdateTenantAsync(new SystemTenant

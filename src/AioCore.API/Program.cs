@@ -1,5 +1,4 @@
 using AioCore.Infrastructure.DbContexts;
-using AioCore.Shared.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +8,7 @@ using Package.EventBus.IntegrationEventLogEF;
 using Serilog;
 using Serilog.Context;
 using System;
+using Package.Extensions.WebHost;
 
 namespace AioCore.API
 {

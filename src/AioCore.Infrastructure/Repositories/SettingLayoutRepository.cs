@@ -1,8 +1,8 @@
-﻿using AioCore.Application.Repositories;
-using AioCore.Domain.CoreEntities;
+﻿using AioCore.Domain.CoreEntities;
 using AioCore.Infrastructure.DbContexts;
 using System;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Repositories.Abstracts;
 
 namespace AioCore.Infrastructure.Repositories
 {

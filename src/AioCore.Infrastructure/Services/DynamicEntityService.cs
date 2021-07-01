@@ -1,6 +1,4 @@
-﻿using AioCore.Application.Services;
-using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.DynamicEntities;
+﻿using AioCore.Domain.DynamicEntities;
 using Microsoft.EntityFrameworkCore;
 using Package.Elasticsearch;
 using Package.Redis;
@@ -9,6 +7,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Infrastructure.Services
 {

@@ -1,6 +1,4 @@
-﻿using AioCore.Application.ActionProcessors;
-using AioCore.Application.Models;
-using AioCore.Application.UnitOfWorks;
+﻿using AioCore.Application.Models;
 using AioCore.Domain.Models;
 using AioCore.Mediator;
 using AioCore.Shared.Common;
@@ -10,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using Plugin.ActionProcessor;
 
 namespace AioCore.Application.DynamicCommand
 {
@@ -68,7 +68,7 @@ namespace AioCore.Application.DynamicCommand
                     if (step.IsBackground)
                     {
                         //use mediator to send a notification and handle it in a background service
-                        await _publisher.Publish(new DynamicPublisher { ActionModel = actionModel }, PublishStrategy.ParallelNoWait);
+                        await _publisher.Publish(new DynamicPublisher { ActionModel = actionModel }, PublishStrategy.ParallelNoWait, cancellationToken);
                     }
                     else
                     {

@@ -1,6 +1,4 @@
-﻿using AioCore.Application.Services;
-using AioCore.Application.UnitOfWorks;
-using AioCore.Domain.CoreEntities;
+﻿using AioCore.Domain.CoreEntities;
 using AioCore.Infrastructure.DbContexts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +10,8 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Infrastructure.Services
 {
