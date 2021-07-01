@@ -4,7 +4,7 @@ using AioCore.Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Plugin.ViewRender;
 using System;
 using System.IO;
 using System.Linq;
