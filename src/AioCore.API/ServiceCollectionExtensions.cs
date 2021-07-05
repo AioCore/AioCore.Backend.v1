@@ -1,6 +1,6 @@
-﻿using AioCore.API.Plugin;
-using AioCore.Application.DynamicAction;
+﻿using AioCore.Application.DynamicAction;
 using AioCore.Application.DynamicView;
+using AioCore.Application.Plugin;
 using AioCore.Application.Repositories;
 using AioCore.Application.Services;
 using AioCore.Application.UnitOfWorks;
@@ -11,6 +11,7 @@ using AioCore.Infrastructure.UnitOfWorks;
 using AioCore.Mediator;
 using AioCore.Shared.Abstracts;
 using FluentValidation;
+using McMaster.NETCore.Plugins;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -142,19 +143,18 @@ namespace AioCore.API
                     .Select(t =>
                     {
                         var pluginDll = Path.Combine(t, "bin", "Debug", "net6.0", Path.GetFileName(t)) + ".dll";
-                        var loadContext = new PluginLoadContext(pluginDll);
-                        var asm = loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginDll)));
-                        return asm;
+                        var loader = PluginLoader.CreateFromAssemblyFile(pluginDll, sharedTypes: new[] { typeof(IPlugin) });
+                        return loader.LoadDefaultAssembly();
                     });
             }
             else
             {
-                var rootFolder = Path.Combine(hostEnvironment.ContentRootPath, "AioCore.Plugins");
+                var rootFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "AioCore.Plugins");
                 return Directory.GetFiles(rootFolder, "Plugin.*.dll")
-                    .Select(t =>
+                    .Select(pluginDll =>
                     {
-                        var loadContext = new PluginLoadContext(t);
-                        return loadContext.LoadFromAssemblyPath(t);
+                        var loader = PluginLoader.CreateFromAssemblyFile(pluginDll, sharedTypes: new[] { typeof(IPlugin) });
+                        return loader.LoadDefaultAssembly();
                     });
             }
         }
