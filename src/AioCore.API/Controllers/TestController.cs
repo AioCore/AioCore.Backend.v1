@@ -1,10 +1,10 @@
-﻿using AioCore.Domain.Models;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+﻿using AioCore.Application.DynamicView;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.Models;
 using AioCore.Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Plugin.ViewRender;
 using System;
 using System.IO;
 using System.Linq;

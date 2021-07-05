@@ -3,8 +3,8 @@ using Nest;
 using Package.Elasticsearch;
 using System;
 using System.Collections.Concurrent;
-using AioCore.Infrastructure.Repositories.Abstracts;
-using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Application.Repositories;
+using AioCore.Application.Services;
 
 namespace AioCore.Infrastructure.Services
 {

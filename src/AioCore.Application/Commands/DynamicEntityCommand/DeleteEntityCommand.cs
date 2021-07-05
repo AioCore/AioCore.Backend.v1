@@ -4,8 +4,8 @@ using Package.Elasticsearch;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.Services.Abstracts;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Application.Services;
 
 namespace AioCore.Application.Commands.DynamicEntityCommand
 {

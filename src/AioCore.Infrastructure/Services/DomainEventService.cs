@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using AioCore.Domain;
-using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Application.Services;
 
 namespace AioCore.Infrastructure.Services
 {

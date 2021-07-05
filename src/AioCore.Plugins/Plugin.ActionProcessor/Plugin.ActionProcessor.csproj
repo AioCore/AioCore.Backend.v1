@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AioCore.Infrastructure\03.AioCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\AioCore.Application\02.AioCore.Application.csproj">
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AioCore.Infrastructure\03.AioCore.Infrastructure.csproj" >
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

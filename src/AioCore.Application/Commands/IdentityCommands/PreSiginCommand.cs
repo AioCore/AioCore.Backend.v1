@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {

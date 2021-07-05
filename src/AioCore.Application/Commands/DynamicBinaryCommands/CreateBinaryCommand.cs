@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.DynamicBinaryCommands
 {

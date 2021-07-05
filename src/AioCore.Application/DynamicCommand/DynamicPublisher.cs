@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Plugin.ActionProcessor;
+using AioCore.Application.DynamicAction;
 
 namespace AioCore.Application.DynamicCommand
 {

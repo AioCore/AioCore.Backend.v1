@@ -5,7 +5,7 @@ using Package.FileServer;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Queries.DynamicBinaryQueries
 {

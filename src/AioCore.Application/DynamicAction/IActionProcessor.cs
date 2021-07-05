@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Plugin.ActionProcessor.Abstracts
+namespace AioCore.Application.DynamicAction
 {
     public interface IActionProcessor
     {

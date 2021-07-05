@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using AioCore.Infrastructure.DbContexts;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using Package.DatabaseManagement;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Infrastructure.UnitOfWorks
 {

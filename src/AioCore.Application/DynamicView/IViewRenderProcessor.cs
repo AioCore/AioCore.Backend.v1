@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Plugin.ViewRender.Abstracts
+namespace AioCore.Application.DynamicView
 {
     public interface IViewRenderProcessor
     {

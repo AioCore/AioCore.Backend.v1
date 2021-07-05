@@ -1,7 +1,7 @@
-﻿using AioCore.Domain.CoreEntities;
+﻿using AioCore.Application.Repositories;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.CoreEntities;
 using AioCore.Infrastructure.DbContexts;
-using AioCore.Infrastructure.Repositories.Abstracts;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Infrastructure.UnitOfWorks
 {
