@@ -5,14 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AioCore.Application\02.AioCore.Application.csproj">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AioCore.Infrastructure\03.AioCore.Infrastructure.csproj" >
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </ProjectReference>
+    <ProjectReference Include="..\..\AioCore.Application\02.AioCore.Application.csproj" />
+    <ProjectReference Include="..\..\AioCore.Infrastructure\03.AioCore.Infrastructure.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="echo f | xcopy /f /y &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(SolutionDir)src\AioCore.API\$(OutDir)AioCore.Plugins\$(TargetFileName)&quot;" />
+  </Target>
 
 </Project>

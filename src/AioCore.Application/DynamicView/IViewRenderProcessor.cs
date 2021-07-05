@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using AioCore.Application.Plugin;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace AioCore.Application.DynamicView
 {
-    public interface IViewRenderProcessor
+    public interface IViewRenderProcessor : IPlugin
     {
         string Type { get; }
 
