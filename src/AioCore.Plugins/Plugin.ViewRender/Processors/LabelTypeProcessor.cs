@@ -1,6 +1,6 @@
-﻿using AioCore.Domain.Models;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
-using Plugin.ViewRender.Abstracts;
+﻿using AioCore.Application.DynamicView;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.Models;
 using System;
 using System.Text;
 using System.Threading.Tasks;

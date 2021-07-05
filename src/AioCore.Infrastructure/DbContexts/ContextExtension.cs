@@ -5,8 +5,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.Services.Abstracts;
 using AioCore.Shared.Abstracts;
+using AioCore.Application.Services;
 
 namespace AioCore.Infrastructure.DbContexts
 {

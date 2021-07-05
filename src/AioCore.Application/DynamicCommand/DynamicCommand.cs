@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
-using Plugin.ActionProcessor;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Application.DynamicAction;
 
 namespace AioCore.Application.DynamicCommand
 {

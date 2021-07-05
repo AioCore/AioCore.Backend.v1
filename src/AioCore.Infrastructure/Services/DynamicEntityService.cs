@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.Services.Abstracts;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Application.Services;
 
 namespace AioCore.Infrastructure.Services
 {

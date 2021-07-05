@@ -10,8 +10,8 @@ using Package.Extensions;
 using Microsoft.EntityFrameworkCore;
 using AioCore.Domain.CoreEntities;
 using System.Net;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using AioCore.Mediator;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Plugin.ViewRender
+namespace AioCore.Application.DynamicView
 {
     public class HtmlBuilder
     {

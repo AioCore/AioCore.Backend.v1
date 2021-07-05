@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemTenantResponses;
+using AioCore.Application.Services;
 using AioCore.Domain.CoreEntities;
-using AioCore.Infrastructure.Services.Abstracts;
 using MediatR;
 using Package.AutoMapper;
 using Package.DatabaseManagement;
@@ -19,8 +19,6 @@ namespace AioCore.Application.Commands.SystemTenantCommands
         public Guid? LogoId { get; set; }
         public DatabaseInfo Database { get; set; }
         public ElasticsearchInfo Elasticsearch { get; set; }
-
-        public DatabaseType DatabaseType { get; set; }
 
         internal class Handler : IRequestHandler<CreateTenantCommand, CreateTenantResponse>
         {

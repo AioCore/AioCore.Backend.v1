@@ -6,7 +6,7 @@ using Package.EventBus.IntegrationEventLogEF.Services;
 using System;
 using System.Data.Common;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.IntegrationEvents
 {

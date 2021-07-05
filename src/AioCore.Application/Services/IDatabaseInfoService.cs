@@ -1,6 +1,6 @@
 ﻿using Package.DatabaseManagement;
 
-namespace AioCore.Infrastructure.Services.Abstracts
+namespace AioCore.Application.Services
 {
     public interface IDatabaseInfoService
     {

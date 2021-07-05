@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AioCore.Domain.DynamicEntities;
 
-namespace AioCore.Infrastructure.Services.Abstracts
+namespace AioCore.Application.Services
 {
     public interface IDynamicEntityService
     {

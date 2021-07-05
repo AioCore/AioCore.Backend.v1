@@ -1,5 +1,5 @@
-﻿using AioCore.Domain.CoreEntities;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+﻿using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.CoreEntities;
 using AioCore.Mediator;
 using Microsoft.Extensions.Logging;
 using Package.Elasticsearch;

@@ -10,8 +10,8 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.Repositories.Abstracts;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+using AioCore.Application.Repositories;
+using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Infrastructure.UnitOfWorks
 {

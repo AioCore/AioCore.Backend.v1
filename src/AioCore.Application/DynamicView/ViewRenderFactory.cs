@@ -1,8 +1,7 @@
-﻿using Plugin.ViewRender.Abstracts;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Plugin.ViewRender
+namespace AioCore.Application.DynamicView
 {
     public class ViewRenderFactory
     {

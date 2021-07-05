@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AioCore.Infrastructure.UnitOfWorks.Abstracts
+namespace AioCore.Application.UnitOfWorks
 {
     public interface IAioDynamicUnitOfWorkFactory
     {

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AioCore.Domain.CoreEntities;
 
-namespace AioCore.Infrastructure.Repositories.Abstracts
+namespace AioCore.Application.Repositories
 {
     public interface ISettingLayoutRepository : IRepository<SettingLayout>
     {
