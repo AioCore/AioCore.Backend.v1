@@ -17,7 +17,7 @@ namespace AioCore.Application.Commands.DynamicEntityCommand
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<AttributeModel> Atributes { get; set; } = new List<AttributeModel>();
+        public List<AttributeModel> Atributes { get; set; } = new();
 
         internal class Handler : IRequestHandler<UpdateEntityTypeCommand, UpdateEntityTypeRespone>
         {

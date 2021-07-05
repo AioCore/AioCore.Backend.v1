@@ -24,7 +24,7 @@ namespace AioCore.Infrastructure.Services
             _configuration = configuration;
         }
 
-        private static readonly ConcurrentDictionary<string, ElasticClient> _esClients = new ConcurrentDictionary<string, ElasticClient>();
+        private static readonly ConcurrentDictionary<string, ElasticClient> _esClients = new();
 
         public IElasticClient CreateElasticClient()
         {

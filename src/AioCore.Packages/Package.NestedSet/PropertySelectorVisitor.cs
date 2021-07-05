@@ -8,7 +8,7 @@ namespace Package.NestedSet
 {
     internal class PropertySelectorVisitor : ExpressionVisitor
     {
-        private readonly List<PropertyInfo> _properties = new List<PropertyInfo>();
+        private readonly List<PropertyInfo> _properties = new();
 
         internal PropertySelectorVisitor(Expression exp)
         {

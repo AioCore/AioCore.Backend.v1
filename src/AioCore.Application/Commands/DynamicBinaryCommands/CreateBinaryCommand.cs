@@ -1,8 +1,8 @@
 ﻿using AioCore.Domain.CoreEntities;
 using AioCore.Domain.Models;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using AioCore.Mediator;
 using Microsoft.AspNetCore.Http;
-using Package.Elasticsearch;
 using Package.Extensions;
 using Package.FileServer;
 using SkiaSharp;
@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Application.Commands.DynamicBinaryCommands
 {
@@ -23,20 +22,17 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
 
         internal class Handler : IRequestHandler<CreateBinaryCommand, string>
         {
-            private readonly int[] _imageSizes = { 25, 50, 100, 200, 400, 800, 1600 };
+            private readonly int[] _imageSizes = { 100, 200, 400, 800, 1600 };
 
             private readonly IFileServerService _fileServerService;
             private readonly IAioCoreUnitOfWork _context;
-            private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
                 IFileServerService fileServerService,
-                IAioCoreUnitOfWork context,
-                IElasticsearchService elasticsearchService)
+                IAioCoreUnitOfWork context)
             {
-                _fileServerService = fileServerService ?? throw new ArgumentNullException(nameof(fileServerService));
+                _fileServerService = fileServerService;
                 _context = context;
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
             }
 
             public async Task<Response<string>> Handle(CreateBinaryCommand request, CancellationToken cancellationToken)
@@ -101,11 +97,9 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         });
                     }
 
-                    _context.SystemBinaries.AddRange(files);
+                    await _context.SystemBinaries.AddRangeAsync(files, cancellationToken);
 
                     await _context.SaveChangesAsync(cancellationToken);
-
-                    await _elasticsearchService.IndexManyAsync(files);
                 }
                 else
                 {
@@ -130,11 +124,9 @@ namespace AioCore.Application.Commands.DynamicBinaryCommands
                         ContentType = file.ContentType
                     };
 
-                    var entity = _context.SystemBinaries.Add(binary);
+                    var entity = await _context.SystemBinaries.AddAsync(binary, cancellationToken);
 
                     await _context.SaveChangesAsync(cancellationToken);
-
-                    await _elasticsearchService.IndexAsync(entity);
                 }
 
                 return fileId;

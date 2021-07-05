@@ -1,5 +1,7 @@
 ﻿using AioCore.Domain.CoreEntities;
 using AioCore.Infrastructure.DbContexts;
+using AioCore.Infrastructure.Services.Abstracts;
+using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,8 +12,6 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.Services.Abstracts;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 
 namespace AioCore.Infrastructure.Services
 {
@@ -37,7 +37,8 @@ namespace AioCore.Infrastructure.Services
 
         public Guid? GetCurrentTenantId()
         {
-            if (Guid.TryParse(_httpContextAccessor.HttpContext.User.FindFirst("tenant")?.Value, out var tenantId))
+            if (_httpContextAccessor.HttpContext != null &&
+                Guid.TryParse(_httpContextAccessor.HttpContext.User.FindFirst("tenant")?.Value, out var tenantId))
             {
                 return Guid.Empty.Equals(tenantId) ? null : tenantId;
             }
@@ -54,12 +55,12 @@ namespace AioCore.Infrastructure.Services
                 var dbInfo = DatabaseInfo.Parse(item.DatabaseInfo);
 
                 //create database
-                _httpContextAccessor.HttpContext.User.AddIdentity(new ClaimsIdentity(new List<Claim>
+                _httpContextAccessor.HttpContext?.User.AddIdentity(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim("tenant_creating", item.Id.ToString()),
-                    new Claim("schema_creating", dbInfo?.Schema)
+                    new("tenant_creating", item.Id.ToString()),
+                    new("schema_creating", dbInfo?.Schema ?? "dbo")
                 }));
-                await _serviceProvider.GetRequiredService<AioDynamicContext>().Database.MigrateAsync(cancellationToken: cancellationToken);
+                await _serviceProvider.GetRequiredService<AioDynamicContext>().Database.MigrateAsync(cancellationToken);
                 return item;
             }
             catch (Exception ex)
@@ -79,12 +80,12 @@ namespace AioCore.Infrastructure.Services
                 {
                     var dbInfo = DatabaseInfo.Parse(item.DatabaseInfo);
                     //create database
-                    _httpContextAccessor.HttpContext.User.AddIdentity(new ClaimsIdentity(new List<Claim>
+                    _httpContextAccessor.HttpContext?.User.AddIdentity(new ClaimsIdentity(new List<Claim>
                     {
-                        new Claim("tenant_creating", item.Id.ToString()),
-                        new Claim("schema_creating", dbInfo?.Schema)
+                        new("tenant_creating", item.Id.ToString()),
+                        new("schema_creating", dbInfo?.Schema ?? "dbo")
                     }));
-                    await _serviceProvider.GetRequiredService<AioDynamicContext>().Database.MigrateAsync(cancellationToken: cancellationToken);
+                    await _serviceProvider.GetRequiredService<AioDynamicContext>().Database.MigrateAsync(cancellationToken);
                 }
                 return item;
             }

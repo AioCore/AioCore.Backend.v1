@@ -16,7 +16,7 @@ namespace AioCore.Mediator
 
         public static implicit operator Response<T>(T value)
         {
-            return new Response<T>
+            return new()
             {
                 Success = true,
                 Status = HttpStatusCode.OK,

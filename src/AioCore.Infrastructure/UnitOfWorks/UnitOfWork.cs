@@ -95,8 +95,8 @@ namespace AioCore.Infrastructure.UnitOfWorks
 
         private static class TypeInitialize
         {
-            private static readonly ConcurrentDictionary<Type, List<Member>> _members = new ConcurrentDictionary<Type, List<Member>>();
-            private static readonly ConcurrentDictionary<string, Type> _memberTypes = new ConcurrentDictionary<string, Type>();
+            private static readonly ConcurrentDictionary<Type, List<Member>> _members = new();
+            private static readonly ConcurrentDictionary<string, Type> _memberTypes = new();
 
             public static void InitializeRepositories(UnitOfWork uow, DbContext context)
             {

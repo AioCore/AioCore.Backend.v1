@@ -23,7 +23,7 @@ namespace Package.DatabaseManagement
         private static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseInfo dbInfo)
         {
             var connectionString = GetConnectionString();
-            var migrationsAssembly = "DynamicMigrations." + dbInfo.DatabaseType.ToString();
+            var migrationsAssembly = "Migration." + dbInfo.DatabaseType;
 
             return dbInfo.DatabaseType switch
             {

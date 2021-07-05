@@ -159,7 +159,7 @@ namespace Package.Extensions.Linq
 
         public static Specification<T> ToSpec<T>(this Expression<Func<T, bool>> expression)
         {
-            return new Specification<T>(expression);
+            return new(expression);
         }
 
         private static LambdaExpression GenerateSelector<T>(string propertyName, out Type resultType) where T : class

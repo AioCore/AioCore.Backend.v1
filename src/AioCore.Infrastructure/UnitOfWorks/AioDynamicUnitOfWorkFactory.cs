@@ -39,8 +39,8 @@ namespace AioCore.Infrastructure.UnitOfWorks
             var dbInfo = DatabaseInfo.Parse(tenant.DatabaseInfo);
             _httpContextAccessor.HttpContext.User.AddIdentity(new ClaimsIdentity(new List<Claim>
             {
-                new Claim("tenant_creating", tenant.Id.ToString()),
-                new Claim("schema_creating", dbInfo?.Schema)
+                new("tenant_creating", tenant.Id.ToString()),
+                new("schema_creating", dbInfo?.Schema)
             }));
 
             var dbContext = _serviceProvider.GetRequiredService<AioDynamicContext>();

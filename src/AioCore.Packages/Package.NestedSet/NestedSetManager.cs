@@ -421,7 +421,7 @@ namespace Package.NestedSet
 
         private static NodeData AsNodeData(T node)
         {
-            return new NodeData { Left = node.Left, Right = node.Right, RootId = node.RootId };
+            return new() { Left = node.Left, Right = node.Right, RootId = node.RootId };
         }
 
         private static IOrderedEnumerable<T> GetPathToNode(NodeData node, IEnumerable<T> nodeSet)

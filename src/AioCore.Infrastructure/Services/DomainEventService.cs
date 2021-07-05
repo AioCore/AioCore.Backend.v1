@@ -13,7 +13,7 @@ namespace AioCore.Infrastructure.Services
     {
         private readonly IMediator _mediator;
         private readonly ILogger<DomainEventService> _logger;
-        private static readonly ConcurrentDictionary<Type, Type> _domainEventTypes = new ConcurrentDictionary<Type, Type>();
+        private static readonly ConcurrentDictionary<Type, Type> _domainEventTypes = new();
 
         public DomainEventService(IMediator mediator, ILogger<DomainEventService> logger)
         {

@@ -9,7 +9,7 @@ namespace AioCore.Domain.Models
     {
         public Guid EntityTypeId { get; set; }
 
-        public List<FilterParameter> Parameters { get; set; } = new List<FilterParameter>();
+        public List<FilterParameter> Parameters { get; set; } = new();
     }
 
     public class FilterParameter

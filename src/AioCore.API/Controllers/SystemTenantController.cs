@@ -71,5 +71,11 @@ namespace AioCore.API.Controllers
                 return NotFound();
             }
         }
+
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete([FromQuery] Guid id)
+        {
+            return Ok();
+        }
     }
 }
