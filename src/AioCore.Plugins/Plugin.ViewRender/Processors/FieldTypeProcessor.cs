@@ -1,8 +1,8 @@
-﻿using AioCore.Domain.Models;
-using AioCore.Infrastructure.Services.Abstracts;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
+﻿using AioCore.Application.DynamicView;
+using AioCore.Application.Services;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.Models;
 using Microsoft.AspNetCore.Http;
-using Plugin.ViewRender.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

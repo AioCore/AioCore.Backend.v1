@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.Repositories.Abstracts;
+using AioCore.Application.Repositories;
 
 namespace AioCore.Infrastructure.Repositories
 {

@@ -1,7 +1,7 @@
-﻿using AioCore.Domain.DynamicEntities;
-using AioCore.Infrastructure.Repositories.Abstracts;
+﻿using AioCore.Application.Repositories;
+using AioCore.Domain.DynamicEntities;
 
-namespace AioCore.Infrastructure.UnitOfWorks.Abstracts
+namespace AioCore.Application.UnitOfWorks
 {
     public interface IAioDynamicUnitOfWork : IUnitOfWork
     {

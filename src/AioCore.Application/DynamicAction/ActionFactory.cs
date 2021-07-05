@@ -1,11 +1,8 @@
 ﻿using AioCore.Shared.Common;
 using System.Collections.Generic;
 using System.Linq;
-using AioCore.Shared.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Plugin.ActionProcessor.Abstracts;
 
-namespace Plugin.ActionProcessor
+namespace AioCore.Application.DynamicAction
 {
     public class ActionFactory
     {

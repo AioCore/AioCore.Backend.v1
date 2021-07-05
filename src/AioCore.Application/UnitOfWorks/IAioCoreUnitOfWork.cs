@@ -1,7 +1,7 @@
-﻿using AioCore.Domain.CoreEntities;
-using AioCore.Infrastructure.Repositories.Abstracts;
+﻿using AioCore.Application.Repositories;
+using AioCore.Domain.CoreEntities;
 
-namespace AioCore.Infrastructure.UnitOfWorks.Abstracts
+namespace AioCore.Application.UnitOfWorks
 {
     public interface IAioCoreUnitOfWork : IUnitOfWork
     {

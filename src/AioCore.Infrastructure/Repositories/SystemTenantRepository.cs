@@ -2,7 +2,7 @@
 using AioCore.Infrastructure.DbContexts;
 using System;
 using System.Threading.Tasks;
-using AioCore.Infrastructure.Repositories.Abstracts;
+using AioCore.Application.Repositories;
 
 namespace AioCore.Infrastructure.Repositories
 {

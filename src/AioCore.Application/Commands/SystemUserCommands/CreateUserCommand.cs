@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Application.Responses.SystemUserResponses;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.CoreEntities;
-using AioCore.Infrastructure.UnitOfWorks.Abstracts;
 using MediatR;
 using Package.AutoMapper;
 using Package.Elasticsearch;

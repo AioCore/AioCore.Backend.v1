@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace AioCore.Infrastructure.Repositories.Abstracts
+namespace AioCore.Application.Repositories
 {
     public interface IRepository { }
 

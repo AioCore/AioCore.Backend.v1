@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace AioCore.Infrastructure.UnitOfWorks.Abstracts
+namespace AioCore.Application.UnitOfWorks
 {
     public interface IUnitOfWork
     {

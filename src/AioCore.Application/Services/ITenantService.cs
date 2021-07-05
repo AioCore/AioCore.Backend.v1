@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AioCore.Domain.CoreEntities;
 
-namespace AioCore.Infrastructure.Services.Abstracts
+namespace AioCore.Application.Services
 {
     public interface ITenantService
     {
