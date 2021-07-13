@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\AioCore.Domain\AioCore.Domain.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\AioCore.Mediator\AioCore.Mediator.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.AutoMapper\Package.AutoMapper.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.DatabaseManagement\Package.DatabaseManagement.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.EventBus\Package.EventBus.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.FileServer\Package.FileServer.csproj" />
+    <ProjectReference Include="..\AioCore.Packages\Package.Localization\Package.Localization.csproj" />
+    <ProjectReference Include="..\AioCore.Shared\AioCore.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.80.2" />
+    <PackageReference Include="System.Threading.AccessControl" Version="5.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AioCore.Application</AssemblyName>
+    <RootNamespace>AioCore.Application</RootNamespace>
+  </PropertyGroup>
+
+</Project>

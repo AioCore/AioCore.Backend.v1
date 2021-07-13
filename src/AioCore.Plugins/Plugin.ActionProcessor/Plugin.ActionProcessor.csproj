@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AioCore.Application\02.AioCore.Application.csproj" />
-    <ProjectReference Include="..\..\AioCore.Infrastructure\03.AioCore.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\AioCore.Application\AioCore.Application.csproj" />
+    <ProjectReference Include="..\..\AioCore.Infrastructure\AioCore.Infrastructure.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
