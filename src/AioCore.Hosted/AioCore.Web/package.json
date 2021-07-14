@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "buildcss:dev": "postcss ./Styles/app.css -o ./wwwroot/css/app.css"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.3.5",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.2.4"
+  }
+}
