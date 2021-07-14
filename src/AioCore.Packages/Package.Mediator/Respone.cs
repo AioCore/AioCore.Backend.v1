@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace AioCore.Mediator
+namespace Package.Mediator
 {
     public class Response
     {

@@ -8,7 +8,6 @@ using AioCore.Infrastructure.DbContexts;
 using AioCore.Infrastructure.Repositories;
 using AioCore.Infrastructure.Services;
 using AioCore.Infrastructure.UnitOfWorks;
-using AioCore.Mediator;
 using AioCore.Shared.Abstracts;
 using FluentValidation;
 using McMaster.NETCore.Plugins;
@@ -19,9 +18,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Package.DatabaseManagement;
 using Package.Elasticsearch;
-using Package.EventBus.IntegrationEventLogEF;
 using Package.Extensions;
 using Package.FileServer;
+using Package.Mediator;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,16 +40,6 @@ namespace AioCore.API
                     b.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
                     b.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                 });
-            });
-
-            services.AddDbContext<IntegrationEventLogContext>(options =>
-            {
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
-                    sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                        sqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
-                    });
             });
 
             services.AddSchemaDbContext<AioDynamicContext>(s => s.GetRequiredService<IDatabaseInfoService>().GetDatabaseInfo());

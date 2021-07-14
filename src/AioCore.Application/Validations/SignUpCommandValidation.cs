@@ -1,14 +1,12 @@
 ﻿using AioCore.Application.Commands.IdentityCommands;
-using AioCore.Shared;
+using AioCore.Shared.Constants;
 using FluentValidation;
-using Microsoft.Extensions.Localization;
-using Package.Localization;
 
 namespace AioCore.Application.Validations
 {
     public class SignUpCommandValidation : AbstractValidator<SignUpCommand>
     {
-        public SignUpCommandValidation(IStringLocalizer<Localization> localizer)
+        public SignUpCommandValidation()
         {
             RuleFor(t => t.Name).NotEmpty();
             RuleFor(t => t.Account).NotEmpty();
@@ -16,7 +14,7 @@ namespace AioCore.Application.Validations
             RuleFor(t => t.Password).NotEmpty();
             RuleFor(t => t.ConfirmPassword).NotEmpty();
             RuleFor(t => t.ConfirmPassword).Equal(t => t.Password)
-                .WithMessage(t => localizer[Message.SignUpMessagePasswordNotMatch]);
+                .WithMessage(t => Messages.SignUpPasswordNotMatch);
         }
     }
 }

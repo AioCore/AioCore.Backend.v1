@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AioCore.API.Controllers
 {
-    [Route("{culture}/api/v1/[controller]")]
+    [Route("api/v1/[controller]")]
     public class AioControllerBase : ControllerBase
     {
         private IMediator _mediator;

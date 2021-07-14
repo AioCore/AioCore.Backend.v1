@@ -1,38 +1,31 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
-using AioCore.Mediator;
-using AioCore.Shared;
+using AioCore.Application.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using Package.Extensions;
-using Package.Localization;
+using Package.Mediator;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {
-    public class PreSiginCommand : IRequest<PreSigninRespone>
+    public class PreSigInCommand : IRequest<PreSigninRespone>
     {
         public string Key { get; set; }
 
         public string Password { get; set; }
 
-        internal class Handler : IRequestHandler<PreSiginCommand, PreSigninRespone>
+        internal class Handler : IRequestHandler<PreSigInCommand, PreSigninRespone>
         {
             private readonly IAioCoreUnitOfWork _coreUnitOfWork;
-            private readonly IStringLocalizer<Localization> _localizer;
 
-            public Handler(
-                  IAioCoreUnitOfWork coreUnitOfWork
-                , IStringLocalizer<Localization> localizer)
+            public Handler(IAioCoreUnitOfWork coreUnitOfWork)
             {
                 _coreUnitOfWork = coreUnitOfWork;
-                _localizer = localizer;
             }
 
-            public async Task<Response<PreSigninRespone>> Handle(PreSiginCommand request, CancellationToken cancellationToken)
+            public async Task<Response<PreSigninRespone>> Handle(PreSigInCommand request, CancellationToken cancellationToken)
             {
                 var user = await _coreUnitOfWork.SystemUsers
                        .Where(x => x.Account == request.Key || x.Email == request.Key)
@@ -47,7 +40,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                         Status = HttpStatusCode.BadRequest,
                         Data = new PreSigninRespone
                         {
-                            Message = _localizer[Message.SignInMessageFail]
+                            Message = "Đăng nhập thất bại"
                         }
                     };
                 }

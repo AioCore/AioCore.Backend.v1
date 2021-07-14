@@ -1,17 +1,15 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
-using AioCore.Shared;
-using Microsoft.Extensions.Localization;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Domain.CoreEntities;
+using AioCore.Shared.Constants;
+using Microsoft.EntityFrameworkCore;
 using Package.Elasticsearch;
-using Package.Localization;
+using Package.Extensions;
+using Package.Mediator;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Package.Extensions;
-using Microsoft.EntityFrameworkCore;
-using AioCore.Domain.CoreEntities;
-using System.Net;
-using AioCore.Mediator;
-using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {
@@ -30,17 +28,14 @@ namespace AioCore.Application.Commands.IdentityCommands
         internal class Handler : IRequestHandler<SignUpCommand, SignUpResponse>
         {
             private readonly IAioCoreUnitOfWork _aioCoreUnitOfWork;
-            private readonly IStringLocalizer<Localization> _localizer;
             private readonly IElasticsearchService _elasticsearchService;
 
             public Handler(
                  IAioCoreUnitOfWork context,
-                 IStringLocalizer<Localization> localizer,
                  IElasticsearchService elasticsearchService)
             {
                 _aioCoreUnitOfWork = context;
-                _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-                _elasticsearchService = elasticsearchService ?? throw new ArgumentNullException(nameof(elasticsearchService));
+                _elasticsearchService = elasticsearchService;
             }
 
             public async Task<Response<SignUpResponse>> Handle(SignUpCommand request, CancellationToken cancellationToken)
@@ -56,7 +51,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                             Status = HttpStatusCode.BadRequest,
                             Data = new SignUpResponse
                             {
-                                Message = string.Format(_localizer[Message.SignUpMessageAccountExisted], request.Account)
+                                Message = string.Format(Messages.SignUpAccountExisted, request.Account)
                             }
                         };
                     }
@@ -70,28 +65,28 @@ namespace AioCore.Application.Commands.IdentityCommands
                             Status = HttpStatusCode.BadRequest,
                             Data = new SignUpResponse
                             {
-                                Message = string.Format(_localizer[Message.SignUpMessageEmailExisted], request.Email)
+                                Message = string.Format(Messages.SignUpEmailExisted, request.Email)
                             }
                         };
                     }
 
-                    var user = _aioCoreUnitOfWork.SystemUsers.Add(new SystemUser
+                    var user = await _aioCoreUnitOfWork.SystemUsers.AddAsync(new SystemUser
                     {
                         Name = request.Name,
                         Account = request.Account,
                         Email = request.Email,
                         PasswordHash = request.Password.CreateMd5(),
-                    });
+                    }, cancellationToken);
                     await _aioCoreUnitOfWork.SaveChangesAsync(cancellationToken);
                     await _elasticsearchService.IndexAsync(user);
                     return new SignUpResponse
                     {
-                        Message = _localizer[Message.SignUpMessageSuccess]
+                        Message = Messages.SignUpSuccess
                     };
                 }
                 catch (Exception e)
                 {
-                    throw new ApplicationException(_localizer[Message.SignUpMessageFail, e.Message]);
+                    throw new ApplicationException(string.Format(Messages.SignUpFail, e.Message));
                 }
             }
         }

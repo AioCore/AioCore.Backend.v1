@@ -1,4 +1,4 @@
-﻿namespace AioCore.Mediator
+﻿namespace Package.Mediator
 {
     public enum PublishStrategy
     {

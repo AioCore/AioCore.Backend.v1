@@ -1,8 +1,8 @@
 ﻿using AioCore.Shared.Exceptions;
+using AioCore.Shared.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Package.EventBus.EventBus.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -30,15 +30,12 @@ namespace AioCore.Application.Behaviors
                 .Where(x => x != null)
                 .ToList();
 
-            if (failures.Count > 0)
-            {
-                _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}"
-                    , request.GetGenericTypeName(), request, failures);
+            if (failures.Count <= 0) return await next();
+            _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}"
+                , request.GetGenericTypeName(), request, failures);
 
-                throw new AioCoreException($"Command Validation Errors for type {typeof(TRequest).Name}"
-                    , new ValidationException("Validation exception", failures));
-            }
-            return await next();
+            throw new AioCoreException($"Command Validation Errors for type {typeof(TRequest).Name}"
+                , new ValidationException("Validation exception", failures));
         }
     }
 }

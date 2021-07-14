@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.Models;
 using AioCore.Domain.Models;
-using AioCore.Mediator;
+using Package.Mediator;
 using AioCore.Shared.Common;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -4,11 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Package.EventBus.IntegrationEventLogEF;
+using Package.Extensions.WebHost;
 using Serilog;
 using Serilog.Context;
 using System;
-using Package.Extensions.WebHost;
 
 namespace AioCore.API
 {
@@ -34,7 +33,7 @@ namespace AioCore.API
                     new AioCoreContextSeed()
                         .SeedAsync(context, logger)
                         .Wait();
-                }).MigrateDbContext<IntegrationEventLogContext>((_, __) => { }); ;
+                });
 
                 Log.Information("Starting web host ({ApplicationContext})...", AppName);
                 host.Run();

@@ -1,5 +1,5 @@
 ﻿using AioCore.Application.Responses.SettingFeatureResponses;
-using AioCore.Mediator;
+using Package.Mediator;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

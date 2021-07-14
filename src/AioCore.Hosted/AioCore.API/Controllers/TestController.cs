@@ -1,7 +1,7 @@
 ﻿using AioCore.Application.DynamicView;
 using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.Models;
-using AioCore.Mediator;
+using Package.Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

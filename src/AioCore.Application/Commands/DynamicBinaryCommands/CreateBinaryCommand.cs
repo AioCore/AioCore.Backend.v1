@@ -1,6 +1,6 @@
 ﻿using AioCore.Domain.CoreEntities;
 using AioCore.Domain.Models;
-using AioCore.Mediator;
+using Package.Mediator;
 using Microsoft.AspNetCore.Http;
 using Package.Extensions;
 using Package.FileServer;

@@ -1,4 +1,4 @@
-﻿using AioCore.Mediator;
+﻿using Package.Mediator;
 using AioCore.Shared.Exceptions;
 using Package.Elasticsearch;
 using System;

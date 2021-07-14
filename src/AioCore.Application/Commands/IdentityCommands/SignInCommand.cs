@@ -1,13 +1,13 @@
 ﻿using AioCore.Application.Responses.IdentityResponses;
-using AioCore.Mediator;
+using AioCore.Application.UnitOfWorks;
 using AioCore.Shared;
+using AioCore.Shared.Constants;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Package.DatabaseManagement;
 using Package.Extensions;
-using Package.Localization;
+using Package.Mediator;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -16,7 +16,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.UnitOfWorks;
 
 namespace AioCore.Application.Commands.IdentityCommands
 {
@@ -32,16 +31,13 @@ namespace AioCore.Application.Commands.IdentityCommands
         {
             private readonly IAioCoreUnitOfWork _context;
             private readonly AppSettings _appSettings;
-            private readonly IStringLocalizer<Localization> _localizer;
 
             public Handler(
                   IAioCoreUnitOfWork context
-                , IOptions<AppSettings> appSettings
-                , IStringLocalizer<Localization> localizer)
+                , IOptions<AppSettings> appSettings)
             {
                 _context = context;
                 _appSettings = appSettings.Value;
-                _localizer = localizer;
             }
 
             public async Task<Response<SignInResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
@@ -59,7 +55,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                         Status = HttpStatusCode.BadRequest,
                         Data = new SignInResponse
                         {
-                            Message = _localizer[Message.SignInMessageFail]
+                            Message = Messages.SignInFail
                         }
                     };
                 }
@@ -78,7 +74,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                         Status = HttpStatusCode.BadRequest,
                         Data = new SignInResponse
                         {
-                            Message = _localizer[Message.SignInMessageFail]
+                            Message = Messages.SignInFail
                         }
                     };
                 }
@@ -112,7 +108,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenNotEncrypt);
                 return new SignInResponse
                 {
-                    Message = _localizer[Message.SignInMessageSuccess],
+                    Message = Messages.SignInSuccess,
                     Token = token
                 };
             }

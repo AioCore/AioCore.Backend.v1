@@ -1,14 +1,12 @@
-﻿using System;
+﻿using AioCore.Application.Responses.SystemUserResponses;
+using AioCore.Application.UnitOfWorks;
+using AioCore.Shared.Constants;
+using Package.Elasticsearch;
+using Package.Mediator;
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using AioCore.Application.Responses.SystemUserResponses;
-using AioCore.Application.UnitOfWorks;
-using AioCore.Mediator;
-using AioCore.Shared;
-using Microsoft.Extensions.Localization;
-using Package.Elasticsearch;
-using Package.Localization;
 
 namespace AioCore.Application.Commands.SystemUserCommands
 {
@@ -24,16 +22,13 @@ namespace AioCore.Application.Commands.SystemUserCommands
         {
             private readonly IAioCoreUnitOfWork _context;
             private readonly IElasticsearchService _elasticsearchService;
-            private readonly IStringLocalizer<Localization> _localizer;
 
             public Handler(
                 IAioCoreUnitOfWork context,
-                IElasticsearchService elasticsearchService,
-                IStringLocalizer<Localization> localizer)
+                IElasticsearchService elasticsearchService)
             {
                 _context = context;
                 _elasticsearchService = elasticsearchService;
-                _localizer = localizer;
             }
 
             public async Task<Response<UpdateUserResponse>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -49,7 +44,7 @@ namespace AioCore.Application.Commands.SystemUserCommands
                 {
                     return new UpdateUserResponse
                     {
-                        Message = _localizer[Message.SystemUserUpdateMessageSuccess]
+                        Message = Messages.SystemUserUpdateSuccess
                     };
                 }
 
@@ -59,7 +54,7 @@ namespace AioCore.Application.Commands.SystemUserCommands
                     Status = HttpStatusCode.BadRequest,
                     Data = new UpdateUserResponse
                     {
-                        Message = _localizer[Message.SystemUserUpdateMessageFail]
+                        Message = Messages.SystemUserUpdateFail
                     }
                 };
             }

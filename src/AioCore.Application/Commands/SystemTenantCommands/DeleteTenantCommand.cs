@@ -1,6 +1,6 @@
 ﻿using AioCore.Application.UnitOfWorks;
 using AioCore.Domain.CoreEntities;
-using AioCore.Mediator;
+using Package.Mediator;
 using Microsoft.Extensions.Logging;
 using Package.Elasticsearch;
 using System;

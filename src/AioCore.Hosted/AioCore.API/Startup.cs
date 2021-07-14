@@ -1,29 +1,14 @@
-using AioCore.Application.IntegrationEvents;
 using AioCore.Infrastructure.Authorize;
 using AioCore.Shared;
 using AioCore.Shared.Filters;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Package.AutoMapper;
-using Package.EventBus.EventBus;
-using Package.EventBus.EventBus.Abstractions;
-using Package.EventBus.EventBus.RabbitMQ;
-using Package.EventBus.EventBus.ServiceBus;
-using Package.EventBus.IntegrationEventLogEF.Services;
-using Package.Localization;
 using Package.Redis;
-using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Globalization;
 
 namespace AioCore.API
 {
@@ -40,13 +25,9 @@ namespace AioCore.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAioLocalization()
-                .AddCustomMvc()
+            services.AddCustomMvc()
                 .AddCustomDbContext(_configuration)
-                .AddCustomSwagger()
-                .AddCustomIntegrations(_configuration)
-                .AddEventBus(_configuration)
-                .AddMapper();
+                .AddCustomSwagger();
 
             services.Configure<AppSettings>(_configuration);
 
@@ -60,8 +41,6 @@ namespace AioCore.API
         public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
-
-            app.UseAioLocalization();
 
             app.UseSwagger()
                 .UseSwaggerUI(c =>
@@ -82,25 +61,11 @@ namespace AioCore.API
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
             });
-
-            app.UseEventBus();
         }
     }
 
     public static class StartupExtensions
     {
-        private static List<CultureInfo> SupportedCultures => new()
-        {
-            new CultureInfo("en-US"),
-            new CultureInfo("vi-VN")
-        };
-
-        public static IApplicationBuilder UseEventBus(this IApplicationBuilder app)
-        {
-            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            return app;
-        }
-
         public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
             services.AddControllers(options =>
@@ -141,86 +106,5 @@ namespace AioCore.API
 
             return services;
         }
-
-        public static IServiceCollection AddCustomIntegrations(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddHttpContextAccessor();
-
-            services.AddTransient<Func<DbConnection, IIntegrationEventLogService>>(_ => c => new IntegrationEventLogService(c));
-
-            services.AddTransient<IAioIntegrationEventService, AioIntegrationEventService>();
-
-            if (configuration.GetValue<bool>("EventBus:AzureServiceBusEnabled"))
-            {
-                services.AddSingleton<IServiceBusPersisterConnection>(_ =>
-                {
-                    var serviceBusConnectionString = configuration["EventBus:Connection"];
-                    var serviceBusConnection = new ServiceBusConnectionStringBuilder(serviceBusConnectionString);
-                    var subscriptionClientName = configuration["EventBus:SubscriptionClientName"];
-
-                    return new DefaultServiceBusPersisterConnection(serviceBusConnection, subscriptionClientName);
-                });
-            }
-            else
-            {
-                services.AddSingleton<IRabbitMqPersistentConnection>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMqPersistentConnection>>();
-
-                    var factory = new ConnectionFactory()
-                    {
-                        HostName = configuration["EventBus:Connection"],
-                        DispatchConsumersAsync = true
-                    };
-
-                    if (!string.IsNullOrEmpty(configuration["EventBus:UserName"]))
-                    {
-                        factory.UserName = configuration["EventBus:UserName"];
-                    }
-
-                    if (!string.IsNullOrEmpty(configuration["EventBus:Password"]))
-                    {
-                        factory.Password = configuration["EventBus:Password"];
-                    }
-
-                    var retryCount = 5;
-                    if (!string.IsNullOrEmpty(configuration["EventBus:RetryCount"]))
-                    {
-                        retryCount = int.Parse(configuration["EventBus:RetryCount"]);
-                    }
-
-                    return new DefaultRabbitMqPersistentConnection(factory, logger, retryCount);
-                });
-            }
-
-            return services;
-        }
-
-        public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
-        {
-            if (configuration.GetValue<bool>("EventBus:AzureServiceBusEnabled"))
-            {
-                services.AddSingleton<IEventBus, EventBusServiceBus>();
-            }
-            else
-            {
-                services.AddSingleton<IEventBus, EventBusRabbitMq>();
-            }
-
-            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddMapper(this IServiceCollection services)
-        {
-            var config = new AutoMapper.MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new MappingProfile());
-            });
-            var mapper = config.CreateMapper();
-            services.AddSingleton(mapper.RegisterMap());
-            return services;
-        }        
     }
 }
