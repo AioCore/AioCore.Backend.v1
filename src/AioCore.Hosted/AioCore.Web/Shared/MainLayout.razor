@@ -1,10 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
-<Layout>
-    <Sider>Sider</Sider>
+<Layout Class="h-full">
+    <Sider Width="65" Theme="SiderTheme.Light">Sider</Sider>
     <Layout>
-        <Header>Header</Header>
+        <Header Style="background-color: white" Class="border-b">Header</Header>
         <Content>@Body</Content>
-        <Footer>Footer</Footer>
     </Layout>
 </Layout>

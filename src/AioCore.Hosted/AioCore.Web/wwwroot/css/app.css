@@ -31855,6 +31855,13 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.ant-layout-sider-children {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+  border-right-width: 1px;
+  color: #111827;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

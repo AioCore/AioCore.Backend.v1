@@ -1,3 +1,10 @@
 ﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ant-layout-sider-children {
+    background-color: #ffffff;
+    border-color: #e5e7eb;
+    border-right-width: 1px;
+    color: #111827;
+}

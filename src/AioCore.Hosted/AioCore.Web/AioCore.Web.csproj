@@ -7,7 +7,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="AntDesign" Version="0.8.2" />
-		<PackageReference Include="BuildWebCompiler" Version="1.12.394" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.5.21301.17" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.5.21301.17" PrivateAssets="all" />
 	</ItemGroup>
