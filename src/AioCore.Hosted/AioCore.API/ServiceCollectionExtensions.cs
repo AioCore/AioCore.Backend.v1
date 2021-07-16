@@ -131,7 +131,7 @@ namespace AioCore.API
                 return Directory.GetDirectories(rootFolder)
                     .Select(t =>
                     {
-                        var pluginDll = Path.Combine(t, "bin", "Debug", "net6.0", Path.GetFileName(t)) + ".dll";
+                        var pluginDll = Path.Combine(t, "bin", "Debug", "net5.0", Path.GetFileName(t)) + ".dll";
                         var loader = PluginLoader.CreateFromAssemblyFile(pluginDll, sharedTypes: new[] { typeof(IPlugin) });
                         return loader.LoadDefaultAssembly();
                     });

@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>AioCore.Infrastructure</AssemblyName>
     <RootNamespace>AioCore.Infrastructure</RootNamespace>
   </PropertyGroup>

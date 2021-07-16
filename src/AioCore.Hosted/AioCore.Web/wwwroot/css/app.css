@@ -1,7 +1,18 @@
-.bg-primary {
-    background-color: #0ebb9d;
+/*Components*/
+nav .menu-items {
+  grid-gap: 0.5rem;
+}
+nav .menu-items .menu-item {
+  width: 64px;
+}
+nav .menu-items .menu-item.active {
+  border-left: 4px solid #04A385;
 }
 
-main {
-    background-color: rgb(249 250 251);
+/*Pages*/
+/*Shared*/
+.aioc main {
+  background-color: #04A385;
 }
+
+/*# sourceMappingURL=app.css.map */

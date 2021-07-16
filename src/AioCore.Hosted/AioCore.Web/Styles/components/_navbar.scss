@@ -1,0 +1,15 @@
+@use "../framework/default";
+
+nav {
+  .menu-items {
+    grid-gap: .5rem;
+    
+    .menu-item {
+      width: 64px;
+      
+      &.active {
+        border-left: 4px solid default.$primary;
+      }
+    }
+  }
+}
