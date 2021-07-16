@@ -18,31 +18,13 @@
                     </AiocSvg>
                 </div>
             </div>
-            <ul class="menu-items grid items-center justify-center mt-2">
-                <li class="menu-item flex h-11 items-center justify-center w-full active">
-                    <AiocSvg Size="20">
-                        <HomeIcon/>
-                    </AiocSvg>
-                </li>
-                <li class="menu-item flex h-11 items-center justify-center w-full">
-                    <AiocSvg Size="20">
-                        <HomeIcon/>
-                    </AiocSvg>
-                </li>
-                <li class="menu-item flex h-11 items-center justify-center w-full">
-                    <AiocSvg Size="20">
-                        <HomeIcon/>
-                    </AiocSvg>
-                </li>
-            </ul>
+            <NavMenu/>
         </nav>
 
         <main class="min-w-0 flex-1 lg:flex">
-            <aside class="hidden lg:block lg:flex-shrink-0 lg:order-first">
-                <div class="h-full relative flex flex-col w-96">
-                    @Body
-                </div>
-            </aside>
+            <div class="h-full relative flex flex-col w-96">
+                @Body
+            </div>
         </main>
     </div>
 </div>
