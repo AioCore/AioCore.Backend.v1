@@ -15,6 +15,7 @@ $ dotnet watch run
 
 ## Môi trường triển khai
 - Aws Amplify
+1. Cấu hình
 ```yml
 version: 1
 applications:
@@ -36,5 +37,17 @@ applications:
       cache:
         paths: []
     appRoot: src/AioCore.Hosted/AioCore.Web
-
+```
+2. Rewrites and redirects
+- Source address
+```text
+</^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf|map|json|br|gz|html|md|eot|otf|dll|blat|wasm|dat)$)([^.]+$)/>
+```
+- Target address
+```text
+/index.html
+```
+- Type
+```text
+200 (Rewrite)
 ```

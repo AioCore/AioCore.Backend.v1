@@ -1,8 +1,106 @@
 @page "/s/tenants"
+@using System.ComponentModel
+@using AntDesign.TableModels
 <PageTitle Title="Cấu hình thuê bao"/>
 
-<h3>SettingTenantPage</h3>
+<AiocBreadcrumb/>
 
-@code {
-    
+<div class="widget w-full p-4 mb-4 rounded-lg bg-white border border-gray-100 dark:bg-gray-900 dark:border-gray-800">
+    <div class="flex flex-row items-center justify-between mb-6">
+        <div class="flex flex-col">
+            <div class="text-sm font-light text-gray-500">Danh sách thuê bao</div>
+            <div class="text-sm font-bold">
+                <span>Trạng thái hoạt động của thuê bao trên hệ thống</span>
+            </div></div>
+        <div class="relative">
+            <button class="btn btn-default btn-circle btn-icon bg-transparent hover:bg-transparent active:bg-transparent relative">
+                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="stroke-current stroke-1" height="18" width="18" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </button>
+        </div>
+    </div>
+    <Table class="aioc-table" Size="@TableSize.Small" TItem="Data" DataSource="@_data" OnRowClick="OnRowClick">
+        <Column @bind-Field="@context.Name">
+            <a>@context.Name</a>
+        </Column>
+        <Column @bind-Field="@context.Age"></Column>
+        <Column @bind-Field="@context.Address">
+            <TitleTemplate>
+                <span> <Icon Type="environment"/> Address </span>
+            </TitleTemplate>
+        </Column>
+        <Column @bind-Field="@context.Tags">
+            @foreach (var tag in context.Tags)
+            {
+                var color = tag.Length > 5 ? "geekblue" : "green";
+                if (tag == "loser")
+                {
+                    color = "volcano";
+                }
+                <Tag Color="@color">@tag</Tag>
+            }
+        </Column>
+        <ActionColumn Title="Acton">
+            <Space Size=@("middle")>
+                <SpaceItem>
+                    <a>Xem chi tiết</a>
+                </SpaceItem>
+                <SpaceItem>
+                    <a>Xóa</a>
+                </SpaceItem>
+            </Space>
+        </ActionColumn>
+    </Table>
+</div>
+
+@code{
+
+    readonly Data[] _data = {
+        new()
+        {
+            Key = "1",
+            Name = "Thẩm mĩ viện đông tây",
+            Age = 32,
+            Address = "New York No. 1 Lake Park",
+            Tags = new[] {"đẹp", "sạch"}
+        },
+        new()
+        {
+            Key = "2",
+            Name = "Công ty công nghệ AIOC",
+            Age = 42,
+            Address = "London No. 1 Lake Park",
+            Tags = new[] { "phần mềm", "công ty phát triển sản phẩm" }
+        },
+        new()
+        {
+            Key = "3",
+            Name = "Sàn thương mại điện tử Thiên Lý",
+            Age = 32,
+            Address = "Sidney No. 1 Lake Park",
+            Tags = new[] { "chuẩn", "thường xuyên" }
+        }
+        };
+
+    public class Data
+    {
+        [DisplayName("KEY")]
+        public string Key { get; set; }
+
+        [DisplayName("TÊN THUÊ BAO")]
+        public string Name { get; set; }
+
+        [DisplayName("NĂM HOẠT ĐỘNG")]
+        public int Age { get; set; }
+
+        [DisplayName("ĐỊA CHỈ")]
+        public string Address { get; set; }
+
+        [DisplayName("NHÃN")]
+        public string[] Tags { get; set; }
+    }
+
+    void OnRowClick(RowData<Data> row)
+    {
+        Console.WriteLine($"row {row.Data.Key} was clicked.");
+    }
 }

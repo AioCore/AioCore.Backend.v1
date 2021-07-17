@@ -1,0 +1,25 @@
+.aioc-table {
+  table {
+    thead {
+      tr {
+        th {
+          background: white !important;
+          border-color: rgba(229, 231, 235, 1);
+          color: rgba(107, 114, 128, 1);
+
+          font-weight: 500;
+          font-size: .75rem;
+          line-height: 1rem;
+          text-transform: uppercase;
+          letter-spacing: .05em;
+        }
+      }
+    }
+
+    tbody tr td, 
+    thead tr th {
+      border-bottom-width: 1px !important;
+      padding: .5rem .75rem !important;
+    }
+  }
+}

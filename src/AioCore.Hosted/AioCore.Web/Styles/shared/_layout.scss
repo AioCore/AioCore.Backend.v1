@@ -1,7 +1,7 @@
 @use "../framework/default";
 
-.aioc {
-  main {
-    background-color: default.$primary;
+#app {
+  .main {
+    background-color: default.$bg-content;
   }
 }

@@ -18,10 +18,36 @@ nav .menu-items .menu-item.active .aioc-icon, nav .menu-items .menu-item:hover .
   fill: #04A385;
 }
 
+.aioc-table table thead tr th {
+  background: white !important;
+  border-color: #e5e7eb;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.aioc-table table tbody tr td,
+.aioc-table table thead tr th {
+  border-bottom-width: 1px !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  visibility: visible;
+  z-index: 100;
+}
+
 /*Pages*/
 /*Shared*/
-.aioc main {
-  background-color: #04A385;
+#app .main {
+  background-color: #F9FAFB;
 }
 
 /*# sourceMappingURL=app.css.map */
