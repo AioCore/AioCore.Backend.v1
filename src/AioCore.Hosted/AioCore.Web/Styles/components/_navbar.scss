@@ -6,9 +6,23 @@ nav {
     
     .menu-item {
       width: 64px;
-      
-      &.active {
-        border-left: 4px solid default.$primary;
+
+      &.active:after,
+      &:hover:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 4px;
+        background-color: default.$primary;
+      }
+
+      &.active,
+      &:hover {
+        .aioc-icon {
+          fill: default.$primary;
+        }
       }
     }
   }

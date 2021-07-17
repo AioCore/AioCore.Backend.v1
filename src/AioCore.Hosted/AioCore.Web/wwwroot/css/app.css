@@ -5,16 +5,21 @@ nav .menu-items {
 nav .menu-items .menu-item {
   width: 64px;
 }
-nav .menu-items .menu-item.active {
-  border-left: 4px solid #04A385;
+nav .menu-items .menu-item.active:after, nav .menu-items .menu-item:hover:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background-color: #04A385;
+}
+nav .menu-items .menu-item.active .aioc-icon, nav .menu-items .menu-item:hover .aioc-icon {
+  fill: #04A385;
 }
 
 /*Pages*/
 /*Shared*/
-nav .menu-items .menu-item:hover {
-  border-left: 4px solid #04A385;
-}
-
 .aioc main {
   background-color: #04A385;
 }
