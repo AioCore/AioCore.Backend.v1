@@ -19,15 +19,15 @@ namespace AioCore.Application.Responses.SystemTenantResponses
 
         public Guid LogoId { get; set; }
 
-        public DatabaseInfo Database { get; set; }
+        public DatabaseSettings Database { get; set; }
 
         public ElasticsearchInfo Elasticsearch { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<SystemTenant, CreateTenantResponse>()
-                .ForMember(t => t.Database, t => t.MapFrom(x => DatabaseInfo.Parse(x.DatabaseInfo)))
-                .ForMember(t => t.Elasticsearch, t => t.MapFrom(x => ElasticsearchInfo.Parse(x.ElasticsearchInfo)));
+                .ForMember(t => t.Database, t => t.MapFrom(x => DatabaseSettings.Parse(x.DatabaseSettingsJson)))
+                .ForMember(t => t.Elasticsearch, t => t.MapFrom(x => ElasticsearchInfo.Parse(x.ElasticsearchSettingsJson)));
         }
     }
 }

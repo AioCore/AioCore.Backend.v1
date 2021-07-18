@@ -8,7 +8,7 @@ namespace Package.DatabaseManagement
     public static class SchemaDbContextExtensions
     {
         public static IServiceCollection AddSchemaDbContext<TContext>(this IServiceCollection services
-            , Func<IServiceProvider, DatabaseInfo> dbInfoFactory
+            , Func<IServiceProvider, DatabaseSettings> dbInfoFactory
             , ServiceLifetime contextLifetime = ServiceLifetime.Scoped
             , ServiceLifetime optionsLifetime = ServiceLifetime.Scoped) where TContext : SchemaDbContext
         {
@@ -20,33 +20,33 @@ namespace Package.DatabaseManagement
             return services;
         }
 
-        private static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseInfo dbInfo)
+        private static DbContextOptionsBuilder UseSql(this DbContextOptionsBuilder optionsBuilder, DatabaseSettings dbSettings)
         {
             var connectionString = GetConnectionString();
-            var migrationsAssembly = "Migration." + dbInfo.DatabaseType;
+            var migrationsAssembly = "Migration." + dbSettings.DatabaseType;
 
-            return dbInfo.DatabaseType switch
+            return dbSettings.DatabaseType switch
             {
                 DatabaseType.PostgresSql => optionsBuilder.UseNpgsql(connectionString, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(migrationsAssembly);
-                    sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
+                    sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbSettings.Schema);
                 }),
                 _ => optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(migrationsAssembly);
-                    sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbInfo.Schema);
+                    sqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, dbSettings.Schema);
                 }),
             };
 
             string GetConnectionString()
             {
-                if (dbInfo == null) throw new ArgumentNullException(nameof(dbInfo));
+                if (dbSettings == null) throw new ArgumentNullException(nameof(dbSettings));
 
-                return dbInfo.DatabaseType switch
+                return dbSettings.DatabaseType switch
                 {
-                    DatabaseType.PostgresSql => $"Host={dbInfo.Server};User ID={dbInfo.User};Password={dbInfo.Password};Database={dbInfo.Database};Pooling=true;",
-                    _ => $"Server={dbInfo.Server};User ID={dbInfo.User};Password={dbInfo.Password};Database={dbInfo.Database};Pooling=true;",
+                    DatabaseType.PostgresSql => $"Host={dbSettings.Server};User ID={dbSettings.User};Password={dbSettings.Password};Database={dbSettings.Database};Pooling=true;",
+                    _ => $"Server={dbSettings.Server};User ID={dbSettings.User};Password={dbSettings.Password};Database={dbSettings.Database};Pooling=true;",
                 };
             }
         }

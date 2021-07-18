@@ -83,7 +83,7 @@ namespace AioCore.Application.Commands.IdentityCommands
 
                 var apps = string.Join(";", tenant.TenantApplications.Select(t => t.ApplicationId));
 
-                var dbInfo = DatabaseInfo.Parse(tenant.DatabaseInfo);
+                var dbInfo = DatabaseSettings.Parse(tenant.DatabaseSettingsJson);
 
                 var claims = new[]
                 {
@@ -92,7 +92,7 @@ namespace AioCore.Application.Commands.IdentityCommands
                     new Claim("email", user.Email),
                     new Claim("account", user.Account),
                     new Claim("tenant", tenant.Id.ToString()),
-                    new Claim("schema", dbInfo?.Schema),
+                    new Claim("schema", dbInfo?.Schema ?? string.Empty),
                     new Claim("apps", apps),
                     new Claim("policies", policies),
                     new Claim("groups", ""),

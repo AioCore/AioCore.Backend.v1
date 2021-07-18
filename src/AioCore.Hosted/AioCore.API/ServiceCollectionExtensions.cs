@@ -51,7 +51,7 @@ namespace AioCore.API
             return services;
         }
 
-        public static IServiceCollection AddUnitOfWork<TService, TImplementation, TDbContext>(this IServiceCollection services)
+        private static IServiceCollection AddUnitOfWork<TService, TImplementation, TDbContext>(this IServiceCollection services)
             where TService : class
             where TImplementation : class, TService
             where TDbContext : DbContext

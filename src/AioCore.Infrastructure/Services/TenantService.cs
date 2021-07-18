@@ -52,7 +52,7 @@ namespace AioCore.Infrastructure.Services
             {
                 var item = await _aioCoreUnitOfWork.SystemTenants.AddAsync(systemTenant, cancellationToken);
                 await _aioCoreUnitOfWork.SaveChangesAsync(cancellationToken);
-                var dbInfo = DatabaseInfo.Parse(item.DatabaseInfo);
+                var dbInfo = DatabaseSettings.Parse(item.DatabaseSettingsJson);
 
                 //create database
                 _httpContextAccessor.HttpContext?.User.AddIdentity(new ClaimsIdentity(new List<Claim>
@@ -78,7 +78,7 @@ namespace AioCore.Infrastructure.Services
                 var result = await _aioCoreUnitOfWork.SaveChangesAsync(cancellationToken);
                 if (result > 0)
                 {
-                    var dbInfo = DatabaseInfo.Parse(item.DatabaseInfo);
+                    var dbInfo = DatabaseSettings.Parse(item.DatabaseSettingsJson);
                     //create database
                     _httpContextAccessor.HttpContext?.User.AddIdentity(new ClaimsIdentity(new List<Claim>
                     {

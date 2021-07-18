@@ -36,11 +36,11 @@ namespace AioCore.Infrastructure.UnitOfWorks
             {
                 throw new AioCoreException("Tenant not found");
             }
-            var dbInfo = DatabaseInfo.Parse(tenant.DatabaseInfo);
-            _httpContextAccessor.HttpContext.User.AddIdentity(new ClaimsIdentity(new List<Claim>
+            var dbInfo = DatabaseSettings.Parse(tenant.DatabaseSettingsJson);
+            _httpContextAccessor.HttpContext?.User.AddIdentity(new ClaimsIdentity(new List<Claim>
             {
                 new("tenant_creating", tenant.Id.ToString()),
-                new("schema_creating", dbInfo?.Schema)
+                new("schema_creating", dbInfo?.Schema ?? string.Empty)
             }));
 
             var dbContext = _serviceProvider.GetRequiredService<AioDynamicContext>();

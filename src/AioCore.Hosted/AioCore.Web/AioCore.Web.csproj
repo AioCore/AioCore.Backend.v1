@@ -2,11 +2,16 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
+		<NpmLastInstall>node_modules/.last-install</NpmLastInstall>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AntDesign" Version="0.8.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.8" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Components\Charts" />
 	</ItemGroup>
 </Project>

@@ -30,7 +30,7 @@ namespace AioCore.Infrastructure.Services
         {
             var currentTenantId = _tenantService.GetCurrentTenantId();
             var tenant = currentTenantId is null ? null : _tenantRepository.GetAsync(currentTenantId.Value).GetAwaiter().GetResult();
-            var esInfo = ElasticsearchInfo.Parse(tenant?.ElasticsearchInfo) ?? new ElasticsearchInfo
+            var esInfo = ElasticsearchInfo.Parse(tenant?.ElasticsearchSettingsJson) ?? new ElasticsearchInfo
             {
                 UserName = _configuration["Elasticsearch:UserName"],
                 Password = _configuration["Elasticsearch:Password"],

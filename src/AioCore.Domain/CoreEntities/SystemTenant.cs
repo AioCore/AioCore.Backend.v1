@@ -7,6 +7,9 @@ namespace AioCore.Domain.CoreEntities
 {
     public class SystemTenant : Entity, IAggregateRoot
     {
+        [Keyword]
+        public string Domain { get; set; }
+        
         [Text(Analyzer = "vi", SearchAnalyzer = "vi")]
         public string Name { get; set; }
 
@@ -19,9 +22,9 @@ namespace AioCore.Domain.CoreEntities
         [Keyword]
         public Guid? LogoId { get; set; }
 
-        public string DatabaseInfo { get; set; }
+        public string DatabaseSettingsJson { get; set; }
 
-        public string ElasticsearchInfo { get; set; }
+        public string ElasticsearchSettingsJson { get; set; }
 
         public virtual ICollection<SystemUser> Users { get; set; }
 

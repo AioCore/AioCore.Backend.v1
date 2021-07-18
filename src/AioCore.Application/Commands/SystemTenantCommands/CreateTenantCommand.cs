@@ -17,7 +17,7 @@ namespace AioCore.Application.Commands.SystemTenantCommands
         public string Description { get; set; }
         public Guid? FaviconId { get; set; }
         public Guid? LogoId { get; set; }
-        public DatabaseInfo Database { get; set; }
+        public DatabaseSettings Database { get; set; }
         public ElasticsearchInfo Elasticsearch { get; set; }
 
         internal class Handler : IRequestHandler<CreateTenantCommand, CreateTenantResponse>
@@ -37,8 +37,8 @@ namespace AioCore.Application.Commands.SystemTenantCommands
                     Description = request.Description,
                     FaviconId = request.FaviconId,
                     LogoId = request.LogoId,
-                    DatabaseInfo = request.Database.ToString(),
-                    ElasticsearchInfo = request.Elasticsearch.ToString()
+                    DatabaseSettingsJson = request.Database.ToString(),
+                    ElasticsearchSettingsJson = request.Elasticsearch.ToString()
                 }, cancellationToken);
 
                 return tenant.MapTo<CreateTenantResponse>();

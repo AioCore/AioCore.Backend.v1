@@ -1,7 +1,13 @@
 /*Components*/
+@import "components/button";
+@import "components/form";
 @import "components/navbar";
 @import "components/table";
+@import "components/input";
 @import "components/tooltip";
+
+/*framework*/
+@import "framework/tailwind";
 
 /*Pages*/
 

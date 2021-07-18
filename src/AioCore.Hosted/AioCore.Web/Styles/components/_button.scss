@@ -1,0 +1,11 @@
+@use "../framework/default";
+
+.btn {
+  &.btn-primary {
+    background-color: default.$primary;
+  }
+  
+  &.hover\:bg-primary:hover {
+    background-color: default.$primary-dark;
+  }
+}

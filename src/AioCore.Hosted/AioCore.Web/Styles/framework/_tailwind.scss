@@ -1,0 +1,19 @@
+@use "../framework/default";
+
+.form-group {
+  .form-input,
+  .form-textarea {
+    display: block;
+    font-size: .75rem;
+    line-height: 1rem;
+    width: 100%;
+  }
+}
+
+.focus\:border-primary:focus {
+  border-color: default.$primary;
+}
+
+.text-primary {
+  color: default.$primary;
+}

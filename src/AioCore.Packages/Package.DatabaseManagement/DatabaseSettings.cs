@@ -3,7 +3,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Package.DatabaseManagement
 {
-    public class DatabaseInfo
+    public class DatabaseSettings
     {
         public string Server { get; set; }
 
@@ -17,10 +17,10 @@ namespace Package.DatabaseManagement
 
         public DatabaseType DatabaseType { get; set; }
 
-        public static DatabaseInfo Parse(string strInfo)
+        public static DatabaseSettings Parse(string strInfo)
         {
             if (string.IsNullOrEmpty(strInfo)) return null;
-            return JsonConvert.DeserializeObject<DatabaseInfo>(strInfo, CreateJsonSerializerSettings());
+            return JsonConvert.DeserializeObject<DatabaseSettings>(strInfo, CreateJsonSerializerSettings());
         }
 
         public override string ToString()
